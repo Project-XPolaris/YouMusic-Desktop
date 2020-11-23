@@ -6,7 +6,7 @@ import ArtistItem from '../../components/ArtistItem'
 import MusicItem from '../../components/MusicItem'
 import { useMount } from 'ahooks'
 import useMusicListModel from './model'
-import usePlayerModel from '../../model/player'
+import usePlayerModel from '../../models/player'
 
 const MusicListPage = ({}) => {
   const classes = useStyles()
@@ -20,7 +20,7 @@ const MusicListPage = ({}) => {
       <Grid container className={classes.grid}>
         {musicModel.data.map((music) => (
           <Grid container item key={music.id} className={classes.item}>
-            <MusicItem music={music} onClick={() => playerModel.setCurrentMusic(music)}/>
+            <MusicItem music={music} onClick={() => playerModel.playMusic(music)}/>
           </Grid>
         ))}
       </Grid>

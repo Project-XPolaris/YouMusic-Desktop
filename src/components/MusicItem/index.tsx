@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import theme from '../../theme'
 import { Music } from '../../api/music'
 import { getMusicAlbumCoverUrl, getMusicArtistString } from '../../utils/music'
+import TouchRipple from '@material-ui/core/ButtonBase/TouchRipple'
+import { ButtonBase } from '@material-ui/core'
 
 const useStyles = makeStyles({
   main: {
@@ -31,15 +33,20 @@ const useStyles = makeStyles({
 
 interface MusicItemPropsType {
   music: Music,
-  onClick:(music:Music) => void
+  onClick: (music: Music) => void
 }
 
-const MusicItem = ({ music, onClick }: MusicItemPropsType): React.ReactElement => {
+const MusicItem = ({
+  music,
+  onClick
+}: MusicItemPropsType): React.ReactElement => {
   const classes = useStyles()
 
   return (
     <div className={classes.main}>
-      <img src={getMusicAlbumCoverUrl(music)} className={classes.cover} onClick={() => onClick(music)} />
+      <ButtonBase>
+        <img src={getMusicAlbumCoverUrl(music)} className={classes.cover} onClick={() => onClick(music)} />
+      </ButtonBase>
       <div className={classes.title}>
         {music.title}
       </div>

@@ -8,10 +8,11 @@ import SkipNextIcon from '@material-ui/icons/SkipNext'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow'
 import QueueMusicIcon from '@material-ui/icons/QueueMusic'
 import PauseIcon from '@material-ui/icons/Pause'
-import usePlayerModel from '../../model/player'
+import usePlayerModel from '../../models/player'
 import { useAudioPlayer, useAudioPosition } from 'react-use-audio-player'
 import { getMusicAlbumCoverUrl, getMusicArtistString, getPlayerUrl } from '../../utils/music'
 import { playTimeText } from '../../utils/time'
+import useLayoutModel from '../../models/layout'
 
 const useStyles = makeStyles({
   main: {
@@ -80,21 +81,21 @@ const useStyles = makeStyles({
   }
 })
 
-interface PlayBarPropsType {
 
-}
 
-const PlayBar = ({}: PlayBarPropsType) => {
+const PlayBar = ():React.ReactElement => {
   const classes = useStyles()
   const playerModel = usePlayerModel()
+  const layoutModel = useLayoutModel()
+  const currentMusic = playerModel.getCurrentPlay()
   const { togglePlayPause, ready, loading, playing } = useAudioPlayer({
-    src: getPlayerUrl(playerModel.currentMusic),
+    src:  getPlayerUrl(currentMusic),
     format: 'mp3',
     autoplay: false
   })
   const [sliderValue, setSliderValue] = useState(-1)
   const { percentComplete, duration, seek } = useAudioPosition({ highRefreshRate: true })
-  const onSliderChange = (_, value) => {
+  const onSliderChange = (_:any, value) => {
     setSliderValue(value)
   }
   const onSliderCommit = (_, value) => {
@@ -102,19 +103,20 @@ const PlayBar = ({}: PlayBarPropsType) => {
     seek(duration * value / 100)
   }
 
+
   return (
     <div className={classes.main}>
       <div className={classes.info}>
-        {playerModel.currentMusic &&
+        {currentMusic &&
           <>
-            <img src={getMusicAlbumCoverUrl(playerModel.currentMusic)}
+            <img src={getMusicAlbumCoverUrl(currentMusic)}
               className={classes.cover} />
             <div>
               <div className={classes.title}>
-                {playerModel.currentMusic.title}
+                {currentMusic.title}
               </div>
               <div className={classes.title}>
-                {getMusicArtistString(playerModel.currentMusic)}
+                {getMusicArtistString(currentMusic)}
               </div>
             </div>
           </>
@@ -157,7 +159,7 @@ const PlayBar = ({}: PlayBarPropsType) => {
         <IconButton>
           <SyncIcon />
         </IconButton>
-        <IconButton>
+        <IconButton onClick={() => layoutModel.switchPlaylistDrawer()}>
           <QueueMusicIcon />
         </IconButton>
       </div>
