@@ -4,10 +4,12 @@ import useStyles from './style'
 import AlbumItem from '../../components/AlbumItem'
 import useAlbumListModel from './model'
 import { useMount } from 'ahooks'
+import usePlayerModel from '../../models/player';
 
 const AlbumListPage = ():React.ReactElement => {
   const classes = useStyles()
   const albumListModel = useAlbumListModel()
+  const playerModel = usePlayerModel()
   useMount(async () => {
     await albumListModel.fetchAlbum()
   })
@@ -17,7 +19,7 @@ const AlbumListPage = ():React.ReactElement => {
       <Grid container className={classes.grid}>
         {albumListModel.data.map((album) => (
           <Grid container item key={album.id} className={classes.item}>
-            <AlbumItem album={album} />
+            <AlbumItem album={album} onClick={(album) => playerModel.playAlbum(album.id)}/>
           </Grid>
         ))}
       </Grid>

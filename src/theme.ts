@@ -7,7 +7,7 @@ const appTheme = createMuiTheme({
     primary: {
       main: '#202020'
     }
-  }
+  },
 
 })
 export default appTheme

@@ -126,13 +126,13 @@ const PlayBar = ():React.ReactElement => {
       <div className={classes.center}>
         <div className={classes.control}>
           <div className={classes.buttons}>
-            <IconButton>
+            <IconButton onClick={() => playerModel.previousMusic()}>
               <SkipPreviousIcon />
             </IconButton>
             <IconButton onClick={() => togglePlayPause()}>
               {(playing ?? false) ? <PauseIcon /> : <PlayArrowIcon />}
             </IconButton>
-            <IconButton>
+            <IconButton onClick={() => playerModel.nextMusic()}>
               <SkipNextIcon />
             </IconButton>
           </div>

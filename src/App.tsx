@@ -12,10 +12,10 @@ document.body.appendChild(mainElement)
 const App = () => {
   return (
     <>
-        <ThemeProvider theme={appTheme}>
-          <GlobalStyle />
-          <BaseLayout />
-        </ThemeProvider>
+      <ThemeProvider theme={appTheme}>
+        <GlobalStyle />
+        <BaseLayout />
+      </ThemeProvider>
     </>
   )
 }

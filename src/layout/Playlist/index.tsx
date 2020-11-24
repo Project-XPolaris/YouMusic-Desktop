@@ -65,13 +65,18 @@ export default function PlaylistDrawer ({}: PlaylistDrawerPropsType) {
         </Typography>
       </div>
       <List className={classes.list} dense>
-        {playerModel.playlist.map((music) => {
+        {playerModel.playlist.map((music, idx) => {
           return (
-            <ListItem key={music.id} button>
+            <ListItem key={music.id} button style={{ color: playerModel.playIndex === idx ? '#E91E63' : undefined }} selected={true}>
               <ListItemAvatar>
                 <Avatar src={getMusicAlbumCoverUrl(music)} variant="rounded"/>
               </ListItemAvatar>
-              <ListItemText primary={music.title} secondary={getMusicArtistString(music)}/>
+              <ListItemText
+                primary={music.title}
+                secondary={getMusicArtistString(music)}
+                primaryTypographyProps={{ noWrap: true }}
+                secondaryTypographyProps={{ noWrap: true }}
+              />
               <ListItemSecondaryAction>
 
               </ListItemSecondaryAction>

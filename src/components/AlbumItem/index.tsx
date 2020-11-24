@@ -4,6 +4,7 @@ import theme from '../../theme'
 import { Album } from '../../api/album'
 import { ApplicationConfig } from '../../config'
 import { getAlbumArtistString } from '../../utils/album'
+import { ButtonBase } from '@material-ui/core'
 
 const useStyles = makeStyles({
   main: {
@@ -31,14 +32,18 @@ const useStyles = makeStyles({
 })
 
 interface AlbumItemPropsType {
-  album:Album
+  album: Album
+  onClick:(album:Album) => void
 }
-const AlbumItem = ({ album }: AlbumItemPropsType) => {
+
+const AlbumItem = ({ album,onClick }: AlbumItemPropsType):React.ReactElement => {
   const classes = useStyles()
 
   return (
     <div className={classes.main}>
-      <img src={`${ApplicationConfig.apiUrl}${album.cover}`} className={classes.cover}/>
+      <ButtonBase onClick={() => onClick(album)} >
+        <img src={`${ApplicationConfig.apiUrl}${album.cover}`} className={classes.cover} />
+      </ButtonBase>
       <div className={classes.title}>
         {album.name}
       </div>
