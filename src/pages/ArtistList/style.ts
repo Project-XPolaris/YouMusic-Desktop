@@ -7,11 +7,13 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '100%',
     padding: theme.spacing(3),
     overflowX: 'hidden',
-    overflowY: 'scroll'
+    overflowY: 'scroll',
+    paddingBottom: theme.spacing(12)
   },
   content: {},
   item: {
     width: 120,
+    height: 180,
     marginRight: theme.spacing(2),
     marginBottom: theme.spacing(2)
   },

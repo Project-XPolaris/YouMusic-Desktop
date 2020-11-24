@@ -5,6 +5,7 @@ import { Music } from '../../api/music'
 import { getMusicAlbumCoverUrl, getMusicArtistString } from '../../utils/music'
 import TouchRipple from '@material-ui/core/ButtonBase/TouchRipple'
 import { ButtonBase } from '@material-ui/core'
+import MusicNoteIcon from '@material-ui/icons/MusicNote'
 
 const useStyles = makeStyles({
   main: {
@@ -15,6 +16,18 @@ const useStyles = makeStyles({
     width: 120,
     height: 120,
     objectFit: 'cover'
+  },
+  noCover: {
+    width: 120,
+    height: 120,
+    backgroundColor: theme.palette.primary.light,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  noCoverIcon: {
+    color: theme.palette.primary.contrastText,
+    fontSize: 32
   },
   title: {
     ...theme.typography.subtitle1,
@@ -45,7 +58,9 @@ const MusicItem = ({
   return (
     <div className={classes.main}>
       <ButtonBase>
-        <img src={getMusicAlbumCoverUrl(music)} className={classes.cover} onClick={() => onClick(music)} />
+        {
+          music.album?.cover ? <img src={getMusicAlbumCoverUrl(music)} className={classes.cover} onClick={() => onClick(music)} /> :<div className={classes.noCover}><MusicNoteIcon className={classes.noCoverIcon} /></div>
+        }
       </ButtonBase>
       <div className={classes.title}>
         {music.title}

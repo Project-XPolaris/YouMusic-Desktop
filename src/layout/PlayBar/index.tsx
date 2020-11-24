@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import theme from '../../theme'
-import { IconButton, Slider, Typography } from '@material-ui/core'
+import { Grid, IconButton, Slider, Typography } from '@material-ui/core'
 import SyncIcon from '@material-ui/icons/Sync'
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious'
 import SkipNextIcon from '@material-ui/icons/SkipNext'
@@ -13,6 +13,8 @@ import { useAudioPlayer, useAudioPosition } from 'react-use-audio-player'
 import { getMusicAlbumCoverUrl, getMusicArtistString, getPlayerUrl } from '../../utils/music'
 import { playTimeText } from '../../utils/time'
 import useLayoutModel from '../../models/layout'
+import { VolumeDown, VolumeUp } from '@material-ui/icons'
+import { useLocalStorageState } from 'ahooks'
 
 const useStyles = makeStyles({
   main: {
@@ -56,7 +58,7 @@ const useStyles = makeStyles({
     width: '30vw',
     display: 'flex',
     justifyContent: 'flex-end',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     marginRight: theme.spacing(4)
   },
   control: {
@@ -66,6 +68,14 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  volume: {
+    marginRight: theme.spacing(2),
+    alignItems: 'center',
+    color: theme.palette.primary.contrastText
+  },
+  volumeSlider: {
+    width: theme.spacing(10)
   },
   buttons: {
     display: 'flex'
@@ -81,18 +91,21 @@ const useStyles = makeStyles({
   }
 })
 
-
-
 const PlayBar = ():React.ReactElement => {
   const classes = useStyles()
   const playerModel = usePlayerModel()
   const layoutModel = useLayoutModel()
   const currentMusic = playerModel.getCurrentPlay()
-  const { togglePlayPause, ready, loading, playing } = useAudioPlayer({
-    src:  getPlayerUrl(currentMusic),
+  const [saveVolume, setSaveVolume] = useLocalStorageState('saveVolume', 0)
+
+  const { togglePlayPause, ready, loading, playing, volume } = useAudioPlayer({
+    src: getPlayerUrl(currentMusic),
     format: 'mp3',
     autoplay: false
   })
+  useEffect(() => {
+    volume(saveVolume / 100)
+  }, [saveVolume])
   const [sliderValue, setSliderValue] = useState(-1)
   const { percentComplete, duration, seek } = useAudioPosition({ highRefreshRate: true })
   const onSliderChange = (_:any, value) => {
@@ -102,7 +115,6 @@ const PlayBar = ():React.ReactElement => {
     setSliderValue(-1)
     seek(duration * value / 100)
   }
-
 
   return (
     <div className={classes.main}>
@@ -156,6 +168,20 @@ const PlayBar = ():React.ReactElement => {
         </div>
       </div>
       <div className={classes.right}>
+        <Grid container spacing={2} className={classes.volume}>
+          <Grid item>
+            <VolumeDown />
+          </Grid>
+          <Grid item xs >
+            <Slider
+              className={classes.volumeSlider}
+              max={100}
+              min={0}
+              color={'secondary'}
+              value={saveVolume} onChange={(_, value) => setSaveVolume(value)}
+            />
+          </Grid>
+        </Grid>
         <IconButton>
           <SyncIcon />
         </IconButton>

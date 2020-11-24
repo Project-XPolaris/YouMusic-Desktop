@@ -7,7 +7,8 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '100%',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingBottom: theme.spacing(12)
   },
   content: {
     color: '#FFFFFF'

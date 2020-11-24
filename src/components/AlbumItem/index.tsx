@@ -5,7 +5,7 @@ import { Album } from '../../api/album'
 import { ApplicationConfig } from '../../config'
 import { getAlbumArtistString } from '../../utils/album'
 import { ButtonBase } from '@material-ui/core'
-
+import MusicNoteIcon from '@material-ui/icons/MusicNote'
 const useStyles = makeStyles({
   main: {
     width: 120,
@@ -15,6 +15,18 @@ const useStyles = makeStyles({
     width: 120,
     height: 120,
     objectFit: 'cover'
+  },
+  noCover: {
+    width: 120,
+    height: 120,
+    backgroundColor: theme.palette.primary.light,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  noCoverIcon: {
+    color: theme.palette.primary.contrastText,
+    fontSize: 32
   },
   title: {
     ...theme.typography.subtitle1,
@@ -36,13 +48,16 @@ interface AlbumItemPropsType {
   onClick:(album:Album) => void
 }
 
-const AlbumItem = ({ album,onClick }: AlbumItemPropsType):React.ReactElement => {
+const AlbumItem = ({ album, onClick }: AlbumItemPropsType):React.ReactElement => {
   const classes = useStyles()
 
   return (
     <div className={classes.main}>
       <ButtonBase onClick={() => onClick(album)} >
-        <img src={`${ApplicationConfig.apiUrl}${album.cover}`} className={classes.cover} />
+        {
+          album.cover ? <img src={`${ApplicationConfig.apiUrl}${album.cover}`} className={classes.cover} /> : <div className={classes.noCover}><MusicNoteIcon className={classes.noCoverIcon} /></div>
+        }
+
       </ButtonBase>
       <div className={classes.title}>
         {album.name}

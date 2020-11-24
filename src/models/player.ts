@@ -7,7 +7,7 @@ import { fetchMusicList, Music } from '../api/music'
 import { useList } from 'react-use'
 
 const playerModel = () => {
-  const [playlist, { push, insertAt }] = useList<Music>([])
+  const [playlist, { push, insertAt, }] = useList<Music>([])
   const [playIndex, setPlayIndex] = useState<number>(0)
   const playMusic = (music:Music) => {
     insertAt(0, music)

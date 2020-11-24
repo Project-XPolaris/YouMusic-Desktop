@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { createStyles, Grid, Typography, withStyles } from '@material-ui/core'
+import { createStyles, Grid, Pagination, Typography, withStyles } from '@material-ui/core'
 import useStyles from './style'
 import AlbumItem from '../../components/AlbumItem'
 import ArtistItem from '../../components/ArtistItem'
@@ -13,7 +13,7 @@ const MusicListPage = ({}) => {
   const musicModel = useMusicListModel()
   const playerModel = usePlayerModel()
   useMount(async () => {
-    await musicModel.fetchMusic()
+    await musicModel.fetchMusic({})
   })
   return (
     <div className={classes.root}>
@@ -24,6 +24,7 @@ const MusicListPage = ({}) => {
           </Grid>
         ))}
       </Grid>
+      <Pagination count={musicModel.total / 55} onChange={(event, page) => musicModel.fetchMusic({ page })} />
     </div>
   )
 }
