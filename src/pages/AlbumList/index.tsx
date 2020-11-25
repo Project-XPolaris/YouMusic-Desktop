@@ -4,12 +4,14 @@ import useStyles from './style'
 import AlbumItem from '../../components/AlbumItem'
 import useAlbumListModel from './model'
 import { useMount } from 'ahooks'
-import usePlayerModel from '../../models/player';
+import usePlayerModel from '../../models/player'
+import { useHistory } from 'react-router-dom'
 
 const AlbumListPage = ():React.ReactElement => {
   const classes = useStyles()
   const albumListModel = useAlbumListModel()
   const playerModel = usePlayerModel()
+  const history = useHistory()
   useMount(async () => {
     await albumListModel.fetchAlbum({})
   })
@@ -19,7 +21,11 @@ const AlbumListPage = ():React.ReactElement => {
       <Grid container>
         {albumListModel.data.map((album) => (
           <Grid container item key={album.id} className={classes.item}>
-            <AlbumItem album={album} onClick={(album) => playerModel.playAlbum(album.id)}/>
+            <AlbumItem
+              album={album}
+              onClick={(album) => playerModel.playAlbum(album.id)}
+              onTitleClick={(album) => history.push(`/album/${album.id}`)}
+            />
           </Grid>
         ))}
       </Grid>

@@ -4,7 +4,7 @@ import theme from '../../theme'
 import { Album } from '../../api/album'
 import { ApplicationConfig } from '../../config'
 import { getAlbumArtistString } from '../../utils/album'
-import { ButtonBase } from '@material-ui/core'
+import { ButtonBase, Link } from '@material-ui/core'
 import MusicNoteIcon from '@material-ui/icons/MusicNote'
 const useStyles = makeStyles({
   main: {
@@ -46,9 +46,10 @@ const useStyles = makeStyles({
 interface AlbumItemPropsType {
   album: Album
   onClick:(album:Album) => void
+  onTitleClick:(album:Album) => void
 }
 
-const AlbumItem = ({ album, onClick }: AlbumItemPropsType):React.ReactElement => {
+const AlbumItem = ({ album, onClick,onTitleClick }: AlbumItemPropsType):React.ReactElement => {
   const classes = useStyles()
 
   return (
@@ -57,9 +58,8 @@ const AlbumItem = ({ album, onClick }: AlbumItemPropsType):React.ReactElement =>
         {
           album.cover ? <img src={`${ApplicationConfig.apiUrl}${album.cover}`} className={classes.cover} /> : <div className={classes.noCover}><MusicNoteIcon className={classes.noCoverIcon} /></div>
         }
-
       </ButtonBase>
-      <div className={classes.title}>
+      <div className={classes.title} onClick={() => onTitleClick(album)}>
         {album.name}
       </div>
       <div className={classes.artist}>

@@ -18,3 +18,7 @@ export const fetchAlbumList = async ({ page = 1, pageSize = 20, ...other }):Prom
     }
   })
 }
+
+export const fetchAlbumById = async (albumId:string | number):Promise<Album> => {
+  return apiRequest.get(ApplicationConfig.apiPaths.album.replace(':id', `${albumId}`), {})
+}

@@ -1,33 +1,53 @@
 import * as React from 'react'
 import { AppBar, IconButton, Toolbar, Typography } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
-import Nav from '../Nav'
 import useStyles from './style'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import HomePage from '../../pages/Home'
-import AlbumListPage from '../../pages/AlbumList'
-import ArtistListPage from '../../pages/ArtistList'
-import MusicListPage from '../../pages/MusicList'
+import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 import PlayBar from '../PlayBar'
 import { AudioPlayerProvider } from 'react-use-audio-player'
 import PlaylistDrawer from '../Playlist'
+import { HomeLayout } from '../HomeLayout'
+import AlbumPage from '../../pages/Album'
+import useLayoutModel from '../../models/layout'
+import { ArrowBack } from '@material-ui/icons'
 
 const BaseLayout = ():React.ReactElement => {
   const classes = useStyles()
+  const layoutModel = useLayoutModel()
+  const NavIcon = () => {
+    switch (layoutModel.navIcon) {
+      case 'Menu':
+        return (
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="menu"
+          >
+            <MenuIcon />
+          </IconButton>
+        )
+      case 'Back':
+        return (
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="menu"
+            onClick={() => history.back()}
+          >
+            <ArrowBack />
+          </IconButton>
+        )
+    }
+  }
   return (
     <>
       <PlaylistDrawer />
       <div>
         <AppBar position="fixed" elevation={0}>
           <Toolbar>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="menu"
-            >
-              <MenuIcon />
-            </IconButton>
+            <NavIcon />
             <Typography variant="h6" className={classes.title}>
             YouMusic
             </Typography>
@@ -35,28 +55,15 @@ const BaseLayout = ():React.ReactElement => {
         </AppBar>
         <div className={classes.main}>
           <Router>
-            <div className={classes.nav}>
-              <Nav />
-            </div>
             <Switch>
-              <Route path="/albumlist">
+              <Route path="/home">
                 <div className={classes.content}>
-                  <AlbumListPage />
+                  <HomeLayout />
                 </div>
               </Route>
-              <Route path="/artistlist">
+              <Route path="/album/:albumId">
                 <div className={classes.content}>
-                  <ArtistListPage />
-                </div>
-              </Route>
-              <Route path="/musiclist">
-                <div className={classes.content}>
-                  <MusicListPage />
-                </div>
-              </Route>
-              <Route path="/">
-                <div className={classes.content}>
-                  <HomePage />
+                  <AlbumPage />
                 </div>
               </Route>
             </Switch>

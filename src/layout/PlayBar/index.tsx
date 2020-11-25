@@ -69,13 +69,13 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  volume: {
-    marginRight: theme.spacing(2),
-    alignItems: 'center',
+  volumeIcon: {
+    marginRight: theme.spacing(1),
     color: theme.palette.primary.contrastText
   },
   volumeSlider: {
-    width: theme.spacing(10)
+    width: theme.spacing(10),
+    color:theme.palette.primary.contrastText
   },
   buttons: {
     display: 'flex'
@@ -168,20 +168,13 @@ const PlayBar = ():React.ReactElement => {
         </div>
       </div>
       <div className={classes.right}>
-        <Grid container spacing={2} className={classes.volume}>
-          <Grid item>
-            <VolumeDown />
-          </Grid>
-          <Grid item xs >
-            <Slider
-              className={classes.volumeSlider}
-              max={100}
-              min={0}
-              color={'secondary'}
-              value={saveVolume} onChange={(_, value) => setSaveVolume(value)}
-            />
-          </Grid>
-        </Grid>
+        <VolumeDown className={classes.volumeIcon} />
+        <Slider
+          className={classes.volumeSlider}
+          max={100}
+          min={0}
+          value={saveVolume} onChange={(_, value) => setSaveVolume(value)}
+        />
         <IconButton>
           <SyncIcon />
         </IconButton>

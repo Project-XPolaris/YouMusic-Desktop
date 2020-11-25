@@ -18,13 +18,14 @@ function createWindow () {
   })
 
   if (process.env.NODE_ENV === 'development') {
-    mainWindow.loadURL('http://localhost:4000')
+    mainWindow.loadURL('http://localhost:4000/#home')
   } else {
     mainWindow.loadURL(
       url.format({
         pathname: path.join(__dirname, 'renderer/index.html'),
         protocol: 'file:',
-        slashes: true
+        slashes: true,
+        hash: 'home'
       })
     )
   }

@@ -18,31 +18,32 @@ const NavItems: {
     icon: <HomeIcon />,
     title: 'Home',
     index: 'Home',
-    path: '/'
+    path: '/home'
   },
   {
     icon: <AlbumIcon />,
     title: 'Album',
     index: 'AlbumList',
-    path: '/albumlist'
+    path: '/home/album'
   },
   {
     icon: <PersonIcon />,
     title: 'Artist',
     index: 'ArtistList',
-    path: '/artistlist'
+    path: '/home/artist'
   },
   {
     icon: <MusicNoteIcon />,
     title: 'Music',
     index: 'MusicList',
-    path: '/musiclist'
+    path: '/home/music'
   }
 ]
 const Nav = () => {
   const classes = useStyles()
   const layoutModel = useLayoutModel()
   const history = useHistory()
+  console.log(history.location.pathname)
   return (
     <div className={classes.root}>
       <List component='nav'>

@@ -1,9 +1,11 @@
 import { createModel } from 'hox'
 import { useState } from 'react'
 export type TabIndex = 'Home' | 'ArtistList' | 'AlbumList' | 'MusicList'
+export type NavIcon = 'Menu' | 'Back'
 const LayoutModel = () => {
   const [activeIndex, setActiveIndex] = useState<TabIndex>('Home')
   const [playlistDrawerOpen, setPlaylistDrawerOpen] = useState<boolean>(false)
+  const [navIcon, setNavIcon] = useState<NavIcon>('Menu')
   const switchPlaylistDrawer = () => {
     setPlaylistDrawerOpen(!playlistDrawerOpen)
   }
@@ -11,7 +13,9 @@ const LayoutModel = () => {
     setActiveIndex,
     activeIndex,
     playlistDrawerOpen,
-    switchPlaylistDrawer
+    switchPlaylistDrawer,
+    navIcon,
+    setNavIcon
   }
 }
 const useLayoutModel = createModel(LayoutModel)
