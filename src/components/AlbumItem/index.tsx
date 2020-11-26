@@ -56,7 +56,7 @@ const AlbumItem = ({ album, onClick,onTitleClick }: AlbumItemPropsType):React.Re
     <div className={classes.main}>
       <ButtonBase onClick={() => onClick(album)} >
         {
-          album.cover ? <img src={`${ApplicationConfig.apiUrl}${album.cover}`} className={classes.cover} /> : <div className={classes.noCover}><MusicNoteIcon className={classes.noCoverIcon} /></div>
+          album?.cover ? <img src={`${ApplicationConfig.apiUrl}${album.cover}`} className={classes.cover} /> : <div className={classes.noCover}><MusicNoteIcon className={classes.noCoverIcon} /></div>
         }
       </ButtonBase>
       <div className={classes.title} onClick={() => onTitleClick(album)}>

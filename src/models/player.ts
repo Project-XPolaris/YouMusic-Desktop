@@ -7,7 +7,7 @@ import { fetchMusicList, Music } from '../api/music'
 import { useList } from 'react-use'
 
 const playerModel = () => {
-  const [playlist, { push, insertAt, }] = useList<Music>([])
+  const [playlist, { push, insertAt }] = useList<Music>([])
   const [playIndex, setPlayIndex] = useState<number>(0)
   const playMusic = (music:Music) => {
     insertAt(0, music)
@@ -15,6 +15,10 @@ const playerModel = () => {
   const playAlbum = async (albumId:string) => {
     const response = await fetchMusicList({ pageSize: 1000, album: albumId })
     response.data.reverse().forEach((music) => insertAt(0, music))
+  }
+  const addAlbumToPlaylist = async (albumId:string) => {
+    const response = await fetchMusicList({ pageSize: 1000, album: albumId })
+    response.data.forEach((music) => push(music))
   }
   const getCurrentPlay = ():Music | undefined => {
     if (playlist.length === 0) {
@@ -30,7 +34,7 @@ const playerModel = () => {
     setPlayIndex(0)
   }
   const previousMusic = () => {
-    if (playIndex !== 0){
+    if (playIndex !== 0) {
       setPlayIndex(playIndex - 1)
     }
   }
@@ -41,7 +45,8 @@ const playerModel = () => {
     getCurrentPlay,
     playAlbum,
     nextMusic,
-    previousMusic
+    previousMusic,
+    addAlbumToPlaylist
   }
 }
 const usePlayerModel = createModel(playerModel)
