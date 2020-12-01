@@ -17,3 +17,7 @@ export const fetchArtistList = async ({ page = 1, pageSize = 20, ...other }):Pro
     }
   })
 }
+
+export const fetchArtistById = async (id:number|string):Promise<Artist> => {
+  return apiRequest.get(ApplicationConfig.apiPaths.artist.replace(':id', `${id}`))
+}

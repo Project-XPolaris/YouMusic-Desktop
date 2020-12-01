@@ -4,6 +4,7 @@ export const ApplicationConfig = {
     albumList: '/album',
     album: '/album/:id',
     artistList: '/artist',
+    artist: '/artist/:id',
     musicList: '/music'
   }
 }

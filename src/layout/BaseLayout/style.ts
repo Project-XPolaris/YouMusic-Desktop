@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
     position: 'fixed',
     zIndex: 100,
     bottom: 0
+  },
+  appbar:{
+    backgroundColor:'#202020'
   }
 }))
 export default useStyles

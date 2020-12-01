@@ -17,6 +17,18 @@ import { getMusicAlbumCoverUrl, getMusicArtistString } from '../../utils/music'
 
 const useStyles = makeStyles({
   main: {
+    '& .Mui-selected': {
+      backgroundColor: theme.palette.primary.main,
+      '&:hover $child': {
+        color: 'red'
+      }
+    },
+    '& .MuiListItem-button.Mui-selected:hover': {
+      backgroundColor: theme.palette.primary.main,
+    },
+    '& .Mui-focusVisible': {
+      backgroundColor: theme.palette.primary.dark
+    }
   },
   cover: {
     width: theme.spacing(4),
@@ -26,13 +38,11 @@ const useStyles = makeStyles({
   list: {
     width: theme.spacing(40),
     marginTop: theme.spacing(8),
-    backgroundColor: theme.palette.primary.main
   },
   header: {
     height: theme.spacing(8),
     paddingTop: theme.spacing(2),
     paddingLeft: theme.spacing(2),
-    backgroundColor: theme.palette.primary.main,
     position: 'fixed',
     width: '100%',
     zIndex: 100
@@ -67,7 +77,7 @@ export default function PlaylistDrawer ({}: PlaylistDrawerPropsType) {
       <List className={classes.list} dense>
         {playerModel.playlist.map((music, idx) => {
           return (
-            <ListItem key={music.id} button style={{ color: playerModel.playIndex === idx ? '#E91E63' : undefined }} selected={true}>
+            <ListItem key={music.id} button selected={true}>
               <ListItemAvatar>
                 <Avatar src={getMusicAlbumCoverUrl(music)} variant="rounded"/>
               </ListItemAvatar>

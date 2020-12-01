@@ -10,18 +10,18 @@ import {
   ListItem,
   ListItemAvatar, ListItemSecondaryAction,
   ListItemText,
-  Typography,
+  Typography
 } from '@material-ui/core'
 import { ArrowBack, PlayArrow, PlaylistAdd } from '@material-ui/icons'
 import useLayoutModel from '../../models/layout'
 import { useParams } from 'react-router-dom'
 import useAlbumModel from './model'
 import MusicNoteIcon from '@material-ui/icons/MusicNote'
-import ArtistItem from '../../components/ArtistItem'
 import { ApplicationConfig } from '../../config'
 import { getMusicArtistString } from '../../utils/music'
 import AlbumArtistItem from './components/AlbumArtist'
 import usePlayerModel from '../../models/player'
+import SideLayout from '../../layout/SideLayout'
 
 const useStyles = makeStyles({
   main: {
@@ -47,7 +47,7 @@ const useStyles = makeStyles({
   cover: {
     width: 240,
     height: 240,
-    objectFit: 'contain'
+    objectFit: 'cover'
   },
   noCover: {
     width: 240,
@@ -109,77 +109,75 @@ const AlbumPage = ({}: AlbumPagePropsType) => {
       </div>
     )
   }
+  const side = (
+    <>
+      {
+        albumModel.album ? <img src={`${ApplicationConfig.apiUrl}${albumModel.album.cover}`} className={classes.cover}/> : <NoCover />
+      }
+      <div className={classes.actionContent}>
+        <Button
+          disableElevation
+          startIcon={<PlayArrow />}
+          color={'secondary'}
+          variant={'contained'}
+          className={classes.actionButton}
+          fullWidth
+          onClick={() => {
+            playerModel.playAlbum(albumId)
+          }}
+        >
+          Play
+        </Button>
+        <Button
+          disableElevation
+          startIcon={<PlaylistAdd />}
+          variant={'outlined'}
+          className={classes.actionButton}
+          fullWidth
+          onClick={() => {
+            playerModel.addAlbumToPlaylist(albumId)
+          }}
+        >
+          Add to playlist
+        </Button>
+      </div>
+    </>
+  )
   return (
-    <div className={classes.main}>
-      <div className={classes.side}>
+    <SideLayout side={side}>
+      <Typography variant="h5" gutterBottom className={classes.title}>
+        Artist
+      </Typography>
+      <Grid container className={classes.artistContainer}>
+        {albumModel.album && albumModel.album.artist.map((artist) => (
+          <Grid item key={artist.id} className={classes.item}>
+            <AlbumArtistItem artist={artist}/>
+          </Grid>
+        ))}
+      </Grid>
+      <Typography variant="h5" gutterBottom className={classes.title}>
+        Music
+      </Typography>
+      <List>
         {
-          albumModel.album ? <img src={`${ApplicationConfig.apiUrl}${albumModel.album.cover}`} className={classes.cover}/> : <NoCover />
+          albumModel.album && albumModel.album.music.map((music) => (
+            <ListItem button key={music.id} >
+              <ListItemAvatar>
+                <Avatar className={classes.musicAvatar}>
+                  <MusicNoteIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText className={classes.listText} primary={music.title} secondary={getMusicArtistString(music)} />
+              <ListItemSecondaryAction>
+                <IconButton>
+                  <PlaylistAdd fontSize="inherit" />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))
         }
-        <div className={classes.actionContent}>
-          <Button
-            disableElevation
-            startIcon={<PlayArrow />}
-            color={'secondary'}
-            variant={'contained'}
-            className={classes.actionButton}
-            fullWidth
-            onClick={() => {
-              playerModel.playAlbum(albumId)
-            }}
-          >
-            Play
-          </Button>
-          <Button
-            disableElevation
-            startIcon={<PlaylistAdd />}
-            variant={'outlined'}
-            color={'#FFFFFF'}
-            className={classes.actionButton}
-            fullWidth
-            onClick={() => {
-              playerModel.addAlbumToPlaylist(albumId)
-            }}
-          >
-            Add to playlist
-          </Button>
-        </div>
-
-      </div>
-      <div className={classes.content}>
-        <Typography variant="h5" gutterBottom className={classes.title}>
-          Artist
-        </Typography>
-        <Grid container className={classes.artistContainer}>
-          {albumModel.album && albumModel.album.artist.map((artist) => (
-            <Grid item key={artist.id} className={classes.item}>
-              <AlbumArtistItem artist={artist}/>
-            </Grid>
-          ))}
-        </Grid>
-        <Typography variant="h5" gutterBottom className={classes.title}>
-          Music
-        </Typography>
-        <List>
-          {
-            albumModel.album && albumModel.album.music.map((music) => (
-              <ListItem button key={music.id} >
-                <ListItemAvatar>
-                  <Avatar className={classes.musicAvatar}>
-                    <MusicNoteIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText className={classes.listText} primary={music.title} secondary={getMusicArtistString(music)} />
-                <ListItemSecondaryAction>
-                  <IconButton>
-                    <PlaylistAdd fontSize="inherit" />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            ))
-          }
-        </List>
-      </div>
-    </div>
+      </List>
+    </SideLayout>
   )
 }
 export default AlbumPage

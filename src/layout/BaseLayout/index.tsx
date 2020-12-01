@@ -10,6 +10,7 @@ import { HomeLayout } from '../HomeLayout'
 import AlbumPage from '../../pages/Album'
 import useLayoutModel from '../../models/layout'
 import { ArrowBack } from '@material-ui/icons'
+import ArtistPage from '../../pages/Artist'
 
 const BaseLayout = ():React.ReactElement => {
   const classes = useStyles()
@@ -45,7 +46,7 @@ const BaseLayout = ():React.ReactElement => {
     <>
       <PlaylistDrawer />
       <div>
-        <AppBar position="fixed" elevation={0}>
+        <AppBar position="fixed" elevation={0} className={classes.appbar}>
           <Toolbar>
             <NavIcon />
             <Typography variant="h6" className={classes.title}>
@@ -64,6 +65,11 @@ const BaseLayout = ():React.ReactElement => {
               <Route path="/album/:albumId">
                 <div className={classes.content}>
                   <AlbumPage />
+                </div>
+              </Route>
+              <Route path="/artist/:artistId">
+                <div className={classes.content}>
+                  <ArtistPage />
                 </div>
               </Route>
             </Switch>

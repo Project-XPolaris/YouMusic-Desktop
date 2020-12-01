@@ -5,10 +5,12 @@ import AlbumItem from '../../components/AlbumItem'
 import ArtistItem from '../../components/ArtistItem'
 import { useMount } from 'ahooks'
 import useArtistListModel from './model'
+import { useHistory } from 'react-router-dom'
 
 const ArtistListPage = ():React.ReactElement => {
   const classes = useStyles()
   const artistModel = useArtistListModel()
+  const history = useHistory()
   useMount(async () => {
     await artistModel.fetchArtist({})
   })
@@ -17,7 +19,7 @@ const ArtistListPage = ():React.ReactElement => {
       <Grid container>
         {artistModel.data.map((artist) => (
           <Grid container item key={artist.id} className={classes.item}>
-            <ArtistItem artist={artist} />
+            <ArtistItem artist={artist} onClick={(artist) => history.push(`/artist/${artist.id}`)}/>
           </Grid>
         ))}
       </Grid>

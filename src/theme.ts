@@ -5,7 +5,7 @@ const appTheme = createMuiTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#202020'
+      main: pink[500]
     }
   },
 

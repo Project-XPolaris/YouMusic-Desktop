@@ -9,7 +9,7 @@ import PersonIcon from '@material-ui/icons/Person'
 import MusicNoteIcon from '@material-ui/icons/MusicNote'
 import useStyles from './style'
 import useLayoutModel, { TabIndex } from '../../models/layout'
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom'
 
 const NavItems: {
   icon: React.ReactElement, title: string, index: TabIndex, path: string

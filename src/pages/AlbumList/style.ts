@@ -8,13 +8,13 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
     overflowX: 'hidden',
     overflowY: 'scroll',
-    paddingBottom:theme.spacing(12)
+    paddingBottom: theme.spacing(12)
   },
   content: {},
   item: {
     width: 120,
-    marginRight:theme.spacing(2),
-    marginBottom:theme.spacing(2)
+    marginRight: theme.spacing(2),
+    marginBottom: theme.spacing(2)
   },
   grid: {},
   '@global': {
