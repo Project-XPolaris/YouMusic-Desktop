@@ -6,9 +6,9 @@ import {
   Link
 } from 'react-router-dom'
 import HomePage from '../../pages/Home'
-import AlbumListPage from '../../pages/AlbumList'
-import ArtistListPage from '../../pages/MusicList'
-import MusicListPage from '../../pages/ArtistList'
+import AlbumListPage from '../../pages/Home/AlbumList'
+import ArtistListPage from '../../pages/Home/MusicList'
+import MusicListPage from '../../pages/Home/ArtistList'
 const RouterLayout = () => {
   return (
     <Router>

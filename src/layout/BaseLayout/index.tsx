@@ -11,6 +11,8 @@ import AlbumPage from '../../pages/Album'
 import useLayoutModel from '../../models/layout'
 import { ArrowBack } from '@material-ui/icons'
 import ArtistPage from '../../pages/Artist'
+import MusicListPage from '../../pages/MusicList'
+import AlbumListPage from '../../pages/AlbumList'
 
 const BaseLayout = ():React.ReactElement => {
   const classes = useStyles()
@@ -70,6 +72,16 @@ const BaseLayout = ():React.ReactElement => {
               <Route path="/artist/:artistId">
                 <div className={classes.content}>
                   <ArtistPage />
+                </div>
+              </Route>
+              <Route path="/musiclist">
+                <div className={classes.content}>
+                  <MusicListPage />
+                </div>
+              </Route>
+              <Route path="/albumlist">
+                <div className={classes.content}>
+                  <AlbumListPage />
                 </div>
               </Route>
             </Switch>

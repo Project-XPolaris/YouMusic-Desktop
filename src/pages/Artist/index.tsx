@@ -5,7 +5,7 @@ import MusicNoteIcon from '@material-ui/icons/MusicNote'
 import useLayoutModel from '../../models/layout'
 import theme from '../../theme'
 import { Person, PlayArrow, PlaylistAdd } from '@material-ui/icons'
-import { Button, Grid, Typography } from '@material-ui/core'
+import { Button, Grid, Link, Typography } from '@material-ui/core'
 import { useHistory, useParams } from 'react-router-dom'
 import useArtistModel from './model'
 import MusicItem from '../../components/MusicItem'
@@ -34,6 +34,18 @@ const useStyles = makeStyles({
   },
   title: {
     color: theme.palette.primary.contrastText
+  },
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  link: {
+    ...theme.typography.body1
+  },
+  artistName: {
+    marginTop: theme.spacing(2),
+    ...theme.typography.h5
   }
 })
 
@@ -48,7 +60,6 @@ const ArtistPage = ({}: ArtistPagePropsType) => {
   const artistModel = useArtistModel()
   const playerModel = usePlayerModel()
   const history = useHistory()
-
   useEffect(() => {
     layoutModel.setNavIcon('Back')
     artistModel.loadData(artistId)
@@ -64,32 +75,52 @@ const ArtistPage = ({}: ArtistPagePropsType) => {
     return (
       <>
         {
-          artistModel.artist?.avatar ? <img src={`${ApplicationConfig.apiUrl}${artistModel.artist.avatar}`} className={classes.cover}/> : <NoCover />
+          artistModel.artist?.avatar
+            ? <img src={`${ApplicationConfig.apiUrl}${artistModel.artist.avatar}`} className={classes.cover} />
+            : <NoCover />
         }
+        <div className={classes.artistName}>
+          {artistModel.artist?.name ?? 'Unknown'}
+        </div>
       </>
     )
   }
   return (
     <SideLayout side={<Side />}>
-      <Typography variant="h5" gutterBottom className={classes.title}>
-        Music
-      </Typography>
+      <div className={classes.header}>
+        <Typography variant='h5' gutterBottom className={classes.title}>
+          Music
+        </Typography>
+        <Link
+          className={classes.link}
+          onClick={() => history.push(`/musiclist?artist=${artistId}`)}
+        >
+          More
+        </Link>
+      </div>
+
       <Grid container spacing={2}>
         {
           artistModel.musicList.map(music => (
-            <Grid item key={music.id} >
+            <Grid item key={music.id}>
               <MusicItem music={music} onClick={() => playerModel.playMusic(music)} />
             </Grid>
           ))
         }
       </Grid>
-      <Typography variant="h5" gutterBottom className={classes.title}>
-        Album
-      </Typography>
+      <div className={classes.header}>
+        <Typography variant='h5' gutterBottom className={classes.title}>
+          Album
+        </Typography>
+        <Link
+          onClick={() => history.push(`/albumlist?artist=${artistId}`)}
+          className={classes.link}
+        >More</Link>
+      </div>
       <Grid container spacing={2}>
         {
           artistModel.albumList.map(album => (
-            <Grid item key={album.id} >
+            <Grid item key={album.id}>
               <AlbumItem
                 onClick={() => playerModel.playAlbum(album.id)}
                 onTitleClick={() => history.push(`/album/${album.id}`)}

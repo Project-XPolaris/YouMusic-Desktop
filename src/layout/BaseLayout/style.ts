@@ -18,12 +18,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100vw',
   },
   content: {
-    width: 'calc(100vw - 240px)',
-    height: '100%'
-  },
-  nav: {
-    height: 'calc(100vh - 64px)',
-    width: 240
+    overflowX:'hidden'
   },
   playerBar: {
     height: 72,

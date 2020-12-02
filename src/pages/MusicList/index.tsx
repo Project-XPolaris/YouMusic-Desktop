@@ -1,32 +1,52 @@
-import * as React from 'react'
-import { createStyles, Grid, Pagination, Typography, withStyles } from '@material-ui/core'
-import useStyles from './style'
-import AlbumItem from '../../components/AlbumItem'
-import ArtistItem from '../../components/ArtistItem'
-import MusicItem from '../../components/MusicItem'
-import { useMount } from 'ahooks'
+import React, { useEffect } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import { useHistory, useParams } from 'react-router-dom'
+import { getQueryParamsFromSearch } from '../../utils/url'
+import GridContainer from '../../components/MusicList'
 import useMusicListModel from './model'
+import theme from '../../theme'
+import MusicItem from '../../components/MusicItem'
 import usePlayerModel from '../../models/player'
+import useLayoutModel from '../../models/layout'
 
-const MusicListPage = ({}) => {
+const useStyles = makeStyles({
+  main: {
+    paddingTop: theme.spacing(4),
+    paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4),
+    paddingBottom: theme.spacing(10)
+  },
+  item: {
+    width: 160,
+    marginBottom: theme.spacing(1)
+  }
+})
+const MusicListPage = ():React.ReactElement => {
   const classes = useStyles()
-  const musicModel = useMusicListModel()
-  const playerModel = usePlayerModel()
-  useMount(async () => {
-    await musicModel.fetchMusic({})
+  const history = useHistory()
+  const musicListModel = useMusicListModel()
+  const layoutModel = useLayoutModel()
+  const { artist } = getQueryParamsFromSearch(history.location.search)
+  useEffect(() => {
+    layoutModel.setNavIcon('Back')
+    musicListModel.loadData(artist, {})
   })
+  const playerModel = usePlayerModel()
+
   return (
-    <div className={classes.root}>
-      <Grid container className={classes.grid}>
-        {musicModel.data.map((music) => (
-          <Grid container item key={music.id} className={classes.item}>
-            <MusicItem music={music} onClick={() => playerModel.playMusic(music)}/>
-          </Grid>
-        ))}
-      </Grid>
-      <Pagination count={musicModel.total / 55} onChange={(event, page) => musicModel.fetchMusic({ page })} />
+    <div className={classes.main}>
+      <GridContainer
+        onPageChange={(page) => musicListModel.loadData(artist, { page })}
+        total={musicListModel.total}
+        source={musicListModel.musicList}
+        itemClassName={classes.item}
+        containerProps={{
+          spacing: 2
+        }}
+        builder={(music) => <MusicItem music={music} onClick={() => playerModel.playMusic(music)}/>}
+        getItemKey={music => music.id}
+      />
     </div>
   )
 }
-
 export default MusicListPage

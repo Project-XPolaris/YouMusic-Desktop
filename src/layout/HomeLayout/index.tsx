@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import { Route, useRouteMatch, Switch } from 'react-router-dom'
 import HomePage from '../../pages/Home'
-import AlbumListPage from '../../pages/AlbumList'
+import AlbumListPage from '../../pages/Home/AlbumList'
 import Nav from '../Nav'
 import useStyles from './style'
-import ArtistListPage from '../../pages/ArtistList'
-import MusicListPage from '../../pages/MusicList'
+import ArtistListPage from '../../pages/Home/ArtistList'
+import MusicListPage from '../../pages/Home/MusicList'
 import useLayoutModel from '../../models/layout'
 
 export const HomeLayout = () => {

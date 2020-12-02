@@ -1,14 +1,18 @@
-import { useDataPageLoader } from '../../hooks/loader'
-import { Album, fetchAlbumList } from '../../api/album'
+import { useState } from 'react'
 import { createModel } from 'hox'
-const albumListModel = () => {
-  const { data, page, pageSize, total, loadData } = useDataPageLoader<Album>({ loader: fetchAlbumList, defaultPageSize: 20, defaultPage: 1 })
-  const fetchAlbum = async ({ page = 1, pageSize = 55 }) => {
-    await loadData({ page, pageSize })
+import { Album, fetchAlbumList } from '../../api/album'
+
+const AlbumListModel = () => {
+  const [albumList, setAlbumList] = useState<Album[]>([])
+  const [total, setTotal] = useState(0)
+  const loadData = async (artistId:string, { page = 1, pageSize = 20 }) => {
+    const albumResponse = await fetchAlbumList({ artist: artistId, pageSize, page })
+    setTotal(albumResponse.count)
+    setAlbumList(albumResponse.data)
   }
   return {
-    data, page, pageSize, total, fetchAlbum
+    loadData, albumList, total
   }
 }
-const useAlbumListModel = createModel(albumListModel)
+const useAlbumListModel = createModel(AlbumListModel)
 export default useAlbumListModel
