@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Route, useRouteMatch, Switch } from 'react-router-dom'
 import HomePage from '../../pages/Home'
 import AlbumListPage from '../../pages/Home/AlbumList'

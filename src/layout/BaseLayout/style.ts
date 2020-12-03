@@ -13,12 +13,12 @@ const useStyles = makeStyles((theme) => ({
   main: {
     backgroundColor: '#181818',
     height: '100vh',
-    paddingTop: theme.spacing(8),
+    paddingTop: theme.spacing(6),
     display: 'flex',
-    width: '100vw',
+    width: '100vw'
   },
   content: {
-    overflowX:'hidden'
+    overflowX: 'hidden'
   },
   playerBar: {
     height: 72,
@@ -28,8 +28,8 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 100,
     bottom: 0
   },
-  appbar:{
-    backgroundColor:'#202020'
+  appbar: {
+    backgroundColor: '#202020'
   }
 }))
 export default useStyles

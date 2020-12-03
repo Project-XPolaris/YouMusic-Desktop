@@ -49,7 +49,7 @@ const BaseLayout = ():React.ReactElement => {
       <PlaylistDrawer />
       <div>
         <AppBar position="fixed" elevation={0} className={classes.appbar}>
-          <Toolbar>
+          <Toolbar variant="dense">
             <NavIcon />
             <Typography variant="h6" className={classes.title}>
             YouMusic

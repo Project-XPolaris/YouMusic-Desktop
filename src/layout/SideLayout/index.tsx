@@ -1,21 +1,5 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { ApplicationConfig } from '../../config'
-import {
-  Avatar,
-  Button,
-  Grid, IconButton,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemSecondaryAction,
-  ListItemText,
-  Typography
-} from '@material-ui/core'
-import { PlayArrow, PlaylistAdd } from '@material-ui/icons'
-import AlbumArtistItem from '../../pages/Album/components/AlbumArtist'
-import MusicNoteIcon from '@material-ui/icons/MusicNote'
-import { getMusicArtistString } from '../../utils/music'
 import theme from '../../theme'
 
 const useStyles = makeStyles({

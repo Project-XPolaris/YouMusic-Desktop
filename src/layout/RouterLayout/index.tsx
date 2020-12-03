@@ -3,7 +3,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from 'react-router-dom'
 import HomePage from '../../pages/Home'
 import AlbumListPage from '../../pages/Home/AlbumList'

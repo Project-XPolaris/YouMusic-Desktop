@@ -1,7 +1,4 @@
-import { useDataPageLoader } from '../hooks/loader'
-import { Album, fetchAlbumList } from '../api/album'
 import { createModel } from 'hox'
-import { useAudioPlayer } from 'react-use-audio-player'
 import { useState } from 'react'
 import { fetchMusicList, Music } from '../api/music'
 import { useList } from 'react-use'
