@@ -7,6 +7,8 @@ export const ApplicationConfig = {
     artist: '/artist/:id',
     musicList: '/music',
     libraryList: '/library',
+    libraryScan: '/library/:id/scan',
+    libraryObject: '/library/:id',
     readPath: '/explore/read'
   }
 }

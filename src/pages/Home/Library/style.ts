@@ -10,6 +10,9 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: 'row-reverse',
       width: '100%',
       marginBottom: theme.spacing(2)
+    },
+    item: {
+      marginBottom: theme.spacing(2)
     }
   })
 )

@@ -1,27 +1,35 @@
 import React from 'react'
 import useStyles from './style'
 import { Avatar, Card, CardHeader, IconButton } from '@material-ui/core'
-import { Folder, MoreVert } from '@material-ui/icons'
+import { Delete, Folder, MoreVert, Sync } from '@material-ui/icons';
 import { Library } from '../../api/library'
 
 export interface LibraryItemPropsType {
   library:Library
+  onScan:() => void
+  onDelete:() => void
 }
 
-const LibraryItem = ({ library }: LibraryItemPropsType):React.ReactElement => {
+const LibraryItem = ({ library,onScan,onDelete }: LibraryItemPropsType):React.ReactElement => {
   const classes = useStyles()
   return (
     <Card>
       <CardHeader
         avatar={
-          <Avatar aria-label="recipe" >
+          <Avatar>
             <Folder />
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
-            <MoreVert />
-          </IconButton>
+          <>
+            <IconButton onClick={onScan}>
+              <Sync />
+            </IconButton>
+            <IconButton onClick={onDelete}>
+              <Delete />
+            </IconButton>
+          </>
+
         }
         title={library.name}
         subheader={library.path}

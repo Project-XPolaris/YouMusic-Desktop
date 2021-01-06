@@ -26,7 +26,10 @@ const LibraryPage = ({}: LibraryPagePropsType) => {
         onCancel={() => {
           layoutModel.switchDialog('library/pickDirectory')
         }}
-        onOk={(pickPath) => {}}
+        onOk={(pickPath) => {
+          model.newLibrary(pickPath)
+          layoutModel.switchDialog('library/pickDirectory')
+        }}
       />
       <div className={classes.headerAction}>
         <Button
@@ -41,7 +44,9 @@ const LibraryPage = ({}: LibraryPagePropsType) => {
       </div>
       {
         model.data && model.data.map(it => (
-          <LibraryItem library={it} key={it.path}/>
+          <div className={classes.item} key={it.path}>
+            <LibraryItem library={it} onDelete={() => model.remove(it.id)} onScan={() => model.scan(it.id)} />
+          </div>
         ))
       }
 

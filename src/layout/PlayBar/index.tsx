@@ -120,7 +120,7 @@ const PlaySlider = withStyles({
   },
   track: {},
   rail: {
-    color: '#FFFFFF'
+    color: '#777777'
   }
 })(Slider)
 const PlayBar = (): React.ReactElement => {
