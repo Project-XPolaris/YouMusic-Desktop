@@ -6,6 +6,7 @@ import { ApplicationConfig } from '../../config'
 import { getAlbumArtistString } from '../../utils/album'
 import { ButtonBase, Link } from '@material-ui/core'
 import MusicNoteIcon from '@material-ui/icons/MusicNote'
+import clsx from 'clsx'
 const useStyles = makeStyles({
   main: {
     width: 120,
@@ -46,14 +47,15 @@ const useStyles = makeStyles({
 interface AlbumItemPropsType {
   album: Album
   onClick:(album:Album) => void
-  onTitleClick:(album:Album) => void
+  onTitleClick:(album:Album) => void,
+  className: any
 }
 
-const AlbumItem = ({ album, onClick,onTitleClick }: AlbumItemPropsType):React.ReactElement => {
+const AlbumItem = ({ album, onClick, onTitleClick, className }: AlbumItemPropsType):React.ReactElement => {
   const classes = useStyles()
 
   return (
-    <div className={classes.main}>
+    <div className={clsx(classes.main, className)}>
       <ButtonBase onClick={() => onClick(album)} >
         {
           album?.cover ? <img src={`${ApplicationConfig.apiUrl}${album.cover}`} className={classes.cover} /> : <div className={classes.noCover}><MusicNoteIcon className={classes.noCoverIcon} /></div>
