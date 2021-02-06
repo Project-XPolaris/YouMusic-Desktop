@@ -48,7 +48,7 @@ interface AlbumItemPropsType {
   album: Album
   onClick:(album:Album) => void
   onTitleClick:(album:Album) => void,
-  className: any
+  className?: any
 }
 
 const AlbumItem = ({ album, onClick, onTitleClick, className }: AlbumItemPropsType):React.ReactElement => {

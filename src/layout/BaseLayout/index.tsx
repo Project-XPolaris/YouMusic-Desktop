@@ -16,7 +16,7 @@ import AlbumListPage from '../../pages/AlbumList'
 import MinimizeSharpIcon from '@material-ui/icons/MinimizeSharp'
 import CheckBoxOutlineBlankSharpIcon from '@material-ui/icons/CheckBoxOutlineBlankSharp'
 import ClearSharpIcon from '@material-ui/icons/ClearSharp'
-import { electronApp, electronRemote } from '../../remote'
+import { electronApp, electronRemote, isElectron } from '../../remote'
 
 const BaseLayout = ():React.ReactElement => {
   const classes = useStyles()
@@ -72,25 +72,26 @@ const BaseLayout = ():React.ReactElement => {
             <Typography variant="h6" className={classes.title}>
             YouMusic
             </Typography>
-            <IconButton size='small' className={classes.windowAction} onClick={onMin}>
-              <MinimizeSharpIcon className={classes.actionIcon} />
-            </IconButton>
-            <IconButton size='small' className={classes.windowAction} onClick={onMax}>
-              <CheckBoxOutlineBlankSharpIcon className={classes.actionIcon} />
-            </IconButton>
-            <IconButton size='small' className={classes.windowAction} onClick={onClose}>
-              <ClearSharpIcon className={classes.actionIcon} />
-            </IconButton>
+            {
+              isElectron() &&
+                <>
+                  <IconButton size='small' className={classes.windowAction} onClick={onMin}>
+                    <MinimizeSharpIcon className={classes.actionIcon} />
+                  </IconButton>
+                  <IconButton size='small' className={classes.windowAction} onClick={onMax}>
+                    <CheckBoxOutlineBlankSharpIcon className={classes.actionIcon} />
+                  </IconButton>
+                  <IconButton size='small' className={classes.windowAction} onClick={onClose}>
+                    <ClearSharpIcon className={classes.actionIcon} />
+                  </IconButton>
+                </>
+            }
           </Toolbar>
         </AppBar>
         <div className={classes.main}>
           <Router>
             <Switch>
-              <Route path="/home">
-                <div className={classes.content}>
-                  <HomeLayout />
-                </div>
-              </Route>
+
               <Route path="/album/:albumId">
                 <div className={classes.content}>
                   <AlbumPage />
@@ -109,6 +110,11 @@ const BaseLayout = ():React.ReactElement => {
               <Route path="/albumlist">
                 <div className={classes.content}>
                   <AlbumListPage />
+                </div>
+              </Route>
+              <Route path="/home">
+                <div className={classes.content}>
+                  <HomeLayout />
                 </div>
               </Route>
             </Switch>

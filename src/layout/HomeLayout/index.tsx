@@ -7,7 +7,7 @@ import useStyles from './style'
 import ArtistListPage from '../../pages/Home/ArtistList'
 import MusicListPage from '../../pages/Home/MusicList'
 import useLayoutModel from '../../models/layout'
-import LibraryPage from '../../pages/Home/Library';
+import LibraryPage from '../../pages/Home/Library'
 
 export const HomeLayout = () => {
   const classes = useStyles()
@@ -23,6 +23,7 @@ export const HomeLayout = () => {
       </div>
       <div className={classes.content}>
         <Switch>
+
           <Route path={`${path}/album`}>
             <AlbumListPage />
           </Route>
