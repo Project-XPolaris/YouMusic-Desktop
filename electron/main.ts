@@ -19,7 +19,7 @@ function createWindow () {
   })
 
   if (process.env.NODE_ENV === 'development') {
-    mainWindow.loadURL('http://localhost:4000/#home')
+    mainWindow.loadURL('http://localhost:4000/')
   } else {
     mainWindow.loadURL(
       url.format({

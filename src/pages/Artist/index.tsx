@@ -12,6 +12,7 @@ import MusicItem from '../../components/MusicItem'
 import usePlayerModel from '../../models/player'
 import AlbumItem from '../../components/AlbumItem'
 import { ApplicationConfig } from '../../config'
+import { getImageUrl } from '../../utils/image'
 
 const useStyles = makeStyles({
   main: {},
@@ -76,7 +77,7 @@ const ArtistPage = ({}: ArtistPagePropsType) => {
       <>
         {
           artistModel.artist?.avatar
-            ? <img src={`${ApplicationConfig.apiUrl}${artistModel.artist.avatar}`} className={classes.cover} />
+            ? <img src={getImageUrl(artistModel.artist.avatar)} className={classes.cover} />
             : <NoCover />
         }
         <div className={classes.artistName}>

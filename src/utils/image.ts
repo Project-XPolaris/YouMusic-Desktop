@@ -1,5 +1,5 @@
 import { ApplicationConfig } from '../config'
 
-export const getImageUrl = (url:string):string => {
-  return `${ApplicationConfig.apiUrl}${url}`
+export const getImageUrl = (url?:string):string => {
+  return `${localStorage.getItem(ApplicationConfig.keys.store.apiUrl)}${url}`
 }

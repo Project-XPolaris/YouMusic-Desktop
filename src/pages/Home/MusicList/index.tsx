@@ -24,7 +24,7 @@ const MusicListPage = ({}) => {
           </Grid>
         ))}
       </Grid>
-      <Pagination count={musicModel.total / 55} onChange={(event, page) => musicModel.fetchMusic({ page })} />
+      <Pagination count={Math.floor(musicModel.total / 55)} onChange={(event, page) => musicModel.fetchMusic({ page })} />
     </div>
   )
 }

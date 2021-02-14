@@ -18,7 +18,7 @@ export const getMusicArtistString = (music:Music, defaultString = 'unknown') : s
 
 export const getPlayerUrl = (music?:Music):string => {
   if (music) {
-    return `${ApplicationConfig.apiUrl}/file/audio/${music.id}`
+    return `${localStorage.getItem(ApplicationConfig.keys.store.apiUrl)}/file/audio/${music.id}`
   }
   return ''
 }

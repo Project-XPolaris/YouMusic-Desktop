@@ -1,15 +1,12 @@
 import * as React from 'react'
-import { AppBar, IconButton, Toolbar, Typography } from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu'
+import { AppBar, IconButton, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core'
 import useStyles from './style'
-import { HashRouter as Router, Route, Switch } from 'react-router-dom'
-import PlayBar from '../PlayBar'
-import { AudioPlayerProvider } from 'react-use-audio-player'
+import { HashRouter as Router, Route, Switch, useHistory } from 'react-router-dom'
 import PlaylistDrawer from '../Playlist'
 import { HomeLayout } from '../HomeLayout'
 import AlbumPage from '../../pages/Album'
 import useLayoutModel from '../../models/layout'
-import { ArrowBack, Remove } from '@material-ui/icons'
+import { ArrowBack, ExitToApp, Link, MusicNote } from '@material-ui/icons'
 import ArtistPage from '../../pages/Artist'
 import MusicListPage from '../../pages/MusicList'
 import AlbumListPage from '../../pages/AlbumList'
@@ -17,10 +14,23 @@ import MinimizeSharpIcon from '@material-ui/icons/MinimizeSharp'
 import CheckBoxOutlineBlankSharpIcon from '@material-ui/icons/CheckBoxOutlineBlankSharp'
 import ClearSharpIcon from '@material-ui/icons/ClearSharp'
 import { electronApp, electronRemote } from '../../remote'
+import PlayBarLayout from '../PlayBar/layout'
+import InitPage from '../../pages/Init'
+import StartPage from '../../pages/Start'
+import { ApplicationConfig } from '../../config'
 
 const BaseLayout = ():React.ReactElement => {
   const classes = useStyles()
   const layoutModel = useLayoutModel()
+  const [linkMenuAnchor, setLinkMenuAnchor] = React.useState<null | HTMLElement>(null)
+
+  const handleLinkClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setLinkMenuAnchor(event.currentTarget)
+  }
+
+  const handleLinkClose = () => {
+    setLinkMenuAnchor(null)
+  }
   const NavIcon = () => {
     switch (layoutModel.navIcon) {
       case 'Menu':
@@ -31,7 +41,7 @@ const BaseLayout = ():React.ReactElement => {
             color="inherit"
             aria-label="menu"
           >
-            <MenuIcon />
+            <MusicNote />
           </IconButton>
         )
       case 'Back':
@@ -64,6 +74,24 @@ const BaseLayout = ():React.ReactElement => {
   }
   return (
     <>
+      <Menu
+        id="link-menu"
+        anchorEl={linkMenuAnchor}
+        keepMounted
+        open={Boolean(linkMenuAnchor)}
+        onClose={handleLinkClose}
+      >
+        <MenuItem
+          onClick={() => {
+            handleLinkClose()
+            localStorage.removeItem(ApplicationConfig.keys.store.apiUrl)
+            onClose()
+          }}
+        >
+          <ExitToApp className={classes.menuIcon} />
+          Disconnect service (restart)
+        </MenuItem>
+      </Menu>
       <PlaylistDrawer />
       <div>
         <AppBar position="fixed" elevation={0} className={classes.appbar}>
@@ -72,6 +100,9 @@ const BaseLayout = ():React.ReactElement => {
             <Typography variant="h6" className={classes.title}>
             YouMusic
             </Typography>
+            <IconButton className={classes.action} size='small' onClick={handleLinkClick}>
+              <Link />
+            </IconButton>
             <IconButton size='small' className={classes.windowAction} onClick={onMin}>
               <MinimizeSharpIcon className={classes.actionIcon} />
             </IconButton>
@@ -86,39 +117,47 @@ const BaseLayout = ():React.ReactElement => {
         <div className={classes.main}>
           <Router>
             <Switch>
-              <Route path="/home">
+              <Route path="/start">
                 <div className={classes.content}>
-                  <HomeLayout />
+                  <StartPage />
                 </div>
+              </Route>
+              <Route path="/home">
+                <PlayBarLayout className={classes.content}>
+                  <HomeLayout />
+                </PlayBarLayout>
               </Route>
               <Route path="/album/:albumId">
-                <div className={classes.content}>
+                <PlayBarLayout className={classes.content}>
                   <AlbumPage />
-                </div>
+                </PlayBarLayout>
               </Route>
               <Route path="/artist/:artistId">
-                <div className={classes.content}>
+                <PlayBarLayout className={classes.content}>
                   <ArtistPage />
-                </div>
+                </PlayBarLayout>
               </Route>
               <Route path="/musiclist">
-                <div className={classes.content}>
+                <PlayBarLayout className={classes.content}>
                   <MusicListPage />
-                </div>
+                </PlayBarLayout>
               </Route>
               <Route path="/albumlist">
-                <div className={classes.content}>
+                <PlayBarLayout className={classes.content}>
                   <AlbumListPage />
-                </div>
+                </PlayBarLayout>
+              </Route>
+              <Route path="/">
+                <InitPage />
               </Route>
             </Switch>
           </Router>
         </div>
-        <div className={classes.playerBar}>
-          <AudioPlayerProvider>
-            <PlayBar />
-          </AudioPlayerProvider>
-        </div>
+        {/* <div className={classes.playerBar}> */}
+        {/*  <AudioPlayerProvider> */}
+        {/*    <PlayBar /> */}
+        {/*  </AudioPlayerProvider> */}
+        {/* </div> */}
       </div>
     </>
   )

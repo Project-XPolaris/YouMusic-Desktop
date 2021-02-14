@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    '-webkit-app-region': 'drag',
+    '-webkit-app-region': 'drag'
   },
   main: {
     backgroundColor: '#181818',
@@ -31,10 +31,10 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0
   },
   appbar: {
-    backgroundColor: '#202020',
+    backgroundColor: '#202020'
 
   },
-  toolbar:{
+  toolbar: {
     padding: 0
   },
   windowAction: {
@@ -43,6 +43,18 @@ const useStyles = makeStyles((theme) => ({
   },
   actionIcon: {
     fontSize: theme.spacing(2)
+  },
+  action: {
+    color: theme.palette.primary.contrastText,
+    marginRight: theme.spacing(2)
+  },
+  divider: {
+    backgroundColor: '#EEEEEE',
+    height: theme.spacing(3),
+    width: 1
+  },
+  menuIcon: {
+    marginRight: theme.spacing(1)
   }
 }))
 export default useStyles

@@ -5,6 +5,7 @@ import { Avatar, Typography } from '@material-ui/core'
 import theme from '../../../../theme'
 import { Artist } from '../../../../api/artist'
 import { ApplicationConfig } from '../../../../config'
+import { getImageUrl } from '../../../../utils/image'
 
 const useStyles = makeStyles({
   main: {
@@ -35,7 +36,7 @@ const AlbumArtistItem = ({ artist }: AlbumArtistItemPropsType):React.ReactElemen
   return (
     <div className={classes.main}>
       {
-        artist.avatar ? <Avatar className={classes.avatar} src={`${ApplicationConfig.apiUrl}${artist.avatar}`}/> : <Avatar className={classes.avatar}><Person /></Avatar>
+        artist.avatar ? <Avatar className={classes.avatar} src={getImageUrl(artist.avatar)}/> : <Avatar className={classes.avatar}><Person /></Avatar>
       }
 
       <Typography variant={'subtitle1'} className={classes.artist}>

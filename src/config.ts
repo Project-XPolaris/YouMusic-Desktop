@@ -1,5 +1,5 @@
 export const ApplicationConfig = {
-  apiUrl: 'http://localhost:3000',
+  apiUrl: 'http://192.168.31.186:3000',
   apiPaths: {
     albumList: '/album',
     album: '/album/:id',
@@ -10,5 +10,10 @@ export const ApplicationConfig = {
     libraryScan: '/library/:id/scan',
     libraryObject: '/library/:id',
     readPath: '/explore/read'
+  },
+  keys: {
+    store: {
+      apiUrl: 'API_URL'
+    }
   }
 }

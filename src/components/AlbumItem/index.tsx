@@ -6,6 +6,7 @@ import { ApplicationConfig } from '../../config'
 import { getAlbumArtistString } from '../../utils/album'
 import { ButtonBase, Link } from '@material-ui/core'
 import MusicNoteIcon from '@material-ui/icons/MusicNote'
+import { getImageUrl } from '../../utils/image'
 const useStyles = makeStyles({
   main: {
     width: 120,
@@ -56,7 +57,7 @@ const AlbumItem = ({ album, onClick,onTitleClick }: AlbumItemPropsType):React.Re
     <div className={classes.main}>
       <ButtonBase onClick={() => onClick(album)} >
         {
-          album?.cover ? <img src={`${ApplicationConfig.apiUrl}${album.cover}`} className={classes.cover} /> : <div className={classes.noCover}><MusicNoteIcon className={classes.noCoverIcon} /></div>
+          album?.cover ? <img src={getImageUrl(album.cover)} className={classes.cover} /> : <div className={classes.noCover}><MusicNoteIcon className={classes.noCoverIcon} /></div>
         }
       </ButtonBase>
       <div className={classes.title} onClick={() => onTitleClick(album)}>

@@ -77,7 +77,7 @@ export default function PlaylistDrawer ({}: PlaylistDrawerPropsType) {
       <List className={classes.list} dense>
         {playerModel.playlist.map((music, idx) => {
           return (
-            <ListItem key={music.id} button selected={true}>
+            <ListItem key={music.id} button selected={playerModel.getCurrentPlay()?.id === music.id}>
               <ListItemAvatar>
                 <Avatar src={getMusicAlbumCoverUrl(music)} variant="rounded"/>
               </ListItemAvatar>

@@ -22,6 +22,7 @@ import { getMusicArtistString } from '../../utils/music'
 import AlbumArtistItem from './components/AlbumArtist'
 import usePlayerModel from '../../models/player'
 import SideLayout from '../../layout/SideLayout'
+import { getImageUrl } from '../../utils/image'
 
 const useStyles = makeStyles({
   main: {
@@ -112,7 +113,7 @@ const AlbumPage = ({}: AlbumPagePropsType) => {
   const side = (
     <>
       {
-        albumModel.album ? <img src={`${ApplicationConfig.apiUrl}${albumModel.album.cover}`} className={classes.cover}/> : <NoCover />
+        albumModel.album ? <img src={getImageUrl(albumModel.album.cover)} className={classes.cover}/> : <NoCover />
       }
       <div className={classes.actionContent}>
         <Button
