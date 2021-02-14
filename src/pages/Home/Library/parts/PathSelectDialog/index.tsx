@@ -6,10 +6,12 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle, IconButton, InputBase,
+  IconButton,
+  InputBase,
   List,
-  ListItem, ListItemAvatar, ListItemText,
-  TextField
+  ListItem,
+  ListItemAvatar,
+  ListItemText
 } from '@material-ui/core'
 import { ArrowBack, Description, Folder } from '@material-ui/icons'
 import { fetchDirectoryContent, FileItem } from '../../../../../api/explore'
@@ -22,7 +24,7 @@ export interface PathSelectDialogPropsType {
 
 const PathSelectDialog = ({ open = false, onCancel, onOk }: PathSelectDialogPropsType):React.ReactElement => {
   const classes = useStyles()
-  const [currentPath, setCurrentPath] = useState<string | undefined>()
+  const [currentPath, setCurrentPath] = useState<string | undefined>('/')
   const [pathInput, setPathInput] = useState<string | undefined>()
   const [content, setContent] = useState<FileItem[]>([])
   const [sep, setSep] = useState<string | undefined>()
@@ -51,7 +53,12 @@ const PathSelectDialog = ({ open = false, onCancel, onOk }: PathSelectDialogProp
               if (currentPath && sep) {
                 const parts = currentPath.split(sep)
                 parts.pop()
-                setCurrentPath(parts.join(sep))
+                console.log(parts.join(sep))
+                if (parts.length > 1) {
+                  setCurrentPath(parts.join(sep))
+                } else {
+                  setCurrentPath('/')
+                }
               }
             }}
           >

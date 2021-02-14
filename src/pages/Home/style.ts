@@ -6,12 +6,13 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '100%',
     minHeight: '100%',
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingBottom: theme.spacing(12)
+    padding: theme.spacing(2),
+    flexDirection: 'column',
+    paddingBottom: theme.spacing(12),
   },
-  content: {
-    color: '#FFFFFF'
+  collection : {
+    color: theme.palette.primary.contrastText,
+    marginBottom: theme.spacing(4)
   }
 }))
 export default useStyles

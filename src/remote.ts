@@ -6,3 +6,6 @@ if (window.require) {
   electronRemote = electron?.remote
   electronApp = electron?.remote?.app
 }
+export const isElectron = () : boolean => {
+  return Boolean(window.require)
+}
