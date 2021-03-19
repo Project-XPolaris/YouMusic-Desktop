@@ -18,7 +18,6 @@ const LibraryPage = ({}: LibraryPagePropsType) => {
   useEffect(() => {
     model.fetchLibrary({})
   }, [])
-  console.log(model.data)
   return (
     <div className={classes.root}>
       <PathSelectDialog

@@ -67,7 +67,7 @@ const PathSelectDialog = ({ open = false, onCancel, onOk }: PathSelectDialogProp
           <InputBase
             className={classes.pathInput}
             value={pathInput}
-            onChange={(e) => setPathInput(e.target.value)}
+            onChange={(e:any) => setPathInput(e.target.value)}
           />
           <Button
             color='secondary'

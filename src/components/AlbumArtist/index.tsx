@@ -1,11 +1,10 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import { Person } from '@material-ui/icons'
 import { Avatar, Typography } from '@material-ui/core'
-import theme from '../../../../theme'
-import { Artist } from '../../../../api/artist'
-import { ApplicationConfig } from '../../../../config'
-import { getImageUrl } from '../../../../utils/image'
+import theme from '../../theme'
+import { getImageUrl } from '../../utils/image'
+import { Artist } from '../../api/artist'
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles({
   main: {
