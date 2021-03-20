@@ -5,6 +5,7 @@ import theme from '../../theme'
 import { getImageUrl } from '../../utils/image'
 import { Artist } from '../../api/artist'
 import { makeStyles } from '@material-ui/core/styles'
+import clsx from 'clsx'
 
 const useStyles = makeStyles({
   main: {
@@ -28,17 +29,19 @@ const useStyles = makeStyles({
 
 interface AlbumArtistItemPropsType {
   artist:Artist
+  className?: any
+  onClick?: () => void
 }
-const AlbumArtistItem = ({ artist }: AlbumArtistItemPropsType):React.ReactElement => {
+const AlbumArtistItem = ({ artist, className, onClick }: AlbumArtistItemPropsType):React.ReactElement => {
   const classes = useStyles()
 
   return (
-    <div className={classes.main}>
+    <div className={clsx(classes.main, className)}>
       {
-        artist.avatar ? <Avatar className={classes.avatar} src={getImageUrl(artist.avatar)}/> : <Avatar className={classes.avatar}><Person /></Avatar>
+        artist.avatar ? <Avatar className={classes.avatar} src={getImageUrl(artist.avatar)} onClick={onClick}/> : <Avatar className={classes.avatar} onClick={onClick}><Person /></Avatar>
       }
 
-      <Typography variant={'subtitle1'} className={classes.artist}>
+      <Typography variant={'subtitle1'} className={classes.artist} onClick={onClick}>
         {artist.name}
       </Typography>
 

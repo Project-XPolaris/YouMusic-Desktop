@@ -7,6 +7,8 @@ import { getAlbumArtistString } from '../../utils/album'
 import { ButtonBase, Link } from '@material-ui/core'
 import MusicNoteIcon from '@material-ui/icons/MusicNote'
 import { getImageUrl } from '../../utils/image'
+import clsx from 'clsx'
+
 const useStyles = makeStyles({
   main: {
     width: 120,
@@ -46,21 +48,31 @@ const useStyles = makeStyles({
 
 interface AlbumItemPropsType {
   album: Album
-  onClick:(album:Album) => void
-  onTitleClick:(album:Album) => void
+  onClick?: (album: Album) => void
+  onTitleClick?: (album: Album) => void
+  className?: any
 }
 
-const AlbumItem = ({ album, onClick,onTitleClick }: AlbumItemPropsType):React.ReactElement => {
+const AlbumItem = ({ album, onClick, onTitleClick, className }: AlbumItemPropsType): React.ReactElement => {
   const classes = useStyles()
 
   return (
-    <div className={classes.main}>
-      <ButtonBase onClick={() => onClick(album)} >
+    <div className={clsx(classes.main, className)}>
+      <ButtonBase onClick={() => {
+        if (onClick) {
+          onClick(album)
+        }
+      }}>
         {
-          album?.cover ? <img src={getImageUrl(album.cover)} className={classes.cover} /> : <div className={classes.noCover}><MusicNoteIcon className={classes.noCoverIcon} /></div>
+          album?.cover ? <img src={getImageUrl(album.cover)} className={classes.cover} />
+            : <div className={classes.noCover}><MusicNoteIcon className={classes.noCoverIcon} /></div>
         }
       </ButtonBase>
-      <div className={classes.title} onClick={() => onTitleClick(album)}>
+      <div className={classes.title} onClick={() => {
+        if (onTitleClick) {
+          onTitleClick(album)
+        }
+      }}>
         {album.name}
       </div>
       <div className={classes.artist}>
