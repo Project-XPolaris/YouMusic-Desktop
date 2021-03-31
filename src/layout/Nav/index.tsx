@@ -50,7 +50,6 @@ const Nav = () => {
   const classes = useStyles()
   const layoutModel = useLayoutModel()
   const history = useHistory()
-  console.log(history.location.pathname)
   return (
     <div className={classes.root}>
       <List component='nav'>

@@ -24,7 +24,7 @@ const useStyles = makeStyles({
     padding: theme.spacing(4),
     overflowX: 'hidden',
     overflowY: 'scroll',
-    paddingBottom:theme.spacing(20)
+    paddingBottom: theme.spacing(20)
   },
   '@global': {
     '*::-webkit-scrollbar': {

@@ -1,23 +1,22 @@
-import * as React from 'react'
-import { AppBar, IconButton, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core'
-import useStyles from './style'
-import { HashRouter as Router, Route, Switch, useHistory } from 'react-router-dom'
-import PlaylistDrawer from '../Playlist'
-import { HomeLayout } from '../HomeLayout'
-import AlbumPage from '../../pages/Album'
-import useLayoutModel from '../../models/layout'
-import { ArrowBack, ExitToApp, Link, MusicNote } from '@material-ui/icons'
-import ArtistPage from '../../pages/Artist'
-import MusicListPage from '../../pages/MusicList'
-import AlbumListPage from '../../pages/AlbumList'
-import MinimizeSharpIcon from '@material-ui/icons/MinimizeSharp'
-import CheckBoxOutlineBlankSharpIcon from '@material-ui/icons/CheckBoxOutlineBlankSharp'
-import ClearSharpIcon from '@material-ui/icons/ClearSharp'
-import { electronApp, electronRemote } from '../../remote'
-import PlayBarLayout from '../PlayBar/layout'
-import InitPage from '../../pages/Init'
-import StartPage from '../../pages/Start'
-import { ApplicationConfig } from '../../config'
+import * as React from 'react';
+import { AppBar, IconButton, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core';
+import useStyles from './style';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import PlaylistDrawer from '../Playlist';
+import { HomeLayout } from '../HomeLayout';
+import AlbumPage from '../../pages/Album';
+import useLayoutModel from '../../models/layout';
+import { ArrowBack, ExitToApp, Link, MusicNote } from '@material-ui/icons';
+import ArtistPage from '../../pages/Artist';
+import MusicListPage from '../../pages/MusicList';
+import AlbumListPage from '../../pages/AlbumList';
+import MinimizeSharpIcon from '@material-ui/icons/MinimizeSharp';
+import CheckBoxOutlineBlankSharpIcon from '@material-ui/icons/CheckBoxOutlineBlankSharp';
+import ClearSharpIcon from '@material-ui/icons/ClearSharp';
+import { electronApp, electronRemote } from '../../remote';
+import PlayBarLayout from '../PlayBar/layout';
+import StartPage from '../../pages/Start';
+import { ApplicationConfig } from '../../config';
 
 const BaseLayout = ():React.ReactElement => {
   const classes = useStyles()
@@ -117,11 +116,6 @@ const BaseLayout = ():React.ReactElement => {
         <div className={classes.main}>
           <Router>
             <Switch>
-              <Route path="/start">
-                <div className={classes.content}>
-                  <StartPage />
-                </div>
-              </Route>
               <Route path="/home">
                 <PlayBarLayout className={classes.content}>
                   <HomeLayout />
@@ -148,7 +142,9 @@ const BaseLayout = ():React.ReactElement => {
                 </PlayBarLayout>
               </Route>
               <Route path="/">
-                <InitPage />
+                <div className={classes.content}>
+                  <StartPage />
+                </div>
               </Route>
             </Switch>
           </Router>
