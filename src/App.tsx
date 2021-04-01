@@ -5,6 +5,7 @@ import BaseLayout from './layout/BaseLayout'
 import appTheme from './theme'
 import { ThemeProvider } from '@material-ui/core'
 import { useTitle } from 'ahooks'
+import { SnackbarProvider } from 'notistack'
 
 const mainElement = document.createElement('div')
 mainElement.setAttribute('id', 'root')
@@ -15,8 +16,10 @@ const App = () => {
   return (
     <>
       <ThemeProvider theme={appTheme}>
-        <GlobalStyle />
-        <BaseLayout />
+        <SnackbarProvider maxSnack={3}>
+          <GlobalStyle />
+          <BaseLayout />
+        </SnackbarProvider>
       </ThemeProvider>
     </>
   )

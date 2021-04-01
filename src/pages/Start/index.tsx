@@ -17,6 +17,9 @@ import { ApplicationConfig } from '../../config'
 import { useHistory } from 'react-router-dom'
 import { useUpdate } from 'ahooks'
 import { LoginHistory, loginHistoryManager } from '../../utils/login'
+import { fetchAppInfo } from '../../api/info'
+import { useSnackbar } from 'notistack'
+import request from 'umi-request'
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -40,6 +43,9 @@ const useStyles = makeStyles(theme => ({
   },
   itemPrimary: {
     color: 'white'
+  },
+  input: {
+    marginBottom: theme.spacing(2)
   }
 
 }))
@@ -51,7 +57,10 @@ interface StartPagePropsType {
 const StartPage = ({}: StartPagePropsType) : ReactElement => {
   const classes = useStyles()
   const history = useHistory()
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const [inputAPIURL, setInputAPIURL] = useState<string | undefined>()
+  const [inputUsername, setInputUsername] = useState<string | undefined>()
+  const [inputPassword, setInputPassword] = useState<string | undefined>()
   const [tabIndex, setTabIndex] = useState<number>(0)
   const refresh = useUpdate()
   const apply = () => {
@@ -71,23 +80,47 @@ const StartPage = ({}: StartPagePropsType) : ReactElement => {
     if (!inputAPIURL) {
       return
     }
-    const loginHistory : LoginHistory = {
-      apiUrl: inputAPIURL,
-      username: 'public',
-      token: ''
-    }
-    loginHistoryManager.addHistory(loginHistory)
     localStorage.setItem(ApplicationConfig.keys.store.apiUrl, inputAPIURL)
-    history.replace('/home')
+    const serviceInfo = await fetchAppInfo()
+    if (serviceInfo.authUrl === undefined) {
+      return
+    }
+    enqueueSnackbar('connect to service success', { variant: 'success' })
+    console.log({ inputUsername, inputPassword })
+    if (inputUsername && inputPassword) {
+      const response = await request.post(serviceInfo.authUrl, { data: { username: inputUsername, password: inputPassword } })
+      if (response.token) {
+        localStorage.setItem(ApplicationConfig.keys.store.token, response.token)
+        enqueueSnackbar('user login success', { variant: 'success' })
+        const loginHistory : LoginHistory = {
+          apiUrl: inputAPIURL,
+          username: inputUsername,
+          token: response.token
+        }
+        loginHistoryManager.addHistory(loginHistory)
+      }
+      console.log(response)
+    } else {
+      const loginHistory : LoginHistory = {
+        apiUrl: inputAPIURL,
+        username: 'public',
+        token: ''
+      }
+      loginHistoryManager.addHistory(loginHistory)
+    }
+    history.push('/home')
   }
   useEffect(() => {
-    check()
+    // check()
     loginHistoryManager.refresh()
     refresh()
   }, [])
   const renderHistoryView = () => {
     const onItemClick = (loginHistory:LoginHistory) => {
       localStorage.setItem(ApplicationConfig.keys.store.apiUrl, loginHistory.apiUrl)
+      if (loginHistory.token !== undefined && loginHistory.token.length > 0) {
+        localStorage.setItem(ApplicationConfig.keys.store.token,loginHistory.token)
+      }
       history.push('/home')
     }
     return (
@@ -124,6 +157,24 @@ const StartPage = ({}: StartPagePropsType) : ReactElement => {
           fullWidth
           onChange={(e) => setInputAPIURL(e.target.value)}
           value={inputAPIURL}
+          className={classes.input}
+        />
+        <TextField
+          label="username"
+          variant="outlined"
+          fullWidth
+          onChange={(e) => setInputUsername(e.target.value)}
+          value={inputUsername}
+          className={classes.input}
+        />
+        <TextField
+          label="password"
+          variant="outlined"
+          fullWidth
+          type="password"
+          onChange={(e) => setInputPassword(e.target.value)}
+          value={inputPassword}
+          className={classes.input}
         />
       </>
     )

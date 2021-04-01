@@ -84,6 +84,7 @@ const BaseLayout = ():React.ReactElement => {
           onClick={() => {
             handleLinkClose()
             localStorage.removeItem(ApplicationConfig.keys.store.apiUrl)
+            localStorage.removeItem(ApplicationConfig.keys.store.token)
             onClose()
           }}
         >
