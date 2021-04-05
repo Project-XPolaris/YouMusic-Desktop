@@ -6,21 +6,33 @@ import useAlbumListModel from './model'
 import { useMount } from 'ahooks'
 import usePlayerModel from '../../../models/player'
 import { useHistory } from 'react-router-dom'
+import AlbumFilter, { AlbumFilterData } from '../../../components/AlbumFilter'
+import { useEffect, useState } from 'react'
 
-const AlbumListPage = ():React.ReactElement => {
+const AlbumListPage = (): React.ReactElement => {
   const classes = useStyles()
   const albumListModel = useAlbumListModel()
   const playerModel = usePlayerModel()
   const history = useHistory()
-  useMount(async () => {
-    await albumListModel.fetchAlbum({})
+  const [filter, setFilter] = useState<AlbumFilterData>({
+    order: '-id'
   })
-  console.log(albumListModel.data)
+  useEffect(() => {
+    (async () => {
+      await albumListModel.fetchAlbum({ ...filter })
+    })()
+  }, [filter])
+  // useMount(async () => {
+  //   await albumListModel.fetchAlbum({})
+  // })
   return (
     <div className={classes.root}>
-      <Grid container>
+      <div className={classes.toolbar}>
+        <AlbumFilter filter={filter} onChange={(newFilter) => setFilter(newFilter)}/>
+      </div>
+      <Grid container className={classes.grid}>
         {albumListModel.data.map((album) => (
-          <Grid container item key={album.id} className={classes.item}>
+          <Grid item key={album.id} className={classes.item}>
             <AlbumItem
               album={album}
               onClick={(album) => playerModel.playAlbum(album.id)}
@@ -29,7 +41,8 @@ const AlbumListPage = ():React.ReactElement => {
           </Grid>
         ))}
       </Grid>
-      <Pagination count={albumListModel.total / 55} onChange={(event, page) => albumListModel.fetchAlbum({ page })} />
+      <Pagination count={Math.ceil(albumListModel.total / 55)}
+        onChange={(event, page) => albumListModel.fetchAlbum({ page })} />
     </div>
   )
 }

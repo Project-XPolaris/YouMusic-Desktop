@@ -8,21 +8,22 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemAvatar, ListItemSecondaryAction,
+  ListItemAvatar,
+  ListItemSecondaryAction,
   ListItemText,
-  Typography
+  Typography,
 } from '@material-ui/core'
-import { ArrowBack, PlayArrow, PlaylistAdd } from '@material-ui/icons'
+import { PlayArrow, PlaylistAdd } from '@material-ui/icons'
 import useLayoutModel from '../../models/layout'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import useAlbumModel from './model'
 import MusicNoteIcon from '@material-ui/icons/MusicNote'
-import { ApplicationConfig } from '../../config'
 import { getMusicArtistString } from '../../utils/music'
 import AlbumArtistItem from '../../components/AlbumArtist'
 import usePlayerModel from '../../models/player'
 import SideLayout from '../../layout/SideLayout'
 import { getImageUrl } from '../../utils/image'
+import { Music } from '../../api/music'
 
 const useStyles = makeStyles({
   main: {
@@ -99,6 +100,7 @@ const AlbumPage = ({}: AlbumPagePropsType) => {
   const classes = useStyles()
   const layoutModel = useLayoutModel()
   const albumModel = useAlbumModel()
+  const history = useHistory()
   useEffect(() => {
     layoutModel.setNavIcon('Back')
     albumModel.loadData(albumId)
@@ -109,6 +111,18 @@ const AlbumPage = ({}: AlbumPagePropsType) => {
         <MusicNoteIcon className={classes.noCoverIcon}/>
       </div>
     )
+  }
+  const onMusicClick = (music:Music) => {
+    if (albumModel.album) {
+      music.album = albumModel.album
+    }
+    playerModel.playMusic(music)
+  }
+  const onMusicAddNextClick = (music:Music) => {
+    if (albumModel.album) {
+      music.album = albumModel.album
+    }
+    playerModel.addMusicToNextPlay(music)
   }
   const side = (
     <>
@@ -152,7 +166,7 @@ const AlbumPage = ({}: AlbumPagePropsType) => {
       <Grid container className={classes.artistContainer}>
         {albumModel.album && albumModel.album.artist.map((artist) => (
           <Grid item key={artist.id} className={classes.item}>
-            <AlbumArtistItem artist={artist}/>
+            <AlbumArtistItem artist={artist} onClick={() => history.push(`/artist/${artist.id}`)}/>
           </Grid>
         ))}
       </Grid>
@@ -162,7 +176,7 @@ const AlbumPage = ({}: AlbumPagePropsType) => {
       <List>
         {
           albumModel.album && albumModel.album.music.map((music) => (
-            <ListItem button key={music.id} >
+            <ListItem button key={music.id} onClick={() => onMusicClick(music)}>
               <ListItemAvatar>
                 <Avatar className={classes.musicAvatar}>
                   <MusicNoteIcon />
@@ -170,7 +184,7 @@ const AlbumPage = ({}: AlbumPagePropsType) => {
               </ListItemAvatar>
               <ListItemText className={classes.listText} primary={music.title} secondary={getMusicArtistString(music)} />
               <ListItemSecondaryAction>
-                <IconButton>
+                <IconButton onClick={() => onMusicAddNextClick(music)}>
                   <PlaylistAdd fontSize="inherit" />
                 </IconButton>
               </ListItemSecondaryAction>

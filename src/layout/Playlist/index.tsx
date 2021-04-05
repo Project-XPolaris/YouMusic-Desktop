@@ -24,7 +24,7 @@ const useStyles = makeStyles({
       }
     },
     '& .MuiListItem-button.Mui-selected:hover': {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.primary.main
     },
     '& .Mui-focusVisible': {
       backgroundColor: theme.palette.primary.dark
@@ -37,7 +37,7 @@ const useStyles = makeStyles({
   },
   list: {
     width: theme.spacing(40),
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(8)
   },
   header: {
     height: theme.spacing(8),
@@ -45,8 +45,9 @@ const useStyles = makeStyles({
     paddingLeft: theme.spacing(2),
     position: 'fixed',
     width: '100%',
-    zIndex: 100
-  }
+    zIndex: 100,
+    backgroundColor: '#202020'
+  },
 })
 
 interface PlaylistDrawerPropsType {
@@ -77,7 +78,7 @@ export default function PlaylistDrawer ({}: PlaylistDrawerPropsType) {
       <List className={classes.list} dense>
         {playerModel.playlist.map((music, idx) => {
           return (
-            <ListItem key={music.id} button selected={playerModel.getCurrentPlay()?.id === music.id}>
+            <ListItem key={music.id} button selected={playerModel.getCurrentPlay()?.id === music.id} onClick={() => playerModel.playWithIndex(idx)}>
               <ListItemAvatar>
                 <Avatar src={getMusicAlbumCoverUrl(music)} variant="rounded"/>
               </ListItemAvatar>

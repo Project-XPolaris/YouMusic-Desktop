@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import theme from '../../theme'
-import { Grid, IconButton, Slider, Typography, withStyles } from '@material-ui/core'
+import { Grid, IconButton, LinearProgress, Slider, Typography, withStyles } from '@material-ui/core'
 import SyncIcon from '@material-ui/icons/Sync'
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious'
 import SkipNextIcon from '@material-ui/icons/SkipNext'
@@ -65,7 +65,7 @@ const useStyles = makeStyles({
     marginLeft: theme.spacing(4),
     marginRight: theme.spacing(4),
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -80,6 +80,9 @@ const useStyles = makeStyles({
   buttons: {
     display: 'flex'
   },
+  controlButton: {
+    alignSelf: 'center'
+  },
   playSlider: {
     display: 'flex',
     alignItems: 'center'
@@ -93,12 +96,14 @@ const useStyles = makeStyles({
     width: '100%',
     position: 'absolute',
     top: -14
-
   },
   root: {
     width: '100%',
     height: '100%',
     position: 'relative'
+  },
+  loading: {
+    width: theme.spacing(20)
   }
 })
 const PlaySlider = withStyles({
@@ -133,12 +138,19 @@ const PlayBar = (): React.ReactElement => {
   const {
     togglePlayPause,
     playing,
-    volume
+    volume,
+    stopped,
+    ended,
+    loading
   } = useAudioPlayer({
     src: getPlayerUrl(currentMusic),
     format: 'mp3',
-    autoplay: false
+    autoplay: false,
+    volume: saveVolume / 100
   })
+  useEffect(() => {
+    volume(saveVolume / 100)
+  }, [playerModel.getCurrentPlay()])
   useEffect(() => {
     console.log(saveVolume / 100)
     volume(saveVolume / 100)
@@ -156,6 +168,13 @@ const PlayBar = (): React.ReactElement => {
     setSliderValue(-1)
     seek(duration * value / 100)
   }
+  useEffect(() => {
+    console.log(percentComplete)
+    if (ended && playerModel.playIndex < playerModel.playlist.length - 1) {
+      playerModel.nextMusic()
+      togglePlayPause()
+    }
+  }, [ended])
 
   return (
     <div className={classes.root}>
@@ -187,18 +206,24 @@ const PlayBar = (): React.ReactElement => {
         </div>
         <div className={classes.center}>
           <div className={classes.control}>
-            <div className={classes.buttons}>
-              <IconButton onClick={() => playerModel.previousMusic()} >
-                <SkipPreviousIcon />
-              </IconButton>
-              <IconButton onClick={() => togglePlayPause()}>
-                {(playing ?? false) ? <PauseIcon fontSize="large" color="primary" /> : <PlayArrowIcon fontSize="large" color="primary" />}
-              </IconButton>
-              <IconButton onClick={() => playerModel.nextMusic()}>
-                <SkipNextIcon />
-              </IconButton>
+            {
+              loading && playerModel.playlist.length > 0 ? <div className={classes.loading}>
+                <LinearProgress color="secondary" />
+              </div>
+                : <div className={classes.buttons}>
+                  <IconButton onClick={() => playerModel.previousMusic()} className={classes.controlButton} >
+                    <SkipPreviousIcon />
+                  </IconButton>
 
-            </div>
+                  <IconButton onClick={() => togglePlayPause()} className={classes.controlButton}>
+                    {(playing ?? false) ? <PauseIcon fontSize="large" color="primary" /> : <PlayArrowIcon fontSize="large" color="primary"/>}
+                  </IconButton>
+                  <IconButton onClick={() => playerModel.nextMusic()} className={classes.controlButton} >
+                    <SkipNextIcon />
+                  </IconButton>
+
+                </div>
+            }
           </div>
         </div>
         <div className={classes.right}>

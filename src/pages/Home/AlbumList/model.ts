@@ -3,8 +3,8 @@ import { Album, fetchAlbumList } from '../../../api/album'
 import { createModel } from 'hox'
 const albumListModel = () => {
   const { data, page, pageSize, total, loadData } = useDataPageLoader<Album>({ loader: fetchAlbumList, defaultPageSize: 20, defaultPage: 1 })
-  const fetchAlbum = async ({ page = 1, pageSize = 55 }) => {
-    await loadData({ page, pageSize })
+  const fetchAlbum = async ({ page = 1, pageSize = 55, ...other }) => {
+    await loadData({ page, pageSize, extraParams: other })
   }
   return {
     data, page, pageSize, total, fetchAlbum

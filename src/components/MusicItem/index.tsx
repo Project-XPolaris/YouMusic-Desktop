@@ -15,7 +15,8 @@ const useStyles = makeStyles({
   cover: {
     width: 120,
     height: 120,
-    objectFit: 'cover'
+    objectFit: 'cover',
+    borderRadius: theme.spacing(1)
   },
   noCover: {
     width: 120,
@@ -23,7 +24,8 @@ const useStyles = makeStyles({
     backgroundColor: theme.palette.primary.light,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    borderRadius: theme.spacing(1)
   },
   noCoverIcon: {
     color: theme.palette.primary.contrastText,

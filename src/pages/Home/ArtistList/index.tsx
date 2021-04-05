@@ -23,7 +23,7 @@ const ArtistListPage = ():React.ReactElement => {
           </Grid>
         ))}
       </Grid>
-      <Pagination count={artistModel.total / 55} onChange={(event, page) => artistModel.fetchArtist({ page })} />
+      <Pagination count={Math.ceil(artistModel.total / 55)} onChange={(event, page) => artistModel.fetchArtist({ page })} />
     </div>
   )
 }
