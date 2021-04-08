@@ -29,6 +29,7 @@ const AlbumFilter = ({ className, filter, onChange }: AlbumFilterPropsType): Rea
             ...filter,
             order: newOrder
           })
+          setOrderAnchorEl(null)
         }}
       />
     </div>

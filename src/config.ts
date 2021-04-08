@@ -9,7 +9,8 @@ export const ApplicationConfig = {
     libraryScan: '/library/:id/scan',
     libraryObject: '/library/:id',
     readPath: '/explore/read',
-    info: '/app/info'
+    info: '/app/info',
+    spotifyCode: '/spotify/client/code'
   },
   keys: {
     store: {

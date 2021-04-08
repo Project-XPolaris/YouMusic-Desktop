@@ -2,6 +2,7 @@ import { app, BrowserWindow } from 'electron'
 import * as path from 'path'
 import * as url from 'url'
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer'
+import { runExpress } from './express/instance'
 
 let mainWindow: Electron.BrowserWindow | null
 
@@ -15,7 +16,7 @@ function createWindow () {
       webSecurity: false,
       allowRunningInsecureContent: true
     },
-    frame:false
+    frame: false
   })
 
   if (process.env.NODE_ENV === 'development') {
@@ -39,6 +40,7 @@ function createWindow () {
 app.on('ready', createWindow)
   .whenReady()
   .then(() => {
+    runExpress()
     if (process.env.NODE_ENV === 'development') {
       installExtension(REACT_DEVELOPER_TOOLS)
         .then((name) => console.log(`Added Extension:  ${name}`))

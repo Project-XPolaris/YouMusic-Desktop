@@ -6,7 +6,7 @@ import appTheme from './theme'
 import { ThemeProvider } from '@material-ui/core'
 import { useTitle } from 'ahooks'
 import { SnackbarProvider } from 'notistack'
-
+import './spotify/client'
 const mainElement = document.createElement('div')
 mainElement.setAttribute('id', 'root')
 document.body.appendChild(mainElement)
