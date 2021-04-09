@@ -1,6 +1,6 @@
 import { createModel } from 'hox'
 import { useState } from 'react'
-export type TabIndex = 'Home' | 'ArtistList' | 'AlbumList' | 'MusicList' | 'Library'
+export type TabIndex = 'Home' | 'ArtistList' | 'AlbumList' | 'MusicList' | 'Library' | 'Person'
 export type NavIcon = 'Menu' | 'Back'
 export type DialogKey = 'library/pickDirectory'
 const LayoutModel = () => {

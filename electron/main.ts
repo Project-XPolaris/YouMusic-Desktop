@@ -3,7 +3,7 @@ import * as path from 'path'
 import * as url from 'url'
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer'
 import { runExpress } from './express/instance'
-
+import './spotify/login'
 let mainWindow: Electron.BrowserWindow | null
 
 function createWindow () {

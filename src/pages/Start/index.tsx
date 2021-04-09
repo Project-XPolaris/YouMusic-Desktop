@@ -82,15 +82,10 @@ const StartPage = ({}: StartPagePropsType) : ReactElement => {
     }
     localStorage.setItem(ApplicationConfig.keys.store.apiUrl, inputAPIURL)
     const serviceInfo = await fetchAppInfo()
-    if (serviceInfo.authUrl === undefined) {
-      return
-    }
     enqueueSnackbar('connect to service success', { variant: 'success' })
-    console.log({ inputUsername, inputPassword })
-    if (inputUsername && inputPassword) {
+    if (inputUsername && inputPassword && serviceInfo.authEnable && serviceInfo.authUrl) {
       const response = await request.post(serviceInfo.authUrl, { data: { username: inputUsername, password: inputPassword } })
       if (response.token) {
-        localStorage.setItem(ApplicationConfig.keys.store.token, response.token)
         enqueueSnackbar('user login success', { variant: 'success' })
         const loginHistory : LoginHistory = {
           apiUrl: inputAPIURL,
@@ -98,14 +93,17 @@ const StartPage = ({}: StartPagePropsType) : ReactElement => {
           token: response.token
         }
         loginHistoryManager.addHistory(loginHistory)
+        localStorage.setItem(ApplicationConfig.keys.store.token, response.token)
+        localStorage.setItem(ApplicationConfig.keys.store.username, inputUsername)
       }
-      console.log(response)
     } else {
       const loginHistory : LoginHistory = {
         apiUrl: inputAPIURL,
         username: 'public',
         token: ''
       }
+      localStorage.removeItem(ApplicationConfig.keys.store.token)
+      localStorage.setItem(ApplicationConfig.keys.store.username, 'public')
       loginHistoryManager.addHistory(loginHistory)
     }
     history.push('/home')
@@ -118,8 +116,9 @@ const StartPage = ({}: StartPagePropsType) : ReactElement => {
   const renderHistoryView = () => {
     const onItemClick = (loginHistory:LoginHistory) => {
       localStorage.setItem(ApplicationConfig.keys.store.apiUrl, loginHistory.apiUrl)
+      localStorage.setItem(ApplicationConfig.keys.store.username, loginHistory.username)
       if (loginHistory.token !== undefined && loginHistory.token.length > 0) {
-        localStorage.setItem(ApplicationConfig.keys.store.token,loginHistory.token)
+        localStorage.setItem(ApplicationConfig.keys.store.token, loginHistory.token)
       }
       history.push('/home')
     }

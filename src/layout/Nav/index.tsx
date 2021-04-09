@@ -10,7 +10,7 @@ import MusicNoteIcon from '@material-ui/icons/MusicNote'
 import useStyles from './style'
 import useLayoutModel, { TabIndex } from '../../models/layout'
 import { useHistory } from 'react-router-dom'
-import { LibraryMusic } from '@material-ui/icons';
+import { LibraryMusic, Person } from '@material-ui/icons';
 
 const NavItems: {
   icon: React.ReactElement, title: string, index: TabIndex, path: string
@@ -44,6 +44,12 @@ const NavItems: {
     title: 'Library',
     index: 'Library',
     path: '/home/library'
+  },
+  {
+    icon: <Person />,
+    title: 'Person',
+    index: 'Person',
+    path: '/home/account'
   }
 ]
 const Nav = () => {

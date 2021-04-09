@@ -15,7 +15,8 @@ export const ApplicationConfig = {
   keys: {
     store: {
       apiUrl: 'API_URL',
-      token: 'TOKEN'
+      token: 'TOKEN',
+      username: 'USERNAME'
     }
   }
 }
