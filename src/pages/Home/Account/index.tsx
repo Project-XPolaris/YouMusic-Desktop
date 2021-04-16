@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import useStyles from './style'
-import { ExitToApp, Link, Person } from '@material-ui/icons';
-import { Avatar, ButtonBase, Paper, Typography } from '@material-ui/core';
-import { ipcRenderer } from 'electron';
-import { ApplicationConfig } from '../../../config';
-import { electronApp } from '../../../remote';
+import { ExitToApp, Link, Person } from '@material-ui/icons'
+import { Avatar, ButtonBase, Paper, Typography } from '@material-ui/core'
+import { ipcRenderer } from 'electron'
+import { ApplicationConfig } from '../../../config'
+import { electronApp } from '../../../remote'
+import SpotifyAccountCard from '../../../components/SpotifyAccountCard'
+import useAccountModel from './model'
 
 export interface AccountPagePropsType {
 
@@ -12,6 +14,10 @@ export interface AccountPagePropsType {
 
 const AccountPage = ({}: AccountPagePropsType) => {
   const classes = useStyles()
+  const accountModel = useAccountModel()
+  useEffect(() => {
+    accountModel.refresh()
+  }, [])
   return (
     <div className={classes.root}>
       <div className={classes.header}>
@@ -23,14 +29,14 @@ const AccountPage = ({}: AccountPagePropsType) => {
         </div>
       </div>
       <div className={classes.content}>
-        <ButtonBase onClick={() => ipcRenderer.send('openSpotifyLoginWindow')}>
-          <Paper className={classes.actionCard}>
-            <Link className={classes.actionCardIcon} />
-            <div className={classes.actionCardText}>
-              Link to Spotify
-            </div>
-          </Paper>
-        </ButtonBase>
+        <SpotifyAccountCard
+          className={classes.card}
+          onLogin={() => ipcRenderer.send('openSpotifyLoginWindow')}
+          isLogin={accountModel.accountInfo?.spotifyLogin ?? false}
+          logout={() => {
+            accountModel.unlink()
+          }}
+        />
         <ButtonBase onClick={() => {
           localStorage.removeItem(ApplicationConfig.keys.store.apiUrl)
           localStorage.removeItem(ApplicationConfig.keys.store.token)

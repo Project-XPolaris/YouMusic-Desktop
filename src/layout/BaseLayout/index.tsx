@@ -18,9 +18,13 @@ import PlayBarLayout from '../PlayBar/layout'
 import StartPage from '../../pages/Start'
 import { ApplicationConfig } from '../../config'
 import { ipcRenderer } from 'electron'
+import { useEffect } from 'react'
+import { Channels } from '../../../electron/channels'
+import { useSnackbar } from 'notistack'
 const BaseLayout = ():React.ReactElement => {
   const classes = useStyles()
   const layoutModel = useLayoutModel()
+  const { enqueueSnackbar } = useSnackbar()
   const [linkMenuAnchor, setLinkMenuAnchor] = React.useState<null | HTMLElement>(null)
 
   const handleLinkClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -30,6 +34,11 @@ const BaseLayout = ():React.ReactElement => {
   const handleLinkClose = () => {
     setLinkMenuAnchor(null)
   }
+  useEffect(() => {
+    ipcRenderer.on(Channels.LibraryScanComplete, (event, id, path) => {
+      enqueueSnackbar(`library ${path} scan complete`, { variant: 'success' })
+    })
+  }, [])
   const NavIcon = () => {
     switch (layoutModel.navIcon) {
       case 'Menu':
