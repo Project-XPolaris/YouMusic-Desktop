@@ -10,7 +10,10 @@ export const ApplicationConfig = {
     libraryObject: '/library/:id',
     readPath: '/explore/read',
     info: '/app/info',
-    spotifyCode: '/spotify/client/code'
+    spotifyCode: '/spotify/client/code',
+    spotifyUnlink: '/spotify/login',
+    spotifySearch: '/spotify/search',
+    accountInfo: '/account/my'
   },
   keys: {
     store: {

@@ -1,5 +1,7 @@
 import { extend } from 'umi-request'
 import { ApplicationConfig } from '../config'
+import { ipcRenderer } from 'electron'
+import { Channels } from '../../electron/channels'
 
 const apiRequest = extend({
   timeout: 1000,
@@ -18,6 +20,17 @@ apiRequest.interceptors.request.use((url, options) => {
       headers: {
         ...options.headers,
         Authorization: `Bearer ${token}`
+      }
+    }
+  }
+  const notificationId = ipcRenderer.sendSync(Channels.GetNotificationId)
+  if (notificationId) {
+    options = {
+      ...options,
+      headers: {
+        ...options.headers,
+        Authorization: `Bearer ${token}`,
+        Notification: notificationId
       }
     }
   }

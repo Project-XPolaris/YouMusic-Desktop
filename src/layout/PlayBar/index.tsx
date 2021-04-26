@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import theme from '../../theme'
-import { Grid, IconButton, LinearProgress, Slider, Typography, withStyles } from '@material-ui/core'
+import { IconButton, LinearProgress, Slider, Typography, withStyles } from '@material-ui/core'
 import SyncIcon from '@material-ui/icons/Sync'
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious'
 import SkipNextIcon from '@material-ui/icons/SkipNext'
@@ -13,8 +13,8 @@ import { useAudioPlayer, useAudioPosition } from 'react-use-audio-player'
 import { getMusicAlbumCoverUrl, getMusicArtistString, getPlayerUrl } from '../../utils/music'
 import { playTimeText } from '../../utils/time'
 import useLayoutModel from '../../models/layout'
-import { VolumeDown, VolumeUp } from '@material-ui/icons'
-import { useLocalStorageState } from 'ahooks'
+import { VolumeDown } from '@material-ui/icons'
+import { useLocalStorageState, useUpdate } from 'ahooks'
 
 const useStyles = makeStyles({
   main: {
@@ -134,20 +134,34 @@ const PlayBar = (): React.ReactElement => {
   const layoutModel = useLayoutModel()
   const currentMusic = playerModel.getCurrentPlay()
   const [saveVolume, setSaveVolume] = useLocalStorageState('saveVolume', 0)
-
+  const update = useUpdate()
   const {
     togglePlayPause,
     playing,
     volume,
     stopped,
     ended,
-    loading
-  } = useAudioPlayer({
-    src: getPlayerUrl(currentMusic),
-    format: 'mp3',
-    autoplay: false,
-    volume: saveVolume / 100
-  })
+    stop,
+    load,
+    loading,
+    player
+  } = useAudioPlayer()
+  useEffect(() => {
+    if (currentMusic) {
+      if (player != null) {
+        player.unload()
+      }
+      load({
+        src: getPlayerUrl(currentMusic),
+        format: ['mp3'],
+        autoplay: true,
+        volume: saveVolume / 100
+      })
+    }
+  }, [currentMusic])
+  useEffect(() => {
+
+  }, [])
   useEffect(() => {
     volume(saveVolume / 100)
   }, [playerModel.getCurrentPlay()])
@@ -218,7 +232,13 @@ const PlayBar = (): React.ReactElement => {
                   <IconButton onClick={() => togglePlayPause()} className={classes.controlButton}>
                     {(playing ?? false) ? <PauseIcon fontSize="large" color="primary" /> : <PlayArrowIcon fontSize="large" color="primary"/>}
                   </IconButton>
-                  <IconButton onClick={() => playerModel.nextMusic()} className={classes.controlButton} >
+                  <IconButton
+                    onClick={() => {
+                      stop()
+                      playerModel.nextMusic()
+                    }}
+                    className={classes.controlButton}
+                  >
                     <SkipNextIcon />
                   </IconButton>
 

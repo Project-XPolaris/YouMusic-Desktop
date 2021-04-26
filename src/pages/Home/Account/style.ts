@@ -23,6 +23,12 @@ const useStyles = makeStyles((theme: Theme) =>
       flexWrap: 'wrap',
       marginTop: theme.spacing(2)
     },
+    card: {
+      color: 'white',
+      width: theme.spacing(30),
+      marginRight: theme.spacing(1),
+      marginBottom: theme.spacing(1)
+    },
     actionCard: {
       color: 'white',
       padding: theme.spacing(2),

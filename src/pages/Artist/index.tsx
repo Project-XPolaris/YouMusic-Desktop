@@ -1,54 +1,15 @@
 import React, { useEffect } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import SideLayout from '../../layout/SideLayout'
-import MusicNoteIcon from '@material-ui/icons/MusicNote'
 import useLayoutModel from '../../models/layout'
-import theme from '../../theme'
-import { Person, PlayArrow, PlaylistAdd } from '@material-ui/icons'
+import { Person } from '@material-ui/icons'
 import { Button, Grid, Link, Typography } from '@material-ui/core'
 import { useHistory, useParams } from 'react-router-dom'
 import useArtistModel from './model'
 import MusicItem from '../../components/MusicItem'
 import usePlayerModel from '../../models/player'
 import AlbumItem from '../../components/AlbumItem'
-import { ApplicationConfig } from '../../config'
 import { getImageUrl } from '../../utils/image'
-
-const useStyles = makeStyles({
-  main: {},
-  cover: {
-    width: 240,
-    height: 240,
-    objectFit: 'cover'
-  },
-  noCover: {
-    width: 240,
-    height: 240,
-    backgroundColor: theme.palette.primary.light,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  noCoverIcon: {
-    color: theme.palette.primary.contrastText,
-    fontSize: 48
-  },
-  title: {
-    color: theme.palette.primary.contrastText
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-  link: {
-    ...theme.typography.body1
-  },
-  artistName: {
-    marginTop: theme.spacing(2),
-    ...theme.typography.h5
-  }
-})
+import useStyles from './style'
 
 interface ArtistPagePropsType {
 
@@ -80,8 +41,10 @@ const ArtistPage = ({}: ArtistPagePropsType) => {
             ? <img src={getImageUrl(artistModel.artist.avatar)} className={classes.cover} />
             : <NoCover />
         }
-        <div className={classes.artistName}>
-          {artistModel.artist?.name ?? 'Unknown'}
+        <div className={classes.sideContent}>
+          <div className={classes.artistName}>
+            {artistModel.artist?.name ?? 'Unknown'}
+          </div>
         </div>
       </>
     )

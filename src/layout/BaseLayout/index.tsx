@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AppBar, IconButton, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core'
+import { AppBar, Divider, IconButton, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core'
 import useStyles from './style'
 import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 import PlaylistDrawer from '../Playlist'
@@ -17,9 +17,7 @@ import { electronApp, electronRemote } from '../../remote'
 import PlayBarLayout from '../PlayBar/layout'
 import StartPage from '../../pages/Start'
 import { ApplicationConfig } from '../../config'
-import MusicEditDrawer from '../../components/MusicEditDrawer'
-import useEditorModel from '../../models/editor'
-
+import { ipcRenderer } from 'electron'
 const BaseLayout = ():React.ReactElement => {
   const classes = useStyles()
   const layoutModel = useLayoutModel()
@@ -95,7 +93,6 @@ const BaseLayout = ():React.ReactElement => {
         </MenuItem>
       </Menu>
       <PlaylistDrawer />
-      <MusicEditDrawer />
       <div>
         <AppBar position="fixed" elevation={0} className={classes.appbar}>
           <Toolbar variant="dense" className={classes.toolbar}>

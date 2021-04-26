@@ -1,9 +1,9 @@
 import { app, BrowserWindow } from 'electron'
 import * as path from 'path'
 import * as url from 'url'
-import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer'
 import { runExpress } from './express/instance'
 import './spotify/login'
+import './notification/client'
 let mainWindow: Electron.BrowserWindow | null
 
 function createWindow () {
@@ -16,9 +16,9 @@ function createWindow () {
       webSecurity: false,
       allowRunningInsecureContent: true
     },
+    icon: path.join(__dirname, '/assets/icon.png'),
     frame: false
   })
-
   if (process.env.NODE_ENV === 'development') {
     mainWindow.loadURL('http://localhost:4000/')
   } else {
@@ -31,7 +31,6 @@ function createWindow () {
       })
     )
   }
-
   mainWindow.on('closed', () => {
     mainWindow = null
   })
@@ -41,13 +40,13 @@ app.on('ready', createWindow)
   .whenReady()
   .then(() => {
     runExpress()
-    if (process.env.NODE_ENV === 'development') {
-      installExtension(REACT_DEVELOPER_TOOLS)
-        .then((name) => console.log(`Added Extension:  ${name}`))
-        .catch((err) => console.log('An error occurred: ', err))
-      installExtension(REDUX_DEVTOOLS)
-        .then((name) => console.log(`Added Extension:  ${name}`))
-        .catch((err) => console.log('An error occurred: ', err))
-    }
+    // if (process.env.NODE_ENV === 'development') {
+    //   installExtension(REACT_DEVELOPER_TOOLS)
+    //     .then((name) => console.log(`Added Extension:  ${name}`))
+    //     .catch((err) => console.log('An error occurred: ', err))
+    //   installExtension(REDUX_DEVTOOLS)
+    //     .then((name) => console.log(`Added Extension:  ${name}`))
+    //     .catch((err) => console.log('An error occurred: ', err))
+    // }
   })
 app.allowRendererProcessReuse = true
