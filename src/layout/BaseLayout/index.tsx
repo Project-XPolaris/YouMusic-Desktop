@@ -101,7 +101,7 @@ const BaseLayout = ():React.ReactElement => {
       {/*  open={true}*/}
       {/*  onPick={(artist) => {}}*/}
       {/*/>*/}
-      <ArtistListEditDialog open={true} onCancel={() => {}} onOk={() => {}} initValue={["Oasis"]} />
+      {/*<ArtistListEditDialog open={true} onCancel={() => {}} onOk={() => {}} initValue={["Oasis"]} />*/}
       <div>
         <AppBar position="fixed" elevation={0} className={classes.appbar}>
           <Toolbar variant="dense" className={classes.toolbar}>

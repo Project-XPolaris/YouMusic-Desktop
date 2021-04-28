@@ -35,3 +35,10 @@ export const updateMusicInfo = async (
     data
   })
 }
+export const uploadMusicCover = async (id:number, file:File) => {
+  const form = new FormData()
+  form.append('file', file)
+  return await apiRequest.post(`/music/${id}/cover`, {
+    data: form
+  })
+}

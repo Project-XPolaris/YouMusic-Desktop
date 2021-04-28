@@ -39,7 +39,6 @@ const MusicListPage = ({}) => {
           onClick={() => {
             contextMenuController.close()
             if (contextMenuController.data) {
-              console.log(contextMenuController.data)
               editorModel.openEditMusic(contextMenuController.data)
             }
           }}

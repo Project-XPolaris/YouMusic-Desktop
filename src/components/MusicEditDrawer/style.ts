@@ -25,7 +25,10 @@ const useStyles = makeStyles((theme: Theme) =>
       marginBottom: theme.spacing(1)
     },
     bottomActions: {
-      marginTop: 'auto'
+      marginTop: 'auto',
+    },
+    actionButton:{
+      marginRight: theme.spacing(2)
     }
   })
 )
