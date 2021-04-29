@@ -5,9 +5,12 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       color: 'white'
     },
-    cover:{
+    cover: {
       width: theme.spacing(8),
       marginRight: theme.spacing(2)
+    },
+    selectedItem: {
+      backgroundColor: theme.palette.primary.dark
     }
   })
 )

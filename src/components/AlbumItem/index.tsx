@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { MouseEventHandler } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import theme from '../../theme'
 import { Album } from '../../api/album'
@@ -51,14 +51,15 @@ interface AlbumItemPropsType {
   album: Album
   onClick?: (album: Album) => void
   onTitleClick?: (album: Album) => void
+  onContextClick?:MouseEventHandler
   className?: any
 }
 
-const AlbumItem = ({ album, onClick, onTitleClick, className }: AlbumItemPropsType): React.ReactElement => {
+const AlbumItem = ({ onContextClick, album, onClick, onTitleClick, className }: AlbumItemPropsType): React.ReactElement => {
   const classes = useStyles()
 
   return (
-    <div className={clsx(classes.main, className)}>
+    <div className={clsx(classes.main, className)} onContextMenu={onContextClick}>
       <ButtonBase onClick={() => {
         if (onClick) {
           onClick(album)

@@ -39,27 +39,51 @@ const MusicListPage = ({}) => {
           onClick={() => {
             contextMenuController.close()
             if (contextMenuController.data) {
-              editorModel.openEditMusic(contextMenuController.data)
+              if (musicModel.selectedMusic.length > 1) {
+                editorModel.openEditMusic(musicModel.selectedMusic)
+              } else {
+                editorModel.openEditMusic([contextMenuController.data])
+              }
             }
           }}
         >Edit</MenuItem>
+        <MenuItem
+          onClick={() => {
+            contextMenuController.close()
+            if (contextMenuController.data) {
+              musicModel.switchSelect(contextMenuController.data)
+            }
+          }}
+        >Select</MenuItem>
       </Menu>
+      <div className={classes.toolbar}>
+
+      </div>
       <List>
         {musicModel.data.map((music) => {
           return (
             <MusicListItem
               music={music}
               key={music.id}
-              onClick={() => playerModel.playMusic(music)}
+              onClick={() => {
+                if (musicModel.selectMode) {
+                  musicModel.switchSelect(music)
+                } else {
+                  playerModel.playMusic(music)
+                }
+              }}
               onContextMenu={(e) => {
                 contextMenuController.open(music, { x: e.clientX - 2, y: e.clientY - 4 })
               }}
+              selected={musicModel.isSelected(music)}
             />
           )
         })}
       </List>
-      <Pagination count={Math.floor(musicModel.total / 55)}
-        onChange={(event, page) => musicModel.fetchMusic({ page })} />
+      <Pagination
+        count={Math.floor(musicModel.total / 55)}
+        onChange={(event, page) => musicModel.fetchMusic({ page })}
+      />
     </div>
   )
 }

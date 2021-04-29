@@ -8,6 +8,9 @@ import useAlbumListModel from './model'
 import MusicItem from '../../components/MusicItem'
 import GridContainer from '../../components/MusicList'
 import AlbumItem from '../../components/AlbumItem'
+import { useContextMenu } from '../../hooks/context';
+import { Music } from '../../api/music';
+import { Album } from '../../api/album';
 
 const useStyles = makeStyles({
   main: {
@@ -28,7 +31,6 @@ interface AlbumListPagePropsType {
 const AlbumListPage = ({}: AlbumListPagePropsType) => {
   const classes = useStyles()
   const history = useHistory()
-
   const albumListModel = useAlbumListModel()
   const layoutModel = useLayoutModel()
   const { artist } = getQueryParamsFromSearch(history.location.search)

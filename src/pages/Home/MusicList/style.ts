@@ -7,7 +7,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
     overflowX: 'hidden',
     overflowY: 'scroll',
-    paddingBottom: theme.spacing(12)
+    paddingBottom: theme.spacing(12),
+    paddingTop: 0
   },
   content: {},
   item: {
@@ -26,6 +27,17 @@ const useStyles = makeStyles((theme) => ({
     '*::-webkit-scrollbar-thumb': {
       backgroundColor: '#303030'
     }
+  },
+  toolbar: {
+    position: 'sticky',
+    top: 0,
+    height: theme.spacing(6),
+    backgroundColor: '#171717',
+    zIndex: 100,
+    display: 'flex',
+    alignItems: 'center',
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2)
   }
 }))
 export default useStyles

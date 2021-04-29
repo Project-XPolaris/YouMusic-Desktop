@@ -1,11 +1,9 @@
-import { createStyles } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: '100%',
     maxHeight: '100%',
-
     overflowX: 'hidden',
     overflowY: 'scroll',
     paddingBottom: theme.spacing(12)

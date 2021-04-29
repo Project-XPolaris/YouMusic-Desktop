@@ -18,18 +18,47 @@ export interface MusicEditDrawerPropsType {
 const MusicEditDrawer = ({}: MusicEditDrawerPropsType) => {
   const editor = useEditorModel()
   const classes = useStyles()
-  const [inputTitle, setInputTitle] = useState<string | undefined>(editor.editMusic?.title)
-  const [inputAlbum, setInputAlbum] = useState<string | undefined>(editor.editMusic?.album.name)
-  const [inputYear, setInputYear] = useState<number | undefined>(editor.editMusic?.year)
-  const [inputTrack, setInputTrack] = useState<number | undefined>(editor.editMusic?.track)
+  const [inputTitle, setInputTitle] = useState<string | undefined>()
+  const [inputAlbum, setInputAlbum] = useState<string | undefined>()
+  const [inputYear, setInputYear] = useState<number | undefined>()
+  const [inputTrack, setInputTrack] = useState<number | undefined>()
   const artistPickController = useArtistPickController([])
   useEffect(() => {
     if (editor.editMusic) {
-      setInputTitle(editor.editMusic.title)
-      setInputAlbum(editor.editMusic.album.name)
-      setInputYear(editor.editMusic.year)
-      setInputTrack(editor.editMusic.track)
-      artistPickController.setSelected(editor.editMusic.artist.map(it => it.name))
+      if (editor.editMusic.length === 1) {
+        setInputTitle(editor.editMusic[0].title)
+        setInputAlbum(editor.editMusic[0].album.name)
+        setInputYear(editor.editMusic[0].year)
+        setInputTrack(editor.editMusic[0].track)
+        artistPickController.setSelected(editor.editMusic[0].artist.map(it => it.name))
+        return
+      }
+      const flagMusicAlbum = editor.editMusic.find(it => it.album)
+      if (flagMusicAlbum && editor.editMusic.filter(it => !it.album || it.album.id === flagMusicAlbum.album.id).length === editor.editMusic.length) {
+        setInputAlbum(flagMusicAlbum.album.name)
+      } else {
+        setInputAlbum(undefined)
+      }
+      const flagMusicArtist = editor.editMusic.find(it => it.artist.length > 0)
+      if (flagMusicArtist && editor.editMusic.filter(it => {
+        if (it.artist.length === 0) {
+          return true
+        }
+        for (const leftArtist of it.artist) {
+          for (const rightArtist of flagMusicArtist.artist) {
+            if (leftArtist.id !== rightArtist.id) {
+              return false
+            }
+          }
+        }
+      }).length === editor.editMusic.length) {
+        artistPickController.setSelected(flagMusicArtist.artist.map(it => it.name))
+      } else {
+        artistPickController.setSelected([])
+      }
+      setInputTitle(undefined)
+      setInputYear(undefined)
+      setInputTrack(undefined)
     }
   }, [editor.isEditMusicOpen])
   const onUpdate = async () => {
@@ -50,7 +79,9 @@ const MusicEditDrawer = ({}: MusicEditDrawerPropsType) => {
       updateData.track = inputTrack
     }
     updateData.artist = artistPickController.selected
-    await updateMusicInfo(Number(editor.editMusic.id), updateData)
+    for (const music of editor.editMusic) {
+      await updateMusicInfo(Number(music.id), updateData)
+    }
     document.dispatchEvent((new CustomEvent('musicUpdate', {})))
     editor.closeEditMusic()
   }
@@ -59,7 +90,9 @@ const MusicEditDrawer = ({}: MusicEditDrawerPropsType) => {
       return
     }
     const file = e.target.files[0]
-    await uploadMusicCover(Number(editor.editMusic.id), file)
+    for (const music of editor.editMusic) {
+      await uploadMusicCover(Number(music.id), file)
+    }
     document.dispatchEvent((new CustomEvent('musicUpdate', {})))
     editor.closeEditMusic()
   }
@@ -67,7 +100,10 @@ const MusicEditDrawer = ({}: MusicEditDrawerPropsType) => {
     <Drawer open={editor.isEditMusicOpen} anchor={'right'} className={classes.root}
       onClose={() => editor.closeEditMusic()}>
       <div className={classes.content}>
-        <img src={editor.editMusic ? getMusicAlbumCoverUrl(editor.editMusic) : undefined} className={classes.cover} />
+        {
+          editor.editMusic?.length === 1 &&
+          <img src={editor.editMusic ? getMusicAlbumCoverUrl(editor.editMusic[0]) : undefined} className={classes.cover} />
+        }
         {/* <Button variant={'contained'} className={classes.uploadCover}>Upload cover</Button> */}
         <div className={classes.item}>
           <TextField
