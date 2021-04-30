@@ -4,7 +4,6 @@ import { ExitToApp, Person } from '@material-ui/icons'
 import { Avatar, ButtonBase, Paper } from '@material-ui/core'
 import { ipcRenderer } from 'electron'
 import { ApplicationConfig } from '../../../config'
-import { electronApp } from '../../../remote'
 import SpotifyAccountCard from '../../../components/SpotifyAccountCard'
 import useAccountModel from './model'
 
@@ -37,7 +36,7 @@ const AccountPage = ():ReactElement => {
           localStorage.removeItem(ApplicationConfig.keys.store.apiUrl)
           localStorage.removeItem(ApplicationConfig.keys.store.token)
           localStorage.removeItem(ApplicationConfig.keys.store.username)
-          electronApp.exit()
+          ipcRenderer.send('close')
         }}>
           <Paper className={classes.actionCard}>
             <ExitToApp className={classes.actionCardIcon} />
