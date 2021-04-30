@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
@@ -10,7 +10,7 @@ import MusicNoteIcon from '@material-ui/icons/MusicNote'
 import useStyles from './style'
 import useLayoutModel, { TabIndex } from '../../models/layout'
 import { useHistory } from 'react-router-dom'
-import { LibraryMusic, Person } from '@material-ui/icons';
+import { LibraryMusic, Person } from '@material-ui/icons'
 
 const NavItems: {
   icon: React.ReactElement, title: string, index: TabIndex, path: string
@@ -52,7 +52,7 @@ const NavItems: {
     path: '/home/account'
   }
 ]
-const Nav = () => {
+const Nav = ():ReactElement => {
   const classes = useStyles()
   const layoutModel = useLayoutModel()
   const history = useHistory()

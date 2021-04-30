@@ -1,4 +1,4 @@
-import { green, pink } from '@material-ui/core/colors'
+import { pink } from '@material-ui/core/colors'
 import { createMuiTheme } from '@material-ui/core'
 
 const appTheme = createMuiTheme({
@@ -7,7 +7,6 @@ const appTheme = createMuiTheme({
     primary: {
       main: pink[500]
     }
-  },
-
+  }
 })
 export default appTheme

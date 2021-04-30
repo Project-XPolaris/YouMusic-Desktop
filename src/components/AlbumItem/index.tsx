@@ -2,9 +2,8 @@ import React, { MouseEventHandler } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import theme from '../../theme'
 import { Album } from '../../api/album'
-import { ApplicationConfig } from '../../config'
 import { getAlbumArtistString } from '../../utils/album'
-import { ButtonBase, Link } from '@material-ui/core'
+import { ButtonBase } from '@material-ui/core'
 import MusicNoteIcon from '@material-ui/icons/MusicNote'
 import { getImageUrl } from '../../utils/image'
 import clsx from 'clsx'
@@ -52,7 +51,7 @@ interface AlbumItemPropsType {
   onClick?: (album: Album) => void
   onTitleClick?: (album: Album) => void
   onContextClick?:MouseEventHandler
-  className?: any
+  className?: string
 }
 
 const AlbumItem = ({ onContextClick, album, onClick, onTitleClick, className }: AlbumItemPropsType): React.ReactElement => {
@@ -66,7 +65,7 @@ const AlbumItem = ({ onContextClick, album, onClick, onTitleClick, className }: 
         }
       }}>
         {
-          album?.cover ? <img src={getImageUrl(album.cover)} className={classes.cover} />
+          album?.cover ? <img src={getImageUrl(album.cover)} className={classes.cover} alt={album.name} />
             : <div className={classes.noCover}><MusicNoteIcon className={classes.noCoverIcon} /></div>
         }
       </ButtonBase>

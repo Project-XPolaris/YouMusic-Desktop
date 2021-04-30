@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
-import useStyles from './style';
-import ArtistPickView from '../ArtistPickView';
-import { useArtistPickController } from '../ArtistPickView/hook';
+import React, { ReactElement } from 'react'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core'
+import useStyles from './style'
+import ArtistPickView from '../ArtistPickView'
+import { useArtistPickController } from '../ArtistPickView/hook'
 
 export interface ArtistListEditDialogPropsType {
   open?: boolean

@@ -4,10 +4,9 @@ import theme from '../../theme'
 import useLayoutModel from '../../models/layout'
 import { getQueryParamsFromSearch } from '../../utils/url'
 import { useHistory } from 'react-router-dom'
-import useAlbumListModel from './model'
+import useArtistListModel from './model'
 import GridContainer from '../../components/MusicList'
-import AlbumItem from '../../components/AlbumItem'
-import usePlayerModel from '../../models/player'
+import ArtistItem from '../../components/ArtistItem'
 
 const useStyles = makeStyles({
   main: {
@@ -22,37 +21,35 @@ const useStyles = makeStyles({
   }
 })
 
-const AlbumListPage = ():ReactElement => {
+const ArtistListPage = ():ReactElement => {
   const classes = useStyles()
   const history = useHistory()
-  const albumListModel = useAlbumListModel()
+  const artistListModel = useArtistListModel()
   const layoutModel = useLayoutModel()
-  const playModel = usePlayerModel()
-  const { artist, search } = getQueryParamsFromSearch(history.location.search)
+  const { search } = getQueryParamsFromSearch(history.location.search)
   useEffect(() => {
     layoutModel.setNavIcon('Back')
-    albumListModel.loadData({ artist, search })
+    artistListModel.loadData({ search })
   })
   return (
     <div className={classes.main}>
       <GridContainer
-        onPageChange={(page) => albumListModel.loadData({ page, artist, search })}
-        total={albumListModel.total}
-        source={albumListModel.albumList}
+        onPageChange={(page) => artistListModel.loadData({ page, search })}
+        total={artistListModel.total}
+        source={artistListModel.artistList}
         itemClassName={classes.item}
         containerProps={{
           spacing: 2
         }}
-        builder={(album) =>
-          <AlbumItem
-            album={album}
-            onClick={(album) => playModel.playAlbum(album.id)}
-            onTitleClick={() => { history.push(`album/${album.id}`) }}
+        builder={(artist) =>
+          <ArtistItem
+            artist={artist}
+            onClick={(artist) => history.push(`artist/${artist.id}`)}
           />
         }
-        getItemKey={album => album.id}
+        getItemKey={artist => artist.id}
       />
     </div>
   )
 }
-export default AlbumListPage
+export default ArtistListPage

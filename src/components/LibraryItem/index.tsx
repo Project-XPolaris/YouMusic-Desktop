@@ -1,7 +1,6 @@
 import React from 'react'
-import useStyles from './style'
 import { Avatar, Card, CardHeader, IconButton } from '@material-ui/core'
-import { Delete, Folder, MoreVert, Sync } from '@material-ui/icons';
+import { Delete, Folder, Sync } from '@material-ui/icons'
 import { Library } from '../../api/library'
 
 export interface LibraryItemPropsType {
@@ -10,8 +9,7 @@ export interface LibraryItemPropsType {
   onDelete:() => void
 }
 
-const LibraryItem = ({ library,onScan,onDelete }: LibraryItemPropsType):React.ReactElement => {
-  const classes = useStyles()
+const LibraryItem = ({ library, onScan, onDelete }: LibraryItemPropsType):React.ReactElement => {
   return (
     <Card>
       <CardHeader

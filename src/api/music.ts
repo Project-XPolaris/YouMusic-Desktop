@@ -1,4 +1,4 @@
-import { ListResponseContainer } from './base'
+import { BaseResponse, ListResponseContainer } from './base'
 import { Album } from './album'
 import { Artist } from './artist'
 import apiRequest from '../utils/request'
@@ -13,7 +13,7 @@ export interface Music {
   artist: Artist[]
 }
 
-export const fetchMusicList = async ({ page = 1, pageSize = 20, ...other }): Promise<ListResponseContainer<Music>> => {
+export const fetchMusicList = async ({ page = 1, pageSize = 20, ...other }:{page?:number, pageSize?:number, search?:string, album?:string }): Promise<ListResponseContainer<Music>> => {
   return apiRequest.get(ApplicationConfig.apiPaths.musicList, {
     params: {
       page,
@@ -35,7 +35,7 @@ export const updateMusicInfo = async (
     data
   })
 }
-export const uploadMusicCover = async (id:number, file:File) => {
+export const uploadMusicCover = async (id:number, file:File):Promise<BaseResponse> => {
   const form = new FormData()
   form.append('file', file)
   return await apiRequest.post(`/music/${id}/cover`, {

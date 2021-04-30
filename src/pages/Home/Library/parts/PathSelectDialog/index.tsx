@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import useStyles from './style'
 import {
   Avatar,
@@ -67,7 +67,7 @@ const PathSelectDialog = ({ open = false, onCancel, onOk }: PathSelectDialogProp
           <InputBase
             className={classes.pathInput}
             value={pathInput}
-            onChange={(e:any) => setPathInput(e.target.value)}
+            onChange={(e:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setPathInput(e.target.value)}
           />
           <Button
             color='secondary'

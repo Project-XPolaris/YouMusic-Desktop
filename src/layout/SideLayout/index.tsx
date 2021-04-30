@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import theme from '../../theme'
 
@@ -40,7 +40,7 @@ const useStyles = makeStyles({
 })
 
 interface SideLayoutPropsType {
-  children?:any
+  children?:React.ReactNode
   side:React.ReactElement
 }
 const SideLayout = ({ children, side }: SideLayoutPropsType):React.ReactElement => {

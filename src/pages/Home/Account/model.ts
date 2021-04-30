@@ -15,7 +15,7 @@ const AccountModel = () => {
     await unlinkSpotify()
     await refresh()
   }
-  ipcRenderer.on(Channels.RefreshSpotifyAuth,() => {
+  ipcRenderer.on(Channels.RefreshSpotifyAuth, () => {
     refresh()
   })
   return {

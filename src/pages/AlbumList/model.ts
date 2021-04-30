@@ -5,8 +5,8 @@ import { Album, fetchAlbumList } from '../../api/album'
 const AlbumListModel = () => {
   const [albumList, setAlbumList] = useState<Album[]>([])
   const [total, setTotal] = useState(0)
-  const loadData = async (artistId:string, { page = 1, pageSize = 20 }) => {
-    const albumResponse = await fetchAlbumList({ artist: artistId, pageSize, page })
+  const loadData = async ({ page = 1, pageSize = 20, artist, search }:{ page?:number, pageSize?:number, artist?:string, search?:string }) => {
+    const albumResponse = await fetchAlbumList({ artist, pageSize, page, search })
     setTotal(albumResponse.count)
     setAlbumList(albumResponse.data)
   }

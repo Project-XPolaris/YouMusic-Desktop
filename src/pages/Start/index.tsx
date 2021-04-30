@@ -50,32 +50,15 @@ const useStyles = makeStyles(theme => ({
 
 }))
 
-interface StartPagePropsType {
-
-}
-
-const StartPage = ({}: StartPagePropsType) : ReactElement => {
+const StartPage = () : ReactElement => {
   const classes = useStyles()
   const history = useHistory()
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  const { enqueueSnackbar } = useSnackbar()
   const [inputAPIURL, setInputAPIURL] = useState<string | undefined>()
   const [inputUsername, setInputUsername] = useState<string | undefined>()
   const [inputPassword, setInputPassword] = useState<string | undefined>()
   const [tabIndex, setTabIndex] = useState<number>(0)
   const refresh = useUpdate()
-  const apply = () => {
-    if (inputAPIURL === undefined) {
-      return
-    }
-    localStorage.setItem(ApplicationConfig.keys.store.apiUrl, inputAPIURL)
-    history.replace('/')
-  }
-  const check = async () => {
-    const apiUrl = localStorage.getItem(ApplicationConfig.keys.store.apiUrl)
-    if (apiUrl !== null) {
-      history.replace('/home')
-    }
-  }
   const loginHandler = async () => {
     if (!inputAPIURL) {
       return

@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Typography } from '@material-ui/core'
 import useStyles from './style'
 import clsx from 'clsx'
 
 export interface CollectionPropsType {
   title: string
-  children: any
-  className?: any
+  children: ReactNode
+  className?: string
 }
 
 const Collection = ({ title, children, className }: CollectionPropsType): React.ReactElement => {

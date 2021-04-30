@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
         }
       },
       '& .MuiListItem-button.Mui-selected:hover': {
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: theme.palette.primary.main
       },
       '& .Mui-focusVisible': {
         backgroundColor: theme.palette.primary.dark

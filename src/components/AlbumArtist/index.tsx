@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 
 interface AlbumArtistItemPropsType {
   artist:Artist
-  className?: any
+  className?: string
   onClick?: () => void
 }
 const AlbumArtistItem = ({ artist, className, onClick }: AlbumArtistItemPropsType):React.ReactElement => {

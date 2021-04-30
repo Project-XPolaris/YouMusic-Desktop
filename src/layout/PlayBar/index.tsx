@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { SyntheticEvent, useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import theme from '../../theme'
 import { IconButton, LinearProgress, Slider, Typography, withStyles } from '@material-ui/core'
@@ -14,7 +14,7 @@ import { getMusicAlbumCoverUrl, getMusicArtistString, getPlayerUrl } from '../..
 import { playTimeText } from '../../utils/time'
 import useLayoutModel from '../../models/layout'
 import { VolumeDown } from '@material-ui/icons'
-import { useLocalStorageState, useUpdate } from 'ahooks'
+import { useLocalStorageState } from 'ahooks'
 
 const useStyles = makeStyles({
   main: {
@@ -134,12 +134,10 @@ const PlayBar = (): React.ReactElement => {
   const layoutModel = useLayoutModel()
   const currentMusic = playerModel.getCurrentPlay()
   const [saveVolume, setSaveVolume] = useLocalStorageState('saveVolume', 0)
-  const update = useUpdate()
   const {
     togglePlayPause,
     playing,
     volume,
-    stopped,
     ended,
     stop,
     load,
@@ -160,9 +158,6 @@ const PlayBar = (): React.ReactElement => {
     }
   }, [currentMusic])
   useEffect(() => {
-
-  }, [])
-  useEffect(() => {
     volume(saveVolume / 100)
   }, [playerModel.getCurrentPlay()])
   useEffect(() => {
@@ -175,10 +170,16 @@ const PlayBar = (): React.ReactElement => {
     duration,
     seek
   } = useAudioPosition({ highRefreshRate: true })
-  const onSliderChange = (_: any, value:any) => {
+  const onSliderChange = (_: SyntheticEvent, value:number | number[]) => {
+    if (Array.isArray(value)) {
+      return
+    }
     setSliderValue(value)
   }
-  const onSliderCommit = (_: any, value:any) => {
+  const onSliderCommit = (_: SyntheticEvent, value:number | number[]) => {
+    if (Array.isArray(value)) {
+      return
+    }
     setSliderValue(-1)
     seek(duration * value / 100)
   }
@@ -204,8 +205,11 @@ const PlayBar = (): React.ReactElement => {
         <div className={classes.info}>
           {currentMusic &&
           <>
-            <img src={getMusicAlbumCoverUrl(currentMusic)}
-              className={classes.cover} />
+            <img
+              src={getMusicAlbumCoverUrl(currentMusic)}
+              className={classes.cover}
+              alt={currentMusic.title}
+            />
             <div>
               <div className={classes.title}>
                 {currentMusic.title}
@@ -261,7 +265,13 @@ const PlayBar = (): React.ReactElement => {
             className={classes.volumeSlider}
             max={100}
             min={0}
-            value={saveVolume} onChange={(_, value:any) => setSaveVolume(value)}
+            value={saveVolume}
+            onChange={(_, value:number | number[]) => {
+              if (Array.isArray(value)) {
+                return
+              }
+              setSaveVolume(value)
+            }}
           />
           <IconButton>
             <SyncIcon />

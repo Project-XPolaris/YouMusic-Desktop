@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import theme from '../../theme'
 import { Music } from '../../api/music'
 import { getMusicAlbumCoverUrl, getMusicArtistString } from '../../utils/music'
-import TouchRipple from '@material-ui/core/ButtonBase/TouchRipple'
 import { ButtonBase } from '@material-ui/core'
 import MusicNoteIcon from '@material-ui/icons/MusicNote'
 
@@ -61,7 +60,7 @@ const MusicItem = ({
     <div className={classes.main}>
       <ButtonBase>
         {
-          music.album?.cover ? <img src={getMusicAlbumCoverUrl(music)} className={classes.cover} onClick={() => onClick(music)} /> :<div className={classes.noCover}><MusicNoteIcon className={classes.noCoverIcon} /></div>
+          music.album?.cover ? <img src={getMusicAlbumCoverUrl(music)} className={classes.cover} onClick={() => onClick(music)} alt={music.title} /> : <div className={classes.noCover}><MusicNoteIcon className={classes.noCoverIcon} /></div>
         }
       </ButtonBase>
       <div className={classes.title}>

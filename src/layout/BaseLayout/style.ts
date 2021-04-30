@@ -55,6 +55,9 @@ const useStyles = makeStyles((theme) => ({
   },
   menuIcon: {
     marginRight: theme.spacing(1)
+  },
+  searchBar: {
+    marginRight: theme.spacing(4)
   }
 }))
 export default useStyles

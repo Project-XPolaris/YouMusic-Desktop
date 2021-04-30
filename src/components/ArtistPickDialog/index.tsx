@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { Avatar, Dialog, InputBase, List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
 import useStyles from './style'
 import { useDebounce } from 'ahooks'
@@ -10,7 +10,7 @@ export interface ArtistPickDialogPropsType {
     onPick:(artist:Artist) => void
 }
 
-const ArtistPickDialog = ({ onPick, open = false }: ArtistPickDialogPropsType) => {
+const ArtistPickDialog = ({ onPick, open = false }: ArtistPickDialogPropsType):ReactElement => {
   const classes = useStyles()
   const [key, setKey] = useState<string | undefined>()
   const searchKey = useDebounce(key, { wait: 500 })

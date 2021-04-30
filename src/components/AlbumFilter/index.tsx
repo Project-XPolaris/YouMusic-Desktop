@@ -3,15 +3,33 @@ import useStyles from './style'
 import clsx from 'clsx'
 import { IconButton } from '@material-ui/core'
 import { Sort } from '@material-ui/icons'
-import OrderPopup from './components/OrderPopup'
+import ChipPickPopup from '../ChipPickPopup'
 export type AlbumFilterData = {
   order:string
 }
 export interface AlbumFilterPropsType {
-  className?: any
+  className?: string
   filter:AlbumFilterData,
   onChange:(newValue:AlbumFilterData) => void
 }
+const orderFilterItem = [
+  {
+    name: 'id asc',
+    value: 'id'
+  },
+  {
+    name: 'id desc',
+    value: '-id'
+  },
+  {
+    name: 'name asc',
+    value: 'name'
+  },
+  {
+    name: 'name desc',
+    value: '-name'
+  }
+]
 const AlbumFilter = ({ className, filter, onChange }: AlbumFilterPropsType): ReactElement => {
   const classes = useStyles()
   const [orderAnchorEl, setOrderAnchorEl] = React.useState<HTMLButtonElement | null>(null)
@@ -20,9 +38,11 @@ const AlbumFilter = ({ className, filter, onChange }: AlbumFilterPropsType): Rea
       <IconButton size={'small'} onClick={(e) => setOrderAnchorEl(e.currentTarget)}>
         <Sort />
       </IconButton>
-      <OrderPopup
+      <ChipPickPopup
+        title={'orders'}
         anchor={orderAnchorEl}
         onClose={() => setOrderAnchorEl(null)}
+        items={orderFilterItem}
         value={filter.order}
         onChange={(newOrder) => {
           onChange({

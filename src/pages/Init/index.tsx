@@ -7,11 +7,7 @@ const useStyles = makeStyles({
   main: {}
 })
 
-interface InitPagePropsType {
-
-}
-
-const InitPage = ({}: InitPagePropsType):ReactElement => {
+const InitPage = ():ReactElement => {
   const classes = useStyles()
   const history = useHistory()
   const toStartPage = () => {

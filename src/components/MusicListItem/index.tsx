@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react'
+import React, { MouseEventHandler, ReactElement } from 'react'
 import { ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
 import { Music } from '../../api/music'
 import { getMusicAlbumCoverUrl } from '../../utils/music'
@@ -8,11 +8,11 @@ import clsx from 'clsx'
 export interface MusicListItemPropsType {
   music: Music
   onClick: () => void
-  onContextMenu:MouseEventHandler
-  selected:any
+  onContextMenu?:MouseEventHandler
+  selected:boolean
 }
 
-const MusicListItem = ({ music, onClick, onContextMenu, selected }: MusicListItemPropsType) => {
+const MusicListItem = ({ music, onClick, onContextMenu, selected }: MusicListItemPropsType):ReactElement => {
   const classes = useStyles()
   return (
     <ListItem
@@ -22,7 +22,7 @@ const MusicListItem = ({ music, onClick, onContextMenu, selected }: MusicListIte
       onContextMenu={onContextMenu}
     >
       <ListItemAvatar>
-        <img src={getMusicAlbumCoverUrl(music)} className={classes.cover} />
+        <img src={getMusicAlbumCoverUrl(music)} className={classes.cover} alt={music.title} />
       </ListItemAvatar>
       <ListItemText
         primary={music.title}

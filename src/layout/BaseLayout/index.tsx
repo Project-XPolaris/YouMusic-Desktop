@@ -1,12 +1,12 @@
 import * as React from 'react'
-import { AppBar, Divider, IconButton, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core'
+import { AppBar, IconButton, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core'
 import useStyles from './style'
 import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 import PlaylistDrawer from '../Playlist'
 import { HomeLayout } from '../HomeLayout'
 import AlbumPage from '../../pages/Album'
 import useLayoutModel from '../../models/layout'
-import { ArrowBack, ExitToApp, Link, MusicNote } from '@material-ui/icons'
+import { ArrowBack, ExitToApp, MusicNote } from '@material-ui/icons'
 import ArtistPage from '../../pages/Artist'
 import MusicListPage from '../../pages/MusicList'
 import AlbumListPage from '../../pages/AlbumList'
@@ -17,20 +17,16 @@ import { electronApp, electronRemote } from '../../remote'
 import PlayBarLayout from '../PlayBar/layout'
 import StartPage from '../../pages/Start'
 import { ApplicationConfig } from '../../config'
-import { ipcRenderer } from 'electron'
 import MusicEditDrawer from '../../components/MusicEditDrawer'
-import ArtistPickDialog from '../../components/ArtistPickDialog'
-import ArtistListEditDialog from '../../components/ArtistListEditDialog';
-import AlbumEditDrawer from '../../components/AlbumEditDrawer';
-import ArtistEditDrawer from '../../components/AlbumEditDrawer';
-const BaseLayout = ():React.ReactElement => {
+import AlbumEditDrawer from '../../components/AlbumEditDrawer'
+import ArtistEditDrawer from '../../components/ArtistEditDrawer'
+import SearchBar from './parts/Search'
+import ArtistListPage from '../../pages/ArtistList'
+
+const BaseLayout = (): React.ReactElement => {
   const classes = useStyles()
   const layoutModel = useLayoutModel()
   const [linkMenuAnchor, setLinkMenuAnchor] = React.useState<null | HTMLElement>(null)
-
-  const handleLinkClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setLinkMenuAnchor(event.currentTarget)
-  }
 
   const handleLinkClose = () => {
     setLinkMenuAnchor(null)
@@ -40,10 +36,10 @@ const BaseLayout = ():React.ReactElement => {
       case 'Menu':
         return (
           <IconButton
-            edge="start"
+            edge='start'
             className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
+            color='inherit'
+            aria-label='menu'
           >
             <MusicNote />
           </IconButton>
@@ -51,10 +47,10 @@ const BaseLayout = ():React.ReactElement => {
       case 'Back':
         return (
           <IconButton
-            edge="start"
+            edge='start'
             className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
+            color='inherit'
+            aria-label='menu'
             onClick={() => history.back()}
           >
             <ArrowBack />
@@ -78,92 +74,92 @@ const BaseLayout = ():React.ReactElement => {
   }
   return (
     <>
-      <Menu
-        id="link-menu"
-        anchorEl={linkMenuAnchor}
-        keepMounted
-        open={Boolean(linkMenuAnchor)}
-        onClose={handleLinkClose}
-      >
-        <MenuItem
-          onClick={() => {
-            handleLinkClose()
-            localStorage.removeItem(ApplicationConfig.keys.store.apiUrl)
-            localStorage.removeItem(ApplicationConfig.keys.store.token)
-            onClose()
-          }}
+      <Router>
+        <Menu
+          id='link-menu'
+          anchorEl={linkMenuAnchor}
+          keepMounted
+          open={Boolean(linkMenuAnchor)}
+          onClose={handleLinkClose}
         >
-          <ExitToApp className={classes.menuIcon} />
+          <MenuItem
+            onClick={() => {
+              handleLinkClose()
+              localStorage.removeItem(ApplicationConfig.keys.store.apiUrl)
+              localStorage.removeItem(ApplicationConfig.keys.store.token)
+              onClose()
+            }}
+          >
+            <ExitToApp className={classes.menuIcon} />
           Disconnect service (restart)
-        </MenuItem>
-      </Menu>
-      <PlaylistDrawer />
-      <MusicEditDrawer />
-      <AlbumEditDrawer />
-      <ArtistEditDrawer />
-      <div>
-        <AppBar position="fixed" elevation={0} className={classes.appbar}>
-          <Toolbar variant="dense" className={classes.toolbar}>
-            <NavIcon />
-            <Typography variant="h6" className={classes.title}>
-            YouMusic
-            </Typography>
-            <IconButton className={classes.action} size='small' onClick={handleLinkClick}>
-              <Link />
-            </IconButton>
-            <IconButton size='small' className={classes.windowAction} onClick={onMin}>
-              <MinimizeSharpIcon className={classes.actionIcon} />
-            </IconButton>
-            <IconButton size='small' className={classes.windowAction} onClick={onMax}>
-              <CheckBoxOutlineBlankSharpIcon className={classes.actionIcon} />
-            </IconButton>
-            <IconButton size='small' className={classes.windowAction} onClick={onClose}>
-              <ClearSharpIcon className={classes.actionIcon} />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <div className={classes.main}>
-          <Router>
+          </MenuItem>
+        </Menu>
+        <PlaylistDrawer />
+        <MusicEditDrawer />
+        <AlbumEditDrawer />
+        <ArtistEditDrawer />
+        <div>
+          <AppBar position='fixed' elevation={0} className={classes.appbar}>
+            <Toolbar variant='dense' className={classes.toolbar}>
+              <NavIcon />
+              <Typography variant='h6' className={classes.title}>
+              YouMusic
+              </Typography>
+              <SearchBar className={classes.searchBar} />
+              <IconButton size='small' className={classes.windowAction} onClick={onMin}>
+                <MinimizeSharpIcon className={classes.actionIcon} />
+              </IconButton>
+              <IconButton size='small' className={classes.windowAction} onClick={onMax}>
+                <CheckBoxOutlineBlankSharpIcon className={classes.actionIcon} />
+              </IconButton>
+              <IconButton size='small' className={classes.windowAction} onClick={onClose}>
+                <ClearSharpIcon className={classes.actionIcon} />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
+          <div className={classes.main}>
+
             <Switch>
-              <Route path="/home">
+              <Route path='/home'>
                 <PlayBarLayout className={classes.content}>
                   <HomeLayout />
                 </PlayBarLayout>
               </Route>
-              <Route path="/album/:albumId">
+              <Route path='/album/:albumId'>
                 <PlayBarLayout className={classes.content}>
                   <AlbumPage />
                 </PlayBarLayout>
               </Route>
-              <Route path="/artist/:artistId">
+              <Route path='/artist/:artistId'>
                 <PlayBarLayout className={classes.content}>
                   <ArtistPage />
                 </PlayBarLayout>
               </Route>
-              <Route path="/musiclist">
+              <Route path='/musiclist'>
                 <PlayBarLayout className={classes.content}>
                   <MusicListPage />
                 </PlayBarLayout>
               </Route>
-              <Route path="/albumlist">
+              <Route path='/albumlist'>
                 <PlayBarLayout className={classes.content}>
                   <AlbumListPage />
                 </PlayBarLayout>
               </Route>
-              <Route path="/">
+              <Route path='/artistlist'>
+                <PlayBarLayout className={classes.content}>
+                  <ArtistListPage />
+                </PlayBarLayout>
+              </Route>
+              <Route path='/'>
                 <div className={classes.content}>
                   <StartPage />
                 </div>
               </Route>
             </Switch>
-          </Router>
+
+          </div>
         </div>
-        {/* <div className={classes.playerBar}> */}
-        {/*  <AudioPlayerProvider> */}
-        {/*    <PlayBar /> */}
-        {/*  </AudioPlayerProvider> */}
-        {/* </div> */}
-      </div>
+      </Router>
     </>
   )
 }

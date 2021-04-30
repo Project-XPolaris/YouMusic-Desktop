@@ -1,6 +1,6 @@
-import { ListResponseContainer } from './base';
-import apiRequest from '../utils/request';
-import { ApplicationConfig } from '../config';
+import { BaseResponse, ListResponseContainer } from './base'
+import apiRequest from '../utils/request'
+import { ApplicationConfig } from '../config'
 
 export interface Artist {
   id:string
@@ -8,7 +8,7 @@ export interface Artist {
   avatar:string
 }
 
-export const fetchArtistList = async ({ page = 1, pageSize = 20, ...other }):Promise<ListResponseContainer<Artist>> => {
+export const fetchArtistList = async ({ page = 1, pageSize = 20, ...other }:{page?:number, pageSize?:number, search?:string}):Promise<ListResponseContainer<Artist>> => {
   return apiRequest.get(ApplicationConfig.apiPaths.artistList, {
     params: {
       page,
@@ -33,7 +33,7 @@ export const updateArtistInfo = async (
   })
 }
 
-export const uploadArtistCover = async (id:number, file:File) => {
+export const uploadArtistCover = async (id:number, file:File):Promise<BaseResponse> => {
   const form = new FormData()
   form.append('file', file)
   return await apiRequest.post(`/artist/${id}/cover`, {

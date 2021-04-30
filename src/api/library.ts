@@ -1,4 +1,4 @@
-import { ListResponseContainer } from './base'
+import { BaseResponse, ListResponseContainer } from './base'
 import apiRequest from '../utils/request'
 import { ApplicationConfig } from '../config'
 
@@ -7,7 +7,7 @@ export interface Library {
   name:string
   path:string
 }
-export const fetchLibraryList = async ({ page = 1, pageSize = 20, ...other }):Promise<ListResponseContainer<Library>> => {
+export const fetchLibraryList = async ({ page = 1, pageSize = 20, ...other }:{page?:number, pageSize?:number}):Promise<ListResponseContainer<Library>> => {
   return apiRequest.get(ApplicationConfig.apiPaths.libraryList, {
     params: {
       page,
@@ -17,7 +17,7 @@ export const fetchLibraryList = async ({ page = 1, pageSize = 20, ...other }):Pr
   })
 }
 
-export const createLibrary = async (libraryPath:string) : Promise<any> => {
+export const createLibrary = async (libraryPath:string) : Promise<Library> => {
   return apiRequest.post(ApplicationConfig.apiPaths.libraryList, {
     data: {
       libraryPath
@@ -25,10 +25,10 @@ export const createLibrary = async (libraryPath:string) : Promise<any> => {
   })
 }
 
-export const scanLibrary = async (libraryId:number | string) : Promise<any> => {
+export const scanLibrary = async (libraryId:number | string) : Promise<BaseResponse> => {
   return apiRequest.post(ApplicationConfig.apiPaths.libraryScan.replace(':id', String(libraryId)), {})
 }
 
-export const deleteLibrary = async (libraryId:number | string) : Promise<any> => {
+export const deleteLibrary = async (libraryId:number | string) : Promise<BaseResponse> => {
   return apiRequest.delete(ApplicationConfig.apiPaths.libraryObject.replace(':id', String(libraryId)), {})
 }

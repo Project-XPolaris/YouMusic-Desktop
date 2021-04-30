@@ -1,5 +1,4 @@
 import React from 'react'
-import { Album } from '../../api/album'
 import { Artist } from '../../api/artist'
 import Collection from '../Collection'
 import useStyles from '../AlbumCollection/style'
@@ -9,7 +8,7 @@ import AlbumArtistItem from '../AlbumArtist'
 export interface ArtistCollectionPropsType {
   title: string
   artistList: Artist[]
-  className: any
+  className?: string
   onItemClick?:(artist:Artist) => void
 }
 

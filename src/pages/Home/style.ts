@@ -1,4 +1,3 @@
-import { createStyles } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
@@ -8,9 +7,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     padding: theme.spacing(2),
     flexDirection: 'column',
-    paddingBottom: theme.spacing(12),
+    paddingBottom: theme.spacing(12)
   },
-  collection : {
+  collection: {
     color: theme.palette.primary.contrastText,
     marginBottom: theme.spacing(4)
   }

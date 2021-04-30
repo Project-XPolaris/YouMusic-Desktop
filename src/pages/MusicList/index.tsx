@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { getQueryParamsFromSearch } from '../../utils/url'
-import GridContainer from '../../components/MusicList'
 import useMusicListModel from './model'
 import theme from '../../theme'
-import MusicItem from '../../components/MusicItem'
 import usePlayerModel from '../../models/player'
 import useLayoutModel from '../../models/layout'
+import MusicListItem from '../../components/MusicListItem'
+import { List, Pagination } from '@material-ui/core'
 
 const useStyles = makeStyles({
   main: {
@@ -26,25 +26,32 @@ const MusicListPage = ():React.ReactElement => {
   const history = useHistory()
   const musicListModel = useMusicListModel()
   const layoutModel = useLayoutModel()
-  const { artist } = getQueryParamsFromSearch(history.location.search)
+  const { artist, search } = getQueryParamsFromSearch(history.location.search)
   useEffect(() => {
     layoutModel.setNavIcon('Back')
-    musicListModel.loadData(artist, {})
+    musicListModel.loadData({ artist, search })
   })
   const playerModel = usePlayerModel()
 
   return (
     <div className={classes.main}>
-      <GridContainer
-        onPageChange={(page) => musicListModel.loadData(artist, { page })}
-        total={musicListModel.total}
-        source={musicListModel.musicList}
-        itemClassName={classes.item}
-        containerProps={{
-          spacing: 2
-        }}
-        builder={(music) => <MusicItem music={music} onClick={() => playerModel.playMusic(music)}/>}
-        getItemKey={music => music.id}
+      <List>
+        {musicListModel.musicList.map((music) => {
+          return (
+            <MusicListItem
+              music={music}
+              key={music.id}
+              onClick={() => {
+                playerModel.playMusic(music)
+              }}
+              selected={false}
+            />
+          )
+        })}
+      </List>
+      <Pagination
+        count={Math.floor(musicListModel.total / 55)}
+        onChange={(event, page) => musicListModel.loadData({ page, artist, search })}
       />
     </div>
   )

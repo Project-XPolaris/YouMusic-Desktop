@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import theme from '../../theme'
 import {
@@ -11,7 +11,7 @@ import {
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
-  Typography,
+  Typography
 } from '@material-ui/core'
 import { PlayArrow, PlaylistAdd } from '@material-ui/icons'
 import useLayoutModel from '../../models/layout'
@@ -90,11 +90,7 @@ const useStyles = makeStyles({
   }
 })
 
-interface AlbumPagePropsType {
-
-}
-
-const AlbumPage = ({}: AlbumPagePropsType) => {
+const AlbumPage = ():ReactElement => {
   const { albumId } = useParams()
   const playerModel = usePlayerModel()
   const classes = useStyles()
@@ -127,7 +123,7 @@ const AlbumPage = ({}: AlbumPagePropsType) => {
   const side = (
     <>
       {
-        albumModel.album ? <img src={getImageUrl(albumModel.album.cover)} className={classes.cover}/> : <NoCover />
+        albumModel.album ? <img src={getImageUrl(albumModel.album.cover)} className={classes.cover} alt={albumModel.album.name}/> : <NoCover />
       }
       <div className={classes.actionContent}>
         <Button

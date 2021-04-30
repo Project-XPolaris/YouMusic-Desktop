@@ -8,8 +8,9 @@ import MusicListItem from '../../../components/MusicListItem'
 import { useContextMenu } from '../../../hooks/context'
 import { Music } from '../../../api/music'
 import useEditorModel from '../../../models/editor'
+import { ReactElement } from 'react'
 
-const MusicListPage = ({}) => {
+const MusicListPage = ():ReactElement => {
   const classes = useStyles()
   const musicModel = useMusicListModel()
   const playerModel = usePlayerModel()
@@ -55,6 +56,15 @@ const MusicListPage = ({}) => {
             }
           }}
         >Select</MenuItem>
+        {
+          musicModel.selectMode &&
+          <MenuItem
+            onClick={() => {
+              contextMenuController.close()
+              musicModel.selectNone()
+            }}
+          >Unselect All</MenuItem>
+        }
       </Menu>
       <div className={classes.toolbar}>
 

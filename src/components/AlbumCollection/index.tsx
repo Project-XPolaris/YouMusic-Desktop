@@ -8,7 +8,7 @@ import clsx from 'clsx'
 export interface AlbumCollectionPropsType {
   title: string
   albums: Album[]
-  className: any
+  className?: string
   onItemClick?:(album:Album) => void
   onTitleClick?:(album:Album) => void
 }

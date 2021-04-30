@@ -1,32 +1,22 @@
-import React, { ReactElement } from 'react'
+import React from 'react'
 import { Chip, Paper, Popover } from '@material-ui/core'
 import useStyles from './style'
 
-export interface OrderPopupPropsType {
-  anchor:any
-  onClose:() => void
-  value:string
-  onChange:(newValue:string) => void
+export interface PickUpChip {
+  name: string,
+  value: any
 }
-const orderFilterItem = [
-  {
-    name: 'id asc',
-    value: 'id'
-  },
-  {
-    name: 'id desc',
-    value: '-id'
-  },
-  {
-    name: 'name asc',
-    value: 'name'
-  },
-  {
-    name: 'name desc',
-    value: '-name'
-  }
-]
-const OrderPopup = ({ anchor, onClose, onChange, value }: OrderPopupPropsType): ReactElement => {
+
+export interface ChipPickPopupPropsType {
+  anchor: any
+  onClose: () => void
+  items: PickUpChip[]
+  value: any
+  onChange: (value: any) => void
+  title: string
+}
+
+const ChipPickPopup = ({ anchor, onClose, items, value, onChange, title }: ChipPickPopupPropsType) => {
   const classes = useStyles()
   return (
     <Popover
@@ -36,11 +26,11 @@ const OrderPopup = ({ anchor, onClose, onChange, value }: OrderPopupPropsType): 
     >
       <Paper className={classes.root}>
         <div className={classes.title}>
-          Orders
+          {title}
         </div>
         <div className={classes.container}>
           {
-            orderFilterItem.map(item => {
+            items.map((item: PickUpChip) => {
               return (
                 <Chip
                   label={item.name}
@@ -59,4 +49,4 @@ const OrderPopup = ({ anchor, onClose, onChange, value }: OrderPopupPropsType): 
   )
 }
 
-export default OrderPopup
+export default ChipPickPopup

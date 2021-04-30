@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import useStyles from './style'
 import LibraryItem from '../../../components/LibraryItem'
 import useLibraryListModel from './model'
@@ -7,11 +7,7 @@ import { Add } from '@material-ui/icons'
 import PathSelectDialog from './parts/PathSelectDialog'
 import useLayoutModel from '../../../models/layout'
 
-export interface LibraryPagePropsType {
-
-}
-
-const LibraryPage = ({}: LibraryPagePropsType) => {
+const LibraryPage = ():ReactElement => {
   const classes = useStyles()
   const model = useLibraryListModel()
   const layoutModel = useLayoutModel()

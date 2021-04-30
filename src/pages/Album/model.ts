@@ -1,5 +1,4 @@
-import { useDataPageLoader } from '../../hooks/loader'
-import { Album, fetchAlbumById, fetchAlbumList } from '../../api/album'
+import { Album, fetchAlbumById } from '../../api/album'
 import { createModel } from 'hox'
 import { useState } from 'react'
 
@@ -11,7 +10,7 @@ const AlbumModel = () => {
     setAlbum(response)
   }
   return {
-    album,loadData
+    album, loadData
   }
 }
 const useAlbumModel = createModel(AlbumModel)

@@ -5,9 +5,9 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
 
     },
-    item:{
+    item: {
       marginRight: theme.spacing(2)
-    },
+    }
   })
 )
 

@@ -1,17 +1,17 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import {
-  Avatar, Checkbox,
+  Avatar,
   Drawer,
   List,
   ListItem,
   ListItemAvatar,
   ListItemSecondaryAction,
-  ListItemText, Typography
+  ListItemText,
+  Typography
 } from '@material-ui/core'
 import useLayoutModel from '../../models/layout'
 import theme from '../../theme'
-import { ApplicationConfig } from '../../config'
 import usePlayerModel from '../../models/player'
 import { getMusicAlbumCoverUrl, getMusicArtistString } from '../../utils/music'
 
@@ -47,14 +47,10 @@ const useStyles = makeStyles({
     width: '100%',
     zIndex: 100,
     backgroundColor: '#202020'
-  },
+  }
 })
 
-interface PlaylistDrawerPropsType {
-
-}
-
-export default function PlaylistDrawer ({}: PlaylistDrawerPropsType) {
+const PlaylistDrawer = (): ReactElement => {
   const classes = useStyles()
   const layoutModel = useLayoutModel()
   const playerModel = usePlayerModel()
@@ -98,3 +94,4 @@ export default function PlaylistDrawer ({}: PlaylistDrawerPropsType) {
     </Drawer>
   )
 }
+export default PlaylistDrawer

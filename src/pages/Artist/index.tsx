@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import SideLayout from '../../layout/SideLayout'
 import useLayoutModel from '../../models/layout'
 import { Person } from '@material-ui/icons'
-import { Button, Grid, Link, Typography } from '@material-ui/core'
+import { Grid, Link, Typography } from '@material-ui/core'
 import { useHistory, useParams } from 'react-router-dom'
 import useArtistModel from './model'
 import MusicItem from '../../components/MusicItem'
@@ -11,11 +11,7 @@ import AlbumItem from '../../components/AlbumItem'
 import { getImageUrl } from '../../utils/image'
 import useStyles from './style'
 
-interface ArtistPagePropsType {
-
-}
-
-const ArtistPage = ({}: ArtistPagePropsType) => {
+const ArtistPage = ():ReactElement => {
   const { artistId } = useParams()
   const classes = useStyles()
   const layoutModel = useLayoutModel()
@@ -38,7 +34,7 @@ const ArtistPage = ({}: ArtistPagePropsType) => {
       <>
         {
           artistModel.artist?.avatar
-            ? <img src={getImageUrl(artistModel.artist.avatar)} className={classes.cover} />
+            ? <img src={getImageUrl(artistModel.artist.avatar)} className={classes.cover} alt={artistModel.artist.name} />
             : <NoCover />
         }
         <div className={classes.sideContent}>

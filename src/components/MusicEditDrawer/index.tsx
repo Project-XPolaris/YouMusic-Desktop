@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, ReactElement, useEffect, useState } from 'react'
 import { Button, Drawer, styled, TextField } from '@material-ui/core'
 import useStyles from './style'
 import { getMusicAlbumCoverUrl } from '../../utils/music'
@@ -11,11 +11,8 @@ import { useArtistPickController } from '../ArtistPickView/hook'
 const Input = styled('input')({
   display: 'none'
 })
-export interface MusicEditDrawerPropsType {
 
-}
-
-const MusicEditDrawer = ({}: MusicEditDrawerPropsType) => {
+const MusicEditDrawer = ():ReactElement => {
   const editor = useEditorModel()
   const classes = useStyles()
   const [inputTitle, setInputTitle] = useState<string | undefined>()
@@ -51,6 +48,7 @@ const MusicEditDrawer = ({}: MusicEditDrawerPropsType) => {
             }
           }
         }
+        return true
       }).length === editor.editMusic.length) {
         artistPickController.setSelected(flagMusicArtist.artist.map(it => it.name))
       } else {

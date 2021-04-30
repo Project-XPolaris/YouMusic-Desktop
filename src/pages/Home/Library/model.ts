@@ -1,7 +1,6 @@
 import { useDataPageLoader } from '../../../hooks/loader'
-import { fetchMusicList, Music } from '../../../api/music'
 import { createModel } from 'hox'
-import { createLibrary, deleteLibrary, fetchLibraryList, Library, scanLibrary } from '../../../api/library';
+import { createLibrary, deleteLibrary, fetchLibraryList, Library, scanLibrary } from '../../../api/library'
 
 const libraryListModel = () => {
   const { data, page, pageSize, total, loadData } = useDataPageLoader<Library>({ loader: fetchLibraryList, defaultPageSize: 20, defaultPage: 1 })

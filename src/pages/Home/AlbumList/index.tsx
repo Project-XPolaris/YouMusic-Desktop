@@ -1,16 +1,16 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { Grid, MenuItem, Pagination, Menu } from '@material-ui/core';
+import { Grid, MenuItem, Pagination, Menu } from '@material-ui/core'
 import useStyles from './style'
 import AlbumItem from '../../../components/AlbumItem'
 import useAlbumListModel from './model'
 import usePlayerModel from '../../../models/player'
 import { useHistory } from 'react-router-dom'
 import AlbumFilter, { AlbumFilterData } from '../../../components/AlbumFilter'
-import { useContextMenu } from '../../../hooks/context';
-import { Album } from '../../../api/album';
-import { useMount, useUnmount } from 'ahooks';
-import useEditorModel from '../../../models/editor';
+import { useContextMenu } from '../../../hooks/context'
+import { Album } from '../../../api/album'
+import { useMount, useUnmount } from 'ahooks'
+import useEditorModel from '../../../models/editor'
 
 const AlbumListPage = (): React.ReactElement => {
   const classes = useStyles()

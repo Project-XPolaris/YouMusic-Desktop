@@ -1,18 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import useStyles from './style'
-import { ExitToApp, Link, Person } from '@material-ui/icons'
-import { Avatar, ButtonBase, Paper, Typography } from '@material-ui/core'
+import { ExitToApp, Person } from '@material-ui/icons'
+import { Avatar, ButtonBase, Paper } from '@material-ui/core'
 import { ipcRenderer } from 'electron'
 import { ApplicationConfig } from '../../../config'
 import { electronApp } from '../../../remote'
 import SpotifyAccountCard from '../../../components/SpotifyAccountCard'
 import useAccountModel from './model'
 
-export interface AccountPagePropsType {
-
-}
-
-const AccountPage = ({}: AccountPagePropsType) => {
+const AccountPage = ():ReactElement => {
   const classes = useStyles()
   const accountModel = useAccountModel()
   useEffect(() => {

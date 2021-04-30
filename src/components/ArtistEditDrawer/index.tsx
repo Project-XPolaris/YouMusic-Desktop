@@ -1,53 +1,47 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, ReactElement, useEffect, useState } from 'react'
 import useEditorModel from '../../models/editor'
 import { Button, Drawer, styled, TextField } from '@material-ui/core'
 import { Photo, Save } from '@material-ui/icons'
-import { UpdateAlbumData, updateAlbumInfo, uploadAlbumCover } from '../../api/album'
 import { getImageUrl } from '../../utils/image'
 import useStyles from './style'
+import { UpdateArtistData, updateArtistInfo } from '../../api/artist'
 
 const Input = styled('input')({
   display: 'none'
 })
-export interface AlbumEditDrawerPropsType {
-
-}
-
-const AlbumEditDrawer = ({}: AlbumEditDrawerPropsType) => {
+const ArtistEditDrawer = ():ReactElement => {
   const editor = useEditorModel()
   const classes = useStyles()
-  const [inputName, setInputName] = useState<string | undefined>(editor.editAlbum?.name)
+  const [inputName, setInputName] = useState<string | undefined>(editor.editArtist?.name)
   useEffect(() => {
-    if (editor.editAlbum) {
-      setInputName(editor.editAlbum.name)
+    if (editor.editArtist) {
+      setInputName(editor.editArtist.name)
     }
-  }, [editor.isEditAlbumOpen])
+  }, [editor.isEditArtistOpen])
   const onUpdate = async () => {
-    if (!editor.editAlbum) {
+    if (!editor.editArtist) {
       return
     }
-    const updateData: UpdateAlbumData = {}
+    const updateData: UpdateArtistData = {}
     if (inputName) {
       updateData.name = inputName
     }
-    await updateAlbumInfo(Number(editor.editAlbum.id), updateData)
-    document.dispatchEvent((new CustomEvent('albumUpdate', {})))
-    editor.closeEditAlbum()
+    await updateArtistInfo(Number(editor.editArtist.id), updateData)
+    document.dispatchEvent((new CustomEvent('artistUpdate', {})))
+    editor.closeEditArtist()
   }
   const onCoverInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0 || !editor.editAlbum) {
+    if (!e.target.files || e.target.files.length === 0 || !editor.editArtist) {
       return
     }
-    const file = e.target.files[0]
-    await uploadAlbumCover(Number(editor.editAlbum.id), file)
-    document.dispatchEvent((new CustomEvent('albumUpdate', {})))
-    editor.closeEditAlbum()
+    document.dispatchEvent((new CustomEvent('artistUpdate', {})))
+    editor.closeEditArtist()
   }
   return (
-    <Drawer open={editor.isEditAlbumOpen} anchor={'right'} className={classes.root}
-      onClose={() => editor.closeEditAlbum()}>
+    <Drawer open={editor.isEditArtistOpen} anchor={'right'} className={classes.root}
+      onClose={() => editor.closeEditArtist()}>
       <div className={classes.content}>
-        <img src={editor.editAlbum ? getImageUrl(editor.editAlbum?.cover) : undefined} className={classes.cover} />
+        <img src={editor.editArtist ? getImageUrl(editor.editArtist?.avatar) : undefined} className={classes.cover} />
         <div className={classes.item}>
           <TextField
             variant={'outlined'}
@@ -86,4 +80,4 @@ const AlbumEditDrawer = ({}: AlbumEditDrawerPropsType) => {
   )
 }
 
-export default AlbumEditDrawer
+export default ArtistEditDrawer

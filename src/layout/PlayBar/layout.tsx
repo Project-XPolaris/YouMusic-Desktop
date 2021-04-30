@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, ReactNode } from 'react'
 import { AudioPlayerProvider } from 'react-use-audio-player'
 import PlayBar from './index'
 import { makeStyles } from '@material-ui/core/styles'
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   playerBar: {
     height: 72,
     width: '100vw',
@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0
   }
 }))
-const PlayBarLayout = ({ children, className }:{children?:any, className?:any}):ReactElement => {
+const PlayBarLayout = ({ children, className }:{children?:ReactNode, className?:string}):ReactElement => {
   const classes = useStyles()
   return (
     <div className={className}>

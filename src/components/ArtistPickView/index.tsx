@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { useDebounce } from 'ahooks'
 import { Artist, fetchArtistList } from '../../api/artist'
 import { ArtistPickController } from './hook'
@@ -7,10 +7,10 @@ import { Person } from '@material-ui/icons'
 
 export interface ArtistPickViewPropsType {
     controller:ArtistPickController
-    className?:any
+    className?:string
 }
 
-const ArtistPickView = ({ className, controller }: ArtistPickViewPropsType) => {
+const ArtistPickView = ({ className, controller }: ArtistPickViewPropsType):ReactElement => {
   const [input, setInput] = useState<string>()
   const searchKey = useDebounce(input, { wait: 500 })
   const [options, setOptions] = useState<Artist[] | undefined>()
@@ -30,7 +30,7 @@ const ArtistPickView = ({ className, controller }: ArtistPickViewPropsType) => {
       className={className}
       multiple
       freeSolo
-      onInputChange={(e, text, r) => setInput(text)}
+      onInputChange={(e, text) => setInput(text)}
       renderInput={(params) => (
         <TextField
           {...params}

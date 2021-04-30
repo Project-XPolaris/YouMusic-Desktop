@@ -1,6 +1,6 @@
 import { BrowserWindow, ipcMain } from 'electron'
 
-ipcMain.on('openSpotifyLoginWindow', async (e) => {
+ipcMain.on('openSpotifyLoginWindow', async () => {
   const loginWindow = new BrowserWindow({
     width: 1100,
     height: 700,

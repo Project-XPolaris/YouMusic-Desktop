@@ -19,8 +19,11 @@ const musicListModel = () => {
   const isSelected = (music:Music) => {
     return selectedMusic.find(it => it.id === music.id) !== undefined
   }
+  const selectNone = () => {
+    setSelectMusic([])
+  }
   return {
-    data, page, pageSize, total, fetchMusic, selectMode: selectedMusic.length > 0, selectedMusic, switchSelect, isSelected
+    data, page, pageSize, total, fetchMusic, selectMode: selectedMusic.length > 0, selectedMusic, switchSelect, isSelected, selectNone
   }
 }
 const useMusicListModel = createModel(musicListModel)
