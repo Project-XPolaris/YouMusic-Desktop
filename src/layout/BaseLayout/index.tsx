@@ -1,36 +1,37 @@
-import * as React from 'react'
-import { AppBar, IconButton, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core'
-import useStyles from './style'
-import { HashRouter as Router, Route, Switch } from 'react-router-dom'
-import PlaylistDrawer from '../Playlist'
-import { HomeLayout } from '../HomeLayout'
-import AlbumPage from '../../pages/Album'
-import useLayoutModel from '../../models/layout'
-import { ArrowBack, ExitToApp, MusicNote } from '@material-ui/icons'
-import ArtistPage from '../../pages/Artist'
-import MusicListPage from '../../pages/MusicList'
-import AlbumListPage from '../../pages/AlbumList'
-import MinimizeSharpIcon from '@material-ui/icons/MinimizeSharp'
-import CheckBoxOutlineBlankSharpIcon from '@material-ui/icons/CheckBoxOutlineBlankSharp'
-import ClearSharpIcon from '@material-ui/icons/ClearSharp'
-import { electronApp, electronRemote } from '../../remote'
-import PlayBarLayout from '../PlayBar/layout'
-import StartPage from '../../pages/Start'
-import { ApplicationConfig } from '../../config'
-import MusicEditDrawer from '../../components/MusicEditDrawer'
-import AlbumEditDrawer from '../../components/AlbumEditDrawer'
-import ArtistEditDrawer from '../../components/ArtistEditDrawer'
-import SearchBar from './parts/Search'
-import ArtistListPage from '../../pages/ArtistList'
+import * as React from 'react';
+import { AppBar, IconButton, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core';
+import useStyles from './style';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import PlaylistDrawer from '../Playlist';
+import { HomeLayout } from '../HomeLayout';
+import AlbumPage from '../../pages/Album';
+import useLayoutModel from '../../models/layout';
+import { ArrowBack, ExitToApp, MusicNote } from '@material-ui/icons';
+import ArtistPage from '../../pages/Artist';
+import MusicListPage from '../../pages/MusicList';
+import AlbumListPage from '../../pages/AlbumList';
+import MinimizeSharpIcon from '@material-ui/icons/MinimizeSharp';
+import CheckBoxOutlineBlankSharpIcon from '@material-ui/icons/CheckBoxOutlineBlankSharp';
+import ClearSharpIcon from '@material-ui/icons/ClearSharp';
+import { electronApp, electronRemote } from '../../remote';
+import PlayBarLayout from '../PlayBar/layout';
+import StartPage from '../../pages/Start';
+import { ApplicationConfig } from '../../config';
+import MusicEditDrawer from '../../components/MusicEditDrawer';
+import AlbumEditDrawer from '../../components/AlbumEditDrawer';
+import ArtistEditDrawer from '../../components/ArtistEditDrawer';
+import SearchBar from './parts/Search';
+import ArtistListPage from '../../pages/ArtistList';
+import PlayPage from '../../pages/Play';
 
 const BaseLayout = (): React.ReactElement => {
-  const classes = useStyles()
-  const layoutModel = useLayoutModel()
-  const [linkMenuAnchor, setLinkMenuAnchor] = React.useState<null | HTMLElement>(null)
+  const classes = useStyles();
+  const layoutModel = useLayoutModel();
+  const [linkMenuAnchor, setLinkMenuAnchor] = React.useState<null | HTMLElement>(null);
 
   const handleLinkClose = () => {
-    setLinkMenuAnchor(null)
-  }
+    setLinkMenuAnchor(null);
+  };
   const NavIcon = () => {
     switch (layoutModel.navIcon) {
       case 'Menu':
@@ -43,7 +44,7 @@ const BaseLayout = (): React.ReactElement => {
           >
             <MusicNote />
           </IconButton>
-        )
+        );
       case 'Back':
         return (
           <IconButton
@@ -55,23 +56,23 @@ const BaseLayout = (): React.ReactElement => {
           >
             <ArrowBack />
           </IconButton>
-        )
+        );
     }
-  }
+  };
   const onClose = () => {
-    electronApp.exit()
-  }
+    electronApp.exit();
+  };
   const onMin = () => {
-    electronRemote.BrowserWindow.getFocusedWindow().minimize()
-  }
+    electronRemote.BrowserWindow.getFocusedWindow().minimize();
+  };
   const onMax = () => {
-    const currentWindow = electronRemote.BrowserWindow.getFocusedWindow()
+    const currentWindow = electronRemote.BrowserWindow.getFocusedWindow();
     if (currentWindow.isMaximized()) {
-      currentWindow.unmaximize()
+      currentWindow.unmaximize();
     } else {
-      currentWindow.maximize()
+      currentWindow.maximize();
     }
-  }
+  };
   return (
     <>
       <Router>
@@ -84,14 +85,14 @@ const BaseLayout = (): React.ReactElement => {
         >
           <MenuItem
             onClick={() => {
-              handleLinkClose()
-              localStorage.removeItem(ApplicationConfig.keys.store.apiUrl)
-              localStorage.removeItem(ApplicationConfig.keys.store.token)
-              onClose()
+              handleLinkClose();
+              localStorage.removeItem(ApplicationConfig.keys.store.apiUrl);
+              localStorage.removeItem(ApplicationConfig.keys.store.token);
+              onClose();
             }}
           >
             <ExitToApp className={classes.menuIcon} />
-          Disconnect service (restart)
+            Disconnect service (restart)
           </MenuItem>
         </Menu>
         <PlaylistDrawer />
@@ -103,7 +104,7 @@ const BaseLayout = (): React.ReactElement => {
             <Toolbar variant='dense' className={classes.toolbar}>
               <NavIcon />
               <Typography variant='h6' className={classes.title}>
-              YouMusic
+                YouMusic
               </Typography>
               <SearchBar className={classes.searchBar} />
               <IconButton size='small' className={classes.windowAction} onClick={onMin}>
@@ -150,6 +151,11 @@ const BaseLayout = (): React.ReactElement => {
                   <ArtistListPage />
                 </PlayBarLayout>
               </Route>
+              <Route path='/play'>
+                <PlayBarLayout className={classes.content}>
+                  <PlayPage />
+                </PlayBarLayout>
+              </Route>
               <Route path='/'>
                 <div className={classes.content}>
                   <StartPage />
@@ -161,7 +167,7 @@ const BaseLayout = (): React.ReactElement => {
         </div>
       </Router>
     </>
-  )
-}
+  );
+};
 
-export default BaseLayout
+export default BaseLayout;

@@ -15,6 +15,7 @@ import { playTimeText } from '../../utils/time'
 import useLayoutModel from '../../models/layout'
 import { VolumeDown } from '@material-ui/icons'
 import { useLocalStorageState } from 'ahooks'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles({
   main: {
@@ -133,6 +134,7 @@ const PlayBar = (): React.ReactElement => {
   const playerModel = usePlayerModel()
   const layoutModel = useLayoutModel()
   const currentMusic = playerModel.getCurrentPlay()
+  const history = useHistory()
   const [saveVolume, setSaveVolume] = useLocalStorageState('saveVolume', 0)
   const {
     togglePlayPause,
@@ -209,6 +211,7 @@ const PlayBar = (): React.ReactElement => {
               src={getMusicAlbumCoverUrl(currentMusic)}
               className={classes.cover}
               alt={currentMusic.title}
+              onClick={() => history.push('/play')}
             />
             <div>
               <div className={classes.title}>

@@ -1,0 +1,46 @@
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      position: 'relative',
+      width: '100vw',
+      height: '100%'
+    },
+    tab: {
+      position: 'absolute',
+      top: theme.spacing(2),
+      left: theme.spacing(2)
+    },
+    musicView: {
+      width: '100vw',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    name: {
+      ...theme.typography.h5,
+      color: theme.palette.primary.main,
+      marginTop: theme.spacing(4)
+    },
+    album: {
+      ...theme.typography.h6,
+      fontSize: 14,
+      fontWeight: 300,
+      marginTop: theme.spacing(2),
+      color: 'white'
+    },
+    artist: {
+      ...theme.typography.h6,
+      fontSize: 14,
+      fontWeight: 300,
+      color: 'white'
+    },
+    cover: {
+      width: theme.spacing(30)
+    }
+  })
+)
+export default useStyles
