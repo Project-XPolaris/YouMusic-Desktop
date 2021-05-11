@@ -1,11 +1,15 @@
 import { createModel } from 'hox'
-import { useState } from 'react'
-import { fetchMusicList, Music } from '../api/music'
+import { useEffect, useState } from 'react'
+import { fetchMusicList, fetchMusicLyrics, Music } from '../api/music'
 import { useList } from 'react-use'
+import { LyricsManager } from '../utils/lyrics'
 
 const playerModel = () => {
   const [playlist, { insertAt, set }] = useList<Music>([])
   const [playIndex, setPlayIndex] = useState<number>(0)
+  const [lyrics, setLyrics] = useState<{ id:string, manager:LyricsManager} | undefined>()
+  const [currentPlayTime, setCurrentPlayTime] = useState<number>(0)
+
   const playMusic = (music:Music) => {
     if (playlist.length === 0) {
       insertAt(0, music)
@@ -70,12 +74,33 @@ const playerModel = () => {
       setPlayIndex(toPlayIndex)
     }
   }
+
   const getCurrentPlay = ():Music | undefined => {
     if (playlist.length === 0) {
       return undefined
     }
     return playlist[playIndex]
   }
+  useEffect(() => {
+    (async () => {
+      const currentPlay = getCurrentPlay()
+      if (!currentPlay) {
+        setLyrics(undefined)
+        return
+      }
+      if (lyrics && lyrics.id === currentPlay.id) {
+        setLyrics(undefined)
+        return
+      }
+      try {
+        const response = await fetchMusicLyrics(currentPlay.id)
+        const lyricManager = LyricsManager.fromLyricsText(response)
+        setLyrics({ id: currentPlay.id, manager: lyricManager })
+      } catch (e) {
+        setLyrics(undefined)
+      }
+    })()
+  }, [playIndex, playlist])
   const playWithIndex = (index:number) => {
     if (index < playlist.length) {
       setPlayIndex(index)
@@ -105,7 +130,10 @@ const playerModel = () => {
     previousMusic,
     addAlbumToPlaylist,
     playWithIndex,
-    addMusicToNextPlay
+    addMusicToNextPlay,
+    lyrics,
+    currentPlayTime,
+    setCurrentPlayTime
   }
 }
 const usePlayerModel = createModel(playerModel)

@@ -186,13 +186,14 @@ const PlayBar = (): React.ReactElement => {
     seek(duration * value / 100)
   }
   useEffect(() => {
-    console.log(percentComplete)
     if (ended && playerModel.playIndex < playerModel.playlist.length - 1) {
       playerModel.nextMusic()
       togglePlayPause()
     }
   }, [ended])
-
+  useEffect(() => {
+    playerModel.setCurrentPlayTime(percentComplete * duration * 10)
+  }, [percentComplete])
   return (
     <div className={classes.root}>
       <PlaySlider

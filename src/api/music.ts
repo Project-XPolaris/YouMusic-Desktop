@@ -42,3 +42,6 @@ export const uploadMusicCover = async (id:number, file:File):Promise<BaseRespons
     data: form
   })
 }
+export const fetchMusicLyrics = async (id:string):Promise<string> => {
+  return await apiRequest.get(`/file/lrc/${id}`)
+}

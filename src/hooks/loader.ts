@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { ListResponseContainer } from '../api/base'
-import { Album, fetchAlbumList } from '../api/album'
 
 export const useDataPageLoader = <T>({
   loader,

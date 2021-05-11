@@ -20,6 +20,32 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
       alignItems: 'center'
     },
+    lyricsView: {
+      width: '100vw',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    lyricsContainer: {
+      width: '60vw',
+      height: '70%',
+      display: 'flex',
+      flexDirection: 'column',
+      overflowY: 'auto'
+    },
+    lyricLine: {
+      ...theme.typography.h6,
+      fontSize: 16,
+      marginBottom: theme.spacing(2)
+    },
+    lyricActive: {
+      color: theme.palette.primary.main
+    },
+    lyricInactive: {
+      color: 'white'
+    },
     name: {
       ...theme.typography.h5,
       color: theme.palette.primary.main,
@@ -40,7 +66,19 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     cover: {
       width: theme.spacing(30)
+    },
+    '@global': {
+      '*::-webkit-scrollbar': {
+        width: '8px'
+      },
+      '*::-webkit-scrollbar-track': {
+        background: 'rgba(0,0,0,0)'
+      },
+      '*::-webkit-scrollbar-thumb': {
+        backgroundColor: '#303030'
+      }
     }
+
   })
 )
 export default useStyles

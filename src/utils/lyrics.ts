@@ -2,7 +2,7 @@ export interface LyricLine {
   time:number
   text:string
 }
-class LyricsManager {
+export class LyricsManager {
   lines:Array<LyricLine> = [];
   static fromLyricsText (rawLrc:string):LyricsManager {
     const instance = new LyricsManager()
@@ -28,5 +28,17 @@ class LyricsManager {
       }
     }
     return instance
+  }
+
+  getLyricTimeByTime = (time:number):number => {
+    if (this.lines.length === 0) {
+      return 0
+    }
+    for (let i = 0; i < this.lines.length - 1; i++) {
+      if (this.lines[i + 1].time > time) {
+        return this.lines[i].time
+      }
+    }
+    return this.lines[this.lines.length - 1].time
   }
 }

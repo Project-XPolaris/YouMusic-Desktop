@@ -9,6 +9,7 @@ const LayoutModel = () => {
   const [playlistDrawerOpen, setPlaylistDrawerOpen] = useState<boolean>(false)
   const [navIcon, setNavIcon] = useState<NavIcon>('Menu')
   const [dialogs, setDialogs] = useState< { [key:string]:boolean }>({})
+  const [showSearch,setShowSearch] = useState<boolean>(false)
   const switchDialog = (dialogKey:DialogKey) => {
     const newDialog = {
       ...dialogs
@@ -31,7 +32,9 @@ const LayoutModel = () => {
     setNavIcon,
     switchDialog,
     dialogs,
-    dialogOpen
+    dialogOpen,
+    showSearch,
+    setShowSearch
   }
 }
 const useLayoutModel = createModel(LayoutModel)

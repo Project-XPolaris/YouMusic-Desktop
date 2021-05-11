@@ -1,37 +1,38 @@
-import * as React from 'react';
-import { AppBar, IconButton, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core';
-import useStyles from './style';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
-import PlaylistDrawer from '../Playlist';
-import { HomeLayout } from '../HomeLayout';
-import AlbumPage from '../../pages/Album';
-import useLayoutModel from '../../models/layout';
-import { ArrowBack, ExitToApp, MusicNote } from '@material-ui/icons';
-import ArtistPage from '../../pages/Artist';
-import MusicListPage from '../../pages/MusicList';
-import AlbumListPage from '../../pages/AlbumList';
-import MinimizeSharpIcon from '@material-ui/icons/MinimizeSharp';
-import CheckBoxOutlineBlankSharpIcon from '@material-ui/icons/CheckBoxOutlineBlankSharp';
-import ClearSharpIcon from '@material-ui/icons/ClearSharp';
-import { electronApp, electronRemote } from '../../remote';
-import PlayBarLayout from '../PlayBar/layout';
-import StartPage from '../../pages/Start';
-import { ApplicationConfig } from '../../config';
-import MusicEditDrawer from '../../components/MusicEditDrawer';
-import AlbumEditDrawer from '../../components/AlbumEditDrawer';
-import ArtistEditDrawer from '../../components/ArtistEditDrawer';
-import SearchBar from './parts/Search';
-import ArtistListPage from '../../pages/ArtistList';
-import PlayPage from '../../pages/Play';
+import * as React from 'react'
+import { AppBar, IconButton, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core'
+import useStyles from './style'
+import { HashRouter as Router, Route, Switch } from 'react-router-dom'
+import PlaylistDrawer from '../Playlist'
+import { HomeLayout } from '../HomeLayout'
+import AlbumPage from '../../pages/Album'
+import useLayoutModel from '../../models/layout'
+import { ArrowBack, ExitToApp, MusicNote } from '@material-ui/icons'
+import ArtistPage from '../../pages/Artist'
+import MusicListPage from '../../pages/MusicList'
+import AlbumListPage from '../../pages/AlbumList'
+import MinimizeSharpIcon from '@material-ui/icons/MinimizeSharp'
+import CheckBoxOutlineBlankSharpIcon from '@material-ui/icons/CheckBoxOutlineBlankSharp'
+import ClearSharpIcon from '@material-ui/icons/ClearSharp'
+import PlayBarLayout from '../PlayBar/layout'
+import StartPage from '../../pages/Start'
+import { ApplicationConfig } from '../../config'
+import MusicEditDrawer from '../../components/MusicEditDrawer'
+import AlbumEditDrawer from '../../components/AlbumEditDrawer'
+import ArtistEditDrawer from '../../components/ArtistEditDrawer'
+import SearchBar from './parts/Search'
+import ArtistListPage from '../../pages/ArtistList'
+import PlayPage from '../../pages/Play'
+import { ipcRenderer } from 'electron'
+import { Channels } from '../../../electron/channels'
 
 const BaseLayout = (): React.ReactElement => {
-  const classes = useStyles();
-  const layoutModel = useLayoutModel();
-  const [linkMenuAnchor, setLinkMenuAnchor] = React.useState<null | HTMLElement>(null);
+  const classes = useStyles()
+  const layoutModel = useLayoutModel()
+  const [linkMenuAnchor, setLinkMenuAnchor] = React.useState<null | HTMLElement>(null)
 
   const handleLinkClose = () => {
-    setLinkMenuAnchor(null);
-  };
+    setLinkMenuAnchor(null)
+  }
   const NavIcon = () => {
     switch (layoutModel.navIcon) {
       case 'Menu':
@@ -44,7 +45,7 @@ const BaseLayout = (): React.ReactElement => {
           >
             <MusicNote />
           </IconButton>
-        );
+        )
       case 'Back':
         return (
           <IconButton
@@ -56,23 +57,19 @@ const BaseLayout = (): React.ReactElement => {
           >
             <ArrowBack />
           </IconButton>
-        );
+        )
     }
-  };
+  }
   const onClose = () => {
-    electronApp.exit();
-  };
+    ipcRenderer.send(Channels.ExitApp)
+  }
   const onMin = () => {
-    electronRemote.BrowserWindow.getFocusedWindow().minimize();
-  };
+    ipcRenderer.send(Channels.Min)
+  }
   const onMax = () => {
-    const currentWindow = electronRemote.BrowserWindow.getFocusedWindow();
-    if (currentWindow.isMaximized()) {
-      currentWindow.unmaximize();
-    } else {
-      currentWindow.maximize();
-    }
-  };
+    ipcRenderer.send(Channels.Max)
+  }
+  console.log(location.hash)
   return (
     <>
       <Router>
@@ -85,10 +82,10 @@ const BaseLayout = (): React.ReactElement => {
         >
           <MenuItem
             onClick={() => {
-              handleLinkClose();
-              localStorage.removeItem(ApplicationConfig.keys.store.apiUrl);
-              localStorage.removeItem(ApplicationConfig.keys.store.token);
-              onClose();
+              handleLinkClose()
+              localStorage.removeItem(ApplicationConfig.keys.store.apiUrl)
+              localStorage.removeItem(ApplicationConfig.keys.store.token)
+              onClose()
             }}
           >
             <ExitToApp className={classes.menuIcon} />
@@ -106,7 +103,7 @@ const BaseLayout = (): React.ReactElement => {
               <Typography variant='h6' className={classes.title}>
                 YouMusic
               </Typography>
-              <SearchBar className={classes.searchBar} />
+              {layoutModel.showSearch && <SearchBar className={classes.searchBar} />}
               <IconButton size='small' className={classes.windowAction} onClick={onMin}>
                 <MinimizeSharpIcon className={classes.actionIcon} />
               </IconButton>
@@ -167,7 +164,7 @@ const BaseLayout = (): React.ReactElement => {
         </div>
       </Router>
     </>
-  );
-};
+  )
+}
 
-export default BaseLayout;
+export default BaseLayout

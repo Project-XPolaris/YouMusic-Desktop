@@ -20,6 +20,7 @@ import { LoginHistory, loginHistoryManager } from '../../utils/login'
 import { fetchAppInfo } from '../../api/info'
 import { useSnackbar } from 'notistack'
 import request from 'umi-request'
+import useLayoutModel from '../../models/layout';
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -59,6 +60,7 @@ const StartPage = () : ReactElement => {
   const [inputPassword, setInputPassword] = useState<string | undefined>()
   const [tabIndex, setTabIndex] = useState<number>(0)
   const refresh = useUpdate()
+  const layoutModel = useLayoutModel()
   const loginHandler = async () => {
     if (!inputAPIURL) {
       return
@@ -93,6 +95,7 @@ const StartPage = () : ReactElement => {
   }
   useEffect(() => {
     // check()
+    layoutModel.setShowSearch(false)
     loginHistoryManager.refresh()
     refresh()
   }, [])
@@ -103,6 +106,7 @@ const StartPage = () : ReactElement => {
       if (loginHistory.token !== undefined && loginHistory.token.length > 0) {
         localStorage.setItem(ApplicationConfig.keys.store.token, loginHistory.token)
       }
+      layoutModel.setShowSearch(true)
       history.push('/home')
     }
     return (

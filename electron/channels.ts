@@ -2,5 +2,8 @@ export const Channels = {
   GetNotificationId: 'GetNotificationId',
   NotificationRegister: 'NotificationRegister',
   RefreshSpotifyAuth: 'RefreshSpotifyAuth',
-  LibraryScanComplete: 'LibraryScanComplete'
+  LibraryScanComplete: 'LibraryScanComplete',
+  ExitApp: 'ExitApp',
+  Max: 'Max',
+  Min: 'Min'
 }

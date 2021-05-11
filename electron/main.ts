@@ -4,6 +4,7 @@ import * as url from 'url'
 import { runExpress } from './express/instance'
 import './spotify/login'
 import './notification/client'
+import { Channels } from './channels'
 let mainWindow: Electron.BrowserWindow | null
 
 function createWindow () {
@@ -14,7 +15,12 @@ function createWindow () {
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false,
-      allowRunningInsecureContent: true
+      allowRunningInsecureContent: true,
+      nodeIntegrationInWorker: true,
+      nodeIntegrationInSubFrames: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+      webviewTag: true
     },
     icon: path.join(__dirname, '/assets/icon.png'),
     frame: false
@@ -52,3 +58,22 @@ app.on('ready', createWindow)
     // }
   })
 app.allowRendererProcessReuse = true
+
+ipcMain.on(Channels.ExitApp, () => {
+  app.exit()
+})
+ipcMain.on(Channels.Min, () => {
+  if (mainWindow) {
+    mainWindow.minimize()
+  }
+})
+
+ipcMain.on(Channels.Max, () => {
+  if (mainWindow) {
+    if (mainWindow.isMaximized()) {
+      mainWindow.unmaximize()
+      return
+    }
+    mainWindow.maximize()
+  }
+})
