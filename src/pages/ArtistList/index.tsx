@@ -30,7 +30,7 @@ const ArtistListPage = ():ReactElement => {
   useEffect(() => {
     layoutModel.setNavIcon('Back')
     artistListModel.loadData({ search })
-  })
+  }, [])
   return (
     <div className={classes.main}>
       <GridContainer

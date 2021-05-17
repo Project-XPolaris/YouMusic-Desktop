@@ -26,6 +26,7 @@ const MusicListPage = ():ReactElement => {
   useUnmount(() => {
     document.removeEventListener('musicUpdate', onMusicUpdate)
   })
+  console.log(musicModel.total)
   return (
     <div className={classes.root}>
       <Menu
@@ -91,7 +92,7 @@ const MusicListPage = ():ReactElement => {
         })}
       </List>
       <Pagination
-        count={Math.floor(musicModel.total / 55)}
+        count={Math.ceil(musicModel.total / 20)}
         onChange={(event, page) => musicModel.fetchMusic({ page })}
       />
     </div>

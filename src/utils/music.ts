@@ -2,11 +2,11 @@ import { Music } from '../api/music'
 import { getImageUrl } from './image'
 import { ApplicationConfig } from '../config'
 
-export const getMusicAlbumCoverUrl = (music:Music):string => {
-  if (music.album) {
+export const getMusicAlbumCoverUrl = (music:Music):string| undefined => {
+  if (music.album?.music) {
     return getImageUrl(music.album.cover)
   }
-  return ''
+  return undefined
 }
 
 export const getMusicArtistString = (music:Music, defaultString = 'unknown') : string => {

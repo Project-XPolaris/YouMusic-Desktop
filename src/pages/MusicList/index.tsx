@@ -16,9 +16,23 @@ const useStyles = makeStyles({
     paddingRight: theme.spacing(4),
     paddingBottom: theme.spacing(10)
   },
+  list: {
+    width: '100%'
+  },
   item: {
     width: 160,
     marginBottom: theme.spacing(1)
+  },
+  '@global': {
+    '*::-webkit-scrollbar': {
+      width: '8px'
+    },
+    '*::-webkit-scrollbar-track': {
+      background: 'rgba(0,0,0,0)'
+    },
+    '*::-webkit-scrollbar-thumb': {
+      backgroundColor: '#303030'
+    }
   }
 })
 const MusicListPage = ():React.ReactElement => {
@@ -30,12 +44,12 @@ const MusicListPage = ():React.ReactElement => {
   useEffect(() => {
     layoutModel.setNavIcon('Back')
     musicListModel.loadData({ artist, search })
-  })
+  }, [])
   const playerModel = usePlayerModel()
 
   return (
     <div className={classes.main}>
-      <List>
+      <List className={classes.list}>
         {musicListModel.musicList.map((music) => {
           return (
             <MusicListItem

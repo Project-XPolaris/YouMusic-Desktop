@@ -20,7 +20,8 @@ const useStyles = makeStyles((theme) => ({
     width: '100vw'
   },
   content: {
-    overflowX: 'hidden'
+    overflowX: 'hidden',
+    width: '100%'
   },
   playerBar: {
     height: 72,

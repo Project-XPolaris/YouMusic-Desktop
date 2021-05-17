@@ -1,18 +1,24 @@
 import React, { MouseEventHandler, ReactElement } from 'react'
-import { ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
+import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
 import { Music } from '../../api/music'
 import { getMusicAlbumCoverUrl } from '../../utils/music'
 import useStyles from './style'
 import clsx from 'clsx'
+import { MusicNote } from '@material-ui/icons'
 
 export interface MusicListItemPropsType {
   music: Music
   onClick: () => void
-  onContextMenu?:MouseEventHandler
-  selected:boolean
+  onContextMenu?: MouseEventHandler
+  selected: boolean
 }
 
-const MusicListItem = ({ music, onClick, onContextMenu, selected }: MusicListItemPropsType):ReactElement => {
+const MusicListItem = ({
+  music,
+  onClick,
+  onContextMenu,
+  selected
+}: MusicListItemPropsType): ReactElement => {
   const classes = useStyles()
   return (
     <ListItem
@@ -22,11 +28,14 @@ const MusicListItem = ({ music, onClick, onContextMenu, selected }: MusicListIte
       onContextMenu={onContextMenu}
     >
       <ListItemAvatar>
-        <img src={getMusicAlbumCoverUrl(music)} className={classes.cover} alt={music.title} />
+        {
+          music.album?.cover ? <img src={getMusicAlbumCoverUrl(music)} className={classes.cover} alt={music.title} />
+            : <Avatar variant={'rounded'} className={classes.icon}><MusicNote /></Avatar>
+        }
       </ListItemAvatar>
       <ListItemText
         primary={music.title}
-        secondary={`${music.album.name} - ${music.artist.map(it => it.name).join('/')}`}
+        secondary={`${music.album?.name ?? ''} - ${music.artist.map(it => it.name).join('/')}`}
       />
     </ListItem>
   )

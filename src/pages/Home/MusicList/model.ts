@@ -4,9 +4,9 @@ import { fetchMusicList, Music } from '../../../api/music'
 import { useState } from 'react'
 
 const musicListModel = () => {
-  const { data, page, pageSize, total, loadData } = useDataPageLoader<Music>({ loader: fetchMusicList, defaultPageSize: 20, defaultPage: 1 })
+  const { data, page, pageSize, total, loadData } = useDataPageLoader<Music>({ loader: fetchMusicList, defaultPageSize: 10, defaultPage: 1 })
   const [selectedMusic, setSelectMusic] = useState<Music[]>([])
-  const fetchMusic = async ({ page = 1, pageSize = 55 }) => {
+  const fetchMusic = async ({ page = 1, pageSize = 20 }) => {
     await loadData({ page, pageSize })
   }
   const switchSelect = (music:Music) => {

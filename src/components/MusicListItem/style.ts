@@ -11,6 +11,12 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     selectedItem: {
       backgroundColor: theme.palette.primary.dark
+    },
+    icon: {
+      backgroundColor: theme.palette.primary.main,
+      color: 'white',
+      width: 48,
+      height: 48
     }
   })
 )
