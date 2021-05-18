@@ -11,6 +11,7 @@ export interface Music {
   track?: number
   album: Album
   artist: Artist[]
+  filename:string
 }
 
 export const fetchMusicList = async ({ page = 1, pageSize = 20, ...other }:{page?:number, pageSize?:number, search?:string, album?:string }): Promise<ListResponseContainer<Music>> => {

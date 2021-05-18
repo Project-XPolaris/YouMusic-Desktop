@@ -20,6 +20,17 @@ const MusicListItem = ({
   selected
 }: MusicListItemPropsType): ReactElement => {
   const classes = useStyles()
+  const getMeta = () => {
+    const parts:string[] = []
+    if (music.album) {
+      parts.push(music.album.name)
+    }
+    if (music.artist.length > 0) {
+      parts.push(music.artist.map(it => it.name).join('/'))
+    }
+    parts.push(music.filename)
+    return parts.join(' | ');
+  }
   return (
     <ListItem
       button={!selected as any}
@@ -35,7 +46,7 @@ const MusicListItem = ({
       </ListItemAvatar>
       <ListItemText
         primary={music.title}
-        secondary={`${music.album?.name ?? ''} - ${music.artist.map(it => it.name).join('/')}`}
+        secondary={getMeta()}
       />
     </ListItem>
   )
