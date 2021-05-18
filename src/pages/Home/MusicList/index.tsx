@@ -8,25 +8,18 @@ import MusicListItem from '../../../components/MusicListItem'
 import { useContextMenu } from '../../../hooks/context'
 import { Music } from '../../../api/music'
 import useEditorModel from '../../../models/editor'
-import { ReactElement } from 'react'
+import { ReactElement, useEffect } from 'react'
+import MusicEditDrawer from '../../../components/MusicEditDrawer'
 
-const MusicListPage = ():ReactElement => {
+const MusicListPage = (): ReactElement => {
   const classes = useStyles()
   const musicModel = useMusicListModel()
   const playerModel = usePlayerModel()
   const editorModel = useEditorModel()
   const contextMenuController = useContextMenu<Music>(undefined)
-  const onMusicUpdate = () => {
+  useEffect(() => {
     musicModel.fetchMusic({})
-  }
-  useMount(async () => {
-    document.addEventListener('musicUpdate', onMusicUpdate)
-    await musicModel.fetchMusic({})
-  })
-  useUnmount(() => {
-    document.removeEventListener('musicUpdate', onMusicUpdate)
-  })
-  console.log(musicModel.total)
+  }, [])
   return (
     <div className={classes.root}>
       <Menu
@@ -34,7 +27,10 @@ const MusicListPage = ():ReactElement => {
         onClose={() => contextMenuController.close()}
         anchorReference='anchorPosition'
         anchorPosition={
-          { top: contextMenuController.anchor?.y ?? 0, left: contextMenuController.anchor?.x ?? 0 }
+          {
+            top: contextMenuController.anchor?.y ?? 0,
+            left: contextMenuController.anchor?.x ?? 0
+          }
         }
       >
         <MenuItem
@@ -67,6 +63,11 @@ const MusicListPage = ():ReactElement => {
           >Unselect All</MenuItem>
         }
       </Menu>
+      <MusicEditDrawer
+        onUpdateMusic={updateMusics => {
+          musicModel.update(updateMusics)
+        }}
+      />
       <div className={classes.toolbar}>
 
       </div>
@@ -84,7 +85,10 @@ const MusicListPage = ():ReactElement => {
                 }
               }}
               onContextMenu={(e) => {
-                contextMenuController.open(music, { x: e.clientX - 2, y: e.clientY - 4 })
+                contextMenuController.open(music, {
+                  x: e.clientX - 2,
+                  y: e.clientY - 4
+                })
               }}
               selected={musicModel.isSelected(music)}
             />

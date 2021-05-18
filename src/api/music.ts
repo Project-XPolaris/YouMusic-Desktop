@@ -27,9 +27,10 @@ export const updateMusicInfo = async (
   id:number,
   data: {
     title?:string
-    album:string
+    album?:string
     year?:number
     track?:number
+    artist?:string[]
   }
 ): Promise<void> => {
   return apiRequest.patch(`/music/${id}/file`, {

@@ -69,7 +69,6 @@ const BaseLayout = (): React.ReactElement => {
   const onMax = () => {
     ipcRenderer.send(Channels.Max)
   }
-  console.log(location.hash)
   return (
     <>
       <Router>
@@ -93,7 +92,6 @@ const BaseLayout = (): React.ReactElement => {
           </MenuItem>
         </Menu>
         <PlaylistDrawer />
-        <MusicEditDrawer />
         <AlbumEditDrawer />
         <ArtistEditDrawer />
         <div>

@@ -163,7 +163,6 @@ const PlayBar = (): React.ReactElement => {
     volume(saveVolume / 100)
   }, [playerModel.getCurrentPlay()])
   useEffect(() => {
-    console.log(saveVolume / 100)
     volume(saveVolume / 100)
   }, [saveVolume])
   const [sliderValue, setSliderValue] = useState(-1)

@@ -67,7 +67,6 @@ const Nav = ():ReactElement => {
             onClick={() => {
               layoutModel.setActiveIndex(item.index)
               history.push(item.path)
-              console.log(item)
             }}
           >
             <ListItemIcon>
