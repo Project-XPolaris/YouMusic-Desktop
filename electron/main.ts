@@ -6,6 +6,7 @@ import './spotify/login'
 import './notification/client'
 import { Channels } from './channels'
 let mainWindow: Electron.BrowserWindow | null
+let editorWindow: Electron.BrowserWindow | null
 
 function createWindow () {
   mainWindow = new BrowserWindow({
@@ -41,10 +42,44 @@ function createWindow () {
     mainWindow = null
   })
 }
+function createEditor () {
+  editorWindow = new BrowserWindow({
+    width: 1100,
+    height: 700,
+    backgroundColor: '#FFFFFF',
+    webPreferences: {
+      nodeIntegration: true,
+      webSecurity: false,
+      allowRunningInsecureContent: true,
+      nodeIntegrationInWorker: true,
+      nodeIntegrationInSubFrames: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+      webviewTag: true
+    },
+    icon: path.join(__dirname, '/assets/icon.png'),
+    frame: false
+  })
+  if (process.env.NODE_ENV === 'development') {
+    editorWindow.loadURL('http://localhost:4000/#/editor')
+  } else {
+    editorWindow.loadURL(
+      url.format({
+        pathname: path.join(__dirname, 'renderer/index.html'),
+        protocol: 'file:',
+        slashes: true,
+        hash: 'editor'
+      })
+    )
+  }
+  editorWindow.on('closed', () => {
+    editorWindow = null
+  })
+}
 ipcMain.on('close', () => {
   app.exit(0)
 })
-app.on('ready', createWindow)
+app.on('ready', createEditor)
   .whenReady()
   .then(() => {
     runExpress()

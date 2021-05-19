@@ -5,7 +5,7 @@ import apiRequest from '../utils/request'
 import { ApplicationConfig } from '../config'
 
 export interface Music {
-  id: string
+  id: number
   title: string
   year?: number
   track?: number

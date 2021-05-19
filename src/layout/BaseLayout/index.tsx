@@ -24,6 +24,7 @@ import ArtistListPage from '../../pages/ArtistList'
 import PlayPage from '../../pages/Play'
 import { ipcRenderer } from 'electron'
 import { Channels } from '../../../electron/channels'
+import EditPage from '../../pages/Editor';
 
 const BaseLayout = (): React.ReactElement => {
   const classes = useStyles()
@@ -152,6 +153,9 @@ const BaseLayout = (): React.ReactElement => {
                 <PlayBarLayout className={classes.content}>
                   <PlayPage />
                 </PlayBarLayout>
+              </Route>
+              <Route path='/editor'>
+                  <EditPage />
               </Route>
               <Route path='/'>
                 <div className={classes.content}>
