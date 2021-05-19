@@ -7,16 +7,19 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      position: 'relative'
+      position: 'relative',
+      height: '100%'
     },
     item: {
       marginBottom: theme.spacing(2)
     },
     cover: {
-      width: '60%',marginBottom: theme.spacing(2)
+      width: '60%', marginBottom: theme.spacing(2)
     },
-    applyButton:{
-      position:'absolute'
+    applyButton: {
+      position: 'absolute',
+      bottom: theme.spacing(2),
+      right: theme.spacing(2)
     }
   })
 )

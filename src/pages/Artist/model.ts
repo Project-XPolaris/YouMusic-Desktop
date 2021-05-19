@@ -10,8 +10,8 @@ const ArtistModel = () => {
   const [albumList, setAlbumList] = useState<Album[]>([])
   const loadData = async (artistId:string) => {
     const response = await fetchArtistById(artistId)
-    const musicResponse = await fetchMusicList({ pageSize: 10, artist: artistId })
-    const albumResponse = await fetchAlbumList({ pageSize: 10, artist: artistId })
+    const musicResponse = await fetchMusicList({ pageSize: 10, artist: Number(artistId) })
+    const albumResponse = await fetchAlbumList({ pageSize: 10, artist: Number(artistId) })
     setArtist(response)
     setMusicList(musicResponse.data)
     setAlbumList(albumResponse.data)

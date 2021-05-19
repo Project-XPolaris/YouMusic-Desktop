@@ -7,12 +7,15 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     toolbar: {
       width: '100vw',
-      height: theme.spacing(4),
-      borderBottom: '1px solid #2b2b2b'
+      height: theme.spacing(6),
+      borderBottom: '1px solid #2b2b2b',
+      padding: theme.spacing(2),
+      display: 'flex',
+      alignItems: 'center'
     },
     content: {
       display: 'flex',
-      height: 'calc(100vh - 48px - 32px)'
+      height: 'calc(100vh - 48px - 48px)'
     },
     view: {
       width: 320,
@@ -27,6 +30,11 @@ const useStyles = makeStyles((theme: Theme) =>
     tableHeader: {
       position: 'sticky',
       top: 0
+    },
+    title: {
+      ...theme.typography.h6,
+      color: 'white',
+      flexGrow: 1
     },
     '@global': {
       '*::-webkit-scrollbar': {

@@ -1,15 +1,15 @@
 import * as React from 'react'
-import { List, Pagination, Menu, MenuItem } from '@material-ui/core'
+import { ReactElement, useEffect } from 'react'
+import { List, Menu, MenuItem, Pagination } from '@material-ui/core'
 import useStyles from './style'
-import { useMount, useUnmount } from 'ahooks'
 import useMusicListModel from './model'
 import usePlayerModel from '../../../models/player'
 import MusicListItem from '../../../components/MusicListItem'
 import { useContextMenu } from '../../../hooks/context'
 import { Music } from '../../../api/music'
 import useEditorModel from '../../../models/editor'
-import { ReactElement, useEffect } from 'react'
 import MusicEditDrawer from '../../../components/MusicEditDrawer'
+import { ipcRenderer } from 'electron'
 
 const MusicListPage = (): ReactElement => {
   const classes = useStyles()
@@ -38,9 +38,10 @@ const MusicListPage = (): ReactElement => {
             contextMenuController.close()
             if (contextMenuController.data) {
               if (musicModel.selectedMusic.length > 1) {
-                editorModel.openEditMusic(musicModel.selectedMusic)
+                ipcRenderer.send('openEditor', musicModel.selectedMusic.map(it => it.id))
+                musicModel.selectNone()
               } else {
-                editorModel.openEditMusic([contextMenuController.data])
+                ipcRenderer.send('openEditor', [contextMenuController.data.id])
               }
             }
           }}

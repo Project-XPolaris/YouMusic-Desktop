@@ -42,6 +42,7 @@ function createWindow () {
     mainWindow = null
   })
 }
+
 function createEditor () {
   editorWindow = new BrowserWindow({
     width: 1100,
@@ -76,10 +77,22 @@ function createEditor () {
     editorWindow = null
   })
 }
-ipcMain.on('close', () => {
-  app.exit(0)
+
+let editIds:number[] = []
+ipcMain.on('openEditor', (e, ids) => {
+  editIds = ids
+  createEditor()
 })
-app.on('ready', createEditor)
+ipcMain.handle('getEditIds', () => {
+  return editIds
+})
+ipcMain.on('close', () => {
+  const currentWindow = BrowserWindow.getFocusedWindow()
+  if (currentWindow) {
+    currentWindow.close()
+  }
+})
+app.on('ready', createWindow)
   .whenReady()
   .then(() => {
     runExpress()
@@ -92,23 +105,31 @@ app.on('ready', createEditor)
     //     .catch((err) => console.log('An error occurred: ', err))
     // }
   })
+app.on('window-all-closed', () => {
+  app.exit()
+})
 app.allowRendererProcessReuse = true
 
 ipcMain.on(Channels.ExitApp, () => {
   app.exit()
 })
 ipcMain.on(Channels.Min, () => {
-  if (mainWindow) {
-    mainWindow.minimize()
+  const currentWindow = BrowserWindow.getFocusedWindow()
+  if (currentWindow) {
+    currentWindow.minimize()
+  }
+  if (currentWindow) {
+    currentWindow.minimize()
   }
 })
 
 ipcMain.on(Channels.Max, () => {
-  if (mainWindow) {
-    if (mainWindow.isMaximized()) {
-      mainWindow.unmaximize()
+  const currentWindow = BrowserWindow.getFocusedWindow()
+  if (currentWindow) {
+    if (currentWindow.isMaximized()) {
+      currentWindow.unmaximize()
       return
     }
-    mainWindow.maximize()
+    currentWindow.maximize()
   }
 })

@@ -24,7 +24,7 @@ import ArtistListPage from '../../pages/ArtistList'
 import PlayPage from '../../pages/Play'
 import { ipcRenderer } from 'electron'
 import { Channels } from '../../../electron/channels'
-import EditPage from '../../pages/Editor';
+import EditPage from '../../pages/Editor'
 
 const BaseLayout = (): React.ReactElement => {
   const classes = useStyles()
@@ -62,7 +62,7 @@ const BaseLayout = (): React.ReactElement => {
     }
   }
   const onClose = () => {
-    ipcRenderer.send(Channels.ExitApp)
+    ipcRenderer.send('close')
   }
   const onMin = () => {
     ipcRenderer.send(Channels.Min)
@@ -153,7 +153,7 @@ const BaseLayout = (): React.ReactElement => {
                 </PlayBarLayout>
               </Route>
               <Route path='/editor'>
-                  <EditPage />
+                <EditPage />
               </Route>
               <Route path='/'>
                 <div className={classes.content}>
