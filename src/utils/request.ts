@@ -4,7 +4,7 @@ import { ipcRenderer } from 'electron'
 import { Channels } from '../../electron/channels'
 
 const apiRequest = extend({
-  timeout: 1000,
+  timeout: 10000,
   credentials: 'omit'
 })
 apiRequest.interceptors.request.use((url, options) => {

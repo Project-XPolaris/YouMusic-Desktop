@@ -6,7 +6,6 @@ const artistListModel = () => {
   const { data, page, pageSize, total, loadData } = useDataPageLoader<Artist>({ loader: fetchArtistList, defaultPageSize: 55, defaultPage: 1 })
   const fetchArtist = async ({ page = 1, pageSize = 55 }) => {
     await loadData({ page, pageSize })
-    console.log(data)
   }
   return {
     data, page, pageSize, total, fetchArtist

@@ -44,7 +44,6 @@ const PlayPage = ({}: PlayPagePropsType):ReactElement => {
       block: 'center',
       inline: 'center'
     })
-    console.log(lyricIndex)
   }, [lyricIndex])
   const onTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue)

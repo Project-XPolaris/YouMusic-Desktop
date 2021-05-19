@@ -1,7 +1,8 @@
 import { useDataPageLoader } from '../../../hooks/loader'
 import { createModel } from 'hox'
-import { fetchMusicList, Music } from '../../../api/music'
+import { fetchMusicList, Music, updateMusicInfo } from '../../../api/music'
 import { useState } from 'react'
+import { MusicUpdate } from '../../../components/MusicEditDrawer'
 
 const musicListModel = () => {
   const { data, page, pageSize, total, loadData } = useDataPageLoader<Music>({ loader: fetchMusicList, defaultPageSize: 10, defaultPage: 1 })
@@ -22,8 +23,24 @@ const musicListModel = () => {
   const selectNone = () => {
     setSelectMusic([])
   }
+  const update = async (updateMusics:MusicUpdate[]) => {
+    for (const updateMusic of updateMusics) {
+      await updateMusicInfo(updateMusic.id, updateMusic.update)
+    }
+    await fetchMusic({ page, pageSize })
+  }
   return {
-    data, page, pageSize, total, fetchMusic, selectMode: selectedMusic.length > 0, selectedMusic, switchSelect, isSelected, selectNone
+    data,
+    page,
+    pageSize,
+    total,
+    fetchMusic,
+    selectMode: selectedMusic.length > 0,
+    selectedMusic,
+    switchSelect,
+    isSelected,
+    selectNone,
+    update
   }
 }
 const useMusicListModel = createModel(musicListModel)

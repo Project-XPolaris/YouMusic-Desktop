@@ -6,7 +6,6 @@ const AlbumModel = () => {
   const [album, setAlbum] = useState<Album | undefined>(undefined)
   const loadData = async (albumId:string) => {
     const response = await fetchAlbumById(albumId)
-    console.log(response.cover)
     setAlbum(response)
   }
   return {

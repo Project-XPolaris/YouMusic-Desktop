@@ -53,7 +53,6 @@ const PathSelectDialog = ({ open = false, onCancel, onOk }: PathSelectDialogProp
               if (currentPath && sep) {
                 const parts = currentPath.split(sep)
                 parts.pop()
-                console.log(parts.join(sep))
                 if (parts.length > 1) {
                   setCurrentPath(parts.join(sep))
                 } else {

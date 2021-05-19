@@ -11,8 +11,17 @@ import { useArtistPickController } from '../ArtistPickView/hook'
 const Input = styled('input')({
   display: 'none'
 })
-
-const MusicEditDrawer = ():ReactElement => {
+export interface MusicUpdate {
+  id:number,
+  update:{
+    title?:string
+    album?:string
+    year?:number
+    track?:number
+    artist?:string[]
+  }
+}
+const MusicEditDrawer = ({ onUpdateMusic }:{onUpdateMusic:(data:any[]) => void}):ReactElement => {
   const editor = useEditorModel()
   const classes = useStyles()
   const [inputTitle, setInputTitle] = useState<string | undefined>()
@@ -24,7 +33,7 @@ const MusicEditDrawer = ():ReactElement => {
     if (editor.editMusic) {
       if (editor.editMusic.length === 1) {
         setInputTitle(editor.editMusic[0].title)
-        setInputAlbum(editor.editMusic[0].album.name)
+        setInputAlbum(editor.editMusic[0].album?.name)
         setInputYear(editor.editMusic[0].year)
         setInputTrack(editor.editMusic[0].track)
         artistPickController.setSelected(editor.editMusic[0].artist.map(it => it.name))
@@ -63,24 +72,28 @@ const MusicEditDrawer = ():ReactElement => {
     if (!editor.editMusic) {
       return
     }
-    const updateData: any = {}
-    if (inputTitle !== undefined && inputTitle.length > 0) {
-      updateData.title = inputTitle
-    }
-    if (inputAlbum !== undefined && inputAlbum.length > 0) {
-      updateData.album = inputAlbum
-    }
-    if (inputYear !== undefined) {
-      updateData.year = inputYear
-    }
-    if (inputTrack !== undefined) {
-      updateData.track = inputTrack
-    }
-    updateData.artist = artistPickController.selected
+    const updateMusics :MusicUpdate[] = []
     for (const music of editor.editMusic) {
-      await updateMusicInfo(Number(music.id), updateData)
+      const updateMusic :MusicUpdate = {
+        id: Number(music.id),
+        update: {}
+      }
+      if (inputTitle !== undefined && inputTitle.length > 0) {
+        updateMusic.update.title = inputTitle
+      }
+      if (inputAlbum !== undefined && inputAlbum.length > 0) {
+        updateMusic.update.album = inputAlbum
+      }
+      if (inputYear !== undefined) {
+        updateMusic.update.year = inputYear
+      }
+      if (inputTrack !== undefined) {
+        updateMusic.update.track = inputTrack
+      }
+      updateMusic.update.artist = artistPickController.selected
+      updateMusics.push(updateMusic)
     }
-    document.dispatchEvent((new CustomEvent('musicUpdate', {})))
+    onUpdateMusic(updateMusics)
     editor.closeEditMusic()
   }
   const onCoverInputChange = async (e:ChangeEvent<HTMLInputElement>) => {
