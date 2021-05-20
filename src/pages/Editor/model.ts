@@ -2,17 +2,25 @@ import { createModel } from 'hox'
 import { useState } from 'react'
 import { fetchMusicList, Music, updateMusicInfo } from '../../api/music'
 import { ipcRenderer } from 'electron'
+import { intersection } from 'lodash'
+import { Channels } from '../../../electron/channels'
+import { getImageUrl } from '../../utils/image'
+import { readFile } from '../../utils/file'
 
 export interface MusicUpdateData {
   id: number
   title?: string
   album?: string
+  artist?:string[]
+  cover?:string,
+  file?:File
 }
 
 export interface EditMusic {
   cover?:string
   title?: string
   album?: string
+  artist?:string[]
 }
 export interface SaveProgress {
   text:string,
@@ -36,9 +44,10 @@ const EditorModel = () => {
       return undefined
     }
     return {
-      cover: music.album?.cover,
+      cover: update?.cover ?? (music.album?.cover ? getImageUrl(music.album.cover) : undefined),
       title: update?.title ?? music.title,
-      album: update?.album ?? music.album?.name
+      album: update?.album ?? music.album?.name,
+      artist: update?.artist ?? music.artist.map(it => it.name)
     }
   }
   const getCurrentEditMusic = (): EditMusic | undefined => {
@@ -66,10 +75,24 @@ const EditorModel = () => {
     if (editMusic.cover && editMusics.find(it => it.cover !== undefined && it.cover !== editMusic.cover)) {
       editMusic.cover = undefined
     }
+    editMusic.artist = intersection(...editMusics.map(it => it.artist))
     return editMusic
   }
   const saveUpdate = (update: MusicUpdateData[]) => {
     setUpdateMusics([...updateMusics.filter(it => update.find(u => it.id !== u.id)), ...update])
+  }
+  const setImageFile = async (ids:number[], file:File) => {
+    const fileUrl:any = await readFile(file)
+    setUpdateMusics(updateMusics.map(it => {
+      if (ids.indexOf(it.id) !== -1) {
+        return {
+          ...it,
+          file,
+          cover: fileUrl
+        }
+      }
+      return it
+    }))
   }
   const saveAll = async () => {
     for (let i = 0; i < updateMusics.length; i++) {
@@ -81,10 +104,12 @@ const EditorModel = () => {
         total: updateMusics.length
       })
       await updateMusicInfo(updateMusic.id, updateMusic)
+
       setUpdateMusics([])
     }
     setSaveProgress(undefined)
     await loadMusic()
+    ipcRenderer.send(Channels.NotifyMusicUpdate, updateMusics.map(it => it.id))
   }
   return {
     musicList,
@@ -96,7 +121,8 @@ const EditorModel = () => {
     updateMusics,
     saveAll,
     saveProgress,
-    getEditMusic
+    getEditMusic,
+    setImageFile
   }
 }
 const useEditorModel = createModel(EditorModel)

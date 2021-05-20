@@ -38,6 +38,7 @@ const ArtistPickView = ({ className, controller }: ArtistPickViewPropsType):Reac
           placeholder='Artists'
         />
       )}
+      value={controller.selected}
       defaultValue={controller.selected}
       renderTags={(value, getTagProps) =>
         value.map((option, index) => (

@@ -10,6 +10,7 @@ import { Music } from '../../../api/music'
 import useEditorModel from '../../../models/editor'
 import MusicEditDrawer from '../../../components/MusicEditDrawer'
 import { ipcRenderer } from 'electron'
+import { Channels } from '../../../../electron/channels'
 
 const MusicListPage = (): ReactElement => {
   const classes = useStyles()
@@ -20,6 +21,11 @@ const MusicListPage = (): ReactElement => {
   useEffect(() => {
     musicModel.fetchMusic({})
   }, [])
+  ipcRenderer.on(Channels.MusicUpdateEvent, (e, ids) => {
+    if (musicModel.data.find(it => ids.find((id:number) => it.id === id) !== 0)) {
+      musicModel.fetchMusic({ page: musicModel.page })
+    }
+  })
   return (
     <div className={classes.root}>
       <Menu

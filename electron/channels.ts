@@ -5,5 +5,7 @@ export const Channels = {
   LibraryScanComplete: 'LibraryScanComplete',
   ExitApp: 'ExitApp',
   Max: 'Max',
-  Min: 'Min'
+  Min: 'Min',
+  NotifyMusicUpdate: 'NotifyMusicUpdate',
+  MusicUpdateEvent: 'MusicUpdateEvent'
 }

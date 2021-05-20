@@ -2,7 +2,17 @@ import useStyles from './style'
 import React, { useEffect } from 'react'
 import useEditorModel, { EditMusic } from './model'
 import clsx from 'clsx'
-import { Checkbox, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@material-ui/core'
+import {
+  Checkbox,
+  Chip,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Tooltip
+} from '@material-ui/core'
 import EditorView from './parts/editor'
 import { Save } from '@material-ui/icons'
 import SaveDialog from './parts/SaveDialog'
@@ -61,6 +71,7 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
                 <TableCell>ID</TableCell>
                 <TableCell>Filename</TableCell>
                 <TableCell>Title</TableCell>
+                <TableCell>Artist</TableCell>
                 <TableCell>Album</TableCell>
               </TableRow>
             </TableHead>
@@ -71,7 +82,6 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
                     return (
                       <TableRow
                         key={it.id}
-                        hover
                       >
                         <TableCell>
                           <Checkbox
@@ -89,6 +99,7 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
                         <TableCell>{it.id}</TableCell>
                         <TableCell>{it.filename}</TableCell>
                         <TableCell>{it.editMusic?.title}</TableCell>
+                        <TableCell>{it.editMusic?.artist?.map(artistName => (<Chip key={artistName} label={artistName} />))}</TableCell>
                         <TableCell>{it.editMusic?.album}</TableCell>
                       </TableRow>
                     )

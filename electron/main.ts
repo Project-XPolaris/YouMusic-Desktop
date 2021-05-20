@@ -5,6 +5,7 @@ import { runExpress } from './express/instance'
 import './spotify/login'
 import './notification/client'
 import { Channels } from './channels'
+import './editor/index'
 let mainWindow: Electron.BrowserWindow | null
 let editorWindow: Electron.BrowserWindow | null
 
@@ -43,49 +44,6 @@ function createWindow () {
   })
 }
 
-function createEditor () {
-  editorWindow = new BrowserWindow({
-    width: 1100,
-    height: 700,
-    backgroundColor: '#FFFFFF',
-    webPreferences: {
-      nodeIntegration: true,
-      webSecurity: false,
-      allowRunningInsecureContent: true,
-      nodeIntegrationInWorker: true,
-      nodeIntegrationInSubFrames: true,
-      contextIsolation: false,
-      enableRemoteModule: true,
-      webviewTag: true
-    },
-    icon: path.join(__dirname, '/assets/icon.png'),
-    frame: false
-  })
-  if (process.env.NODE_ENV === 'development') {
-    editorWindow.loadURL('http://localhost:4000/#/editor')
-  } else {
-    editorWindow.loadURL(
-      url.format({
-        pathname: path.join(__dirname, 'renderer/index.html'),
-        protocol: 'file:',
-        slashes: true,
-        hash: 'editor'
-      })
-    )
-  }
-  editorWindow.on('closed', () => {
-    editorWindow = null
-  })
-}
-
-let editIds:number[] = []
-ipcMain.on('openEditor', (e, ids) => {
-  editIds = ids
-  createEditor()
-})
-ipcMain.handle('getEditIds', () => {
-  return editIds
-})
 ipcMain.on('close', () => {
   const currentWindow = BrowserWindow.getFocusedWindow()
   if (currentWindow) {
@@ -118,9 +76,6 @@ ipcMain.on(Channels.Min, () => {
   if (currentWindow) {
     currentWindow.minimize()
   }
-  if (currentWindow) {
-    currentWindow.minimize()
-  }
 })
 
 ipcMain.on(Channels.Max, () => {
@@ -131,5 +86,11 @@ ipcMain.on(Channels.Max, () => {
       return
     }
     currentWindow.maximize()
+  }
+})
+
+ipcMain.on(Channels.NotifyMusicUpdate, (e, ids) => {
+  if (mainWindow) {
+    mainWindow.webContents.send(Channels.MusicUpdateEvent, ids)
   }
 })

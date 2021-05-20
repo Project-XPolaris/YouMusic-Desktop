@@ -16,10 +16,17 @@ const useStyles = makeStyles((theme: Theme) =>
     cover: {
       width: '60%', marginBottom: theme.spacing(2)
     },
-    applyButton: {
+    empty: {
+      width: 240,
+      height: 240,
+      marginBottom: theme.spacing(2),
+      backgroundColor: '#2b2b2b'
+    },
+    bottomAction: {
       position: 'absolute',
       bottom: theme.spacing(2),
-      right: theme.spacing(2)
+      right: theme.spacing(2),
+      display: "flex"
     }
   })
 )
