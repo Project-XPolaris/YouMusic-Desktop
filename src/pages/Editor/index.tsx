@@ -1,6 +1,6 @@
 import useStyles from './style'
-import React, { useEffect } from 'react'
-import useEditorModel, { EditMusic } from './model'
+import React, { useEffect, useState } from 'react'
+import useEditorModel, { EditMusic, MusicUpdateData } from './model'
 import clsx from 'clsx'
 import {
   Checkbox,
@@ -11,37 +11,98 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Tooltip
+  Tooltip,
 } from '@material-ui/core'
 import EditorView from './parts/editor'
-import { Save } from '@material-ui/icons'
+import { Bookmark, Save } from '@material-ui/icons'
 import SaveDialog from './parts/SaveDialog'
+import ParseNameDialog from './parts/ParseNameDialog'
+import { matchName } from '../../utils/match'
 
 export interface EditPagePropsType {
   className?: string
 }
+
 export interface ColData {
-  id:number
-  filename:string
-  editMusic:EditMusic | undefined
+  id: number
+  filename: string
+  editMusic: EditMusic | undefined
 }
+
 const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
   const classes = useStyles()
   const model = useEditorModel()
+  const [matchString, setMatchString] = useState<string | undefined>()
   useEffect(() => {
     model.loadMusic()
   }, [])
-  const getData = ():ColData[] => {
+  const getData = (): ColData[] => {
     return model.musicList.filter(it => model.getEditMusic(it.id) !== undefined)
-      .map(it => ({ id: it.id, filename: it.filename, editMusic: model.getEditMusic(it.id) }))
+      .map(it => ({
+        id: it.id,
+        filename: it.filename,
+        editMusic: model.getEditMusic(it.id)
+      }))
+  }
+  const onMatchString = () => {
+    if (!model.editIds || model.setEditIds.length === 0) {
+      return
+    }
+    const id = model.editIds[0]
+    const music = model.musicList.find(it => it.id === id)
+    if (!music) {
+      return
+    }
+    setMatchString(music.filename.substr(0, music.filename.lastIndexOf('.')))
+  }
+  const onMatchOk = (pattern: string) => {
+    setMatchString(undefined)
+    if (!model.editIds) {
+      return
+    }
+    const updates = model.updateMusics
+    for (const editId of model.editIds) {
+      const music = model.musicList.find(it => it.id === editId)
+      if (!music) {
+        continue
+      }
+      const result = matchName(music.filename.substr(0, music.filename.lastIndexOf('.')), pattern)
+      const update = updates.find(it => editId === it.id)
+      if (update) {
+        if (result.title) {
+          update.title = result.title
+        }
+      } else {
+        const newUpdate: MusicUpdateData = {
+          id: editId,
+          title: result.title
+        }
+        updates.push(newUpdate)
+      }
+    }
+    model.setUpdateMusics(updates)
   }
   return (
     <div className={clsx(className, classes.root)}>
       <SaveDialog />
+      <ParseNameDialog
+        open={Boolean(matchString)}
+        name={matchString ?? ''}
+        onCancel={() => setMatchString(undefined)}
+        onOk={onMatchOk}
+      />
       <div className={classes.toolbar}>
         <div className={classes.title}>
           Editor
         </div>
+        {
+          (model.editIds?.length ?? 0) > 0 && <Tooltip title='match filename'>
+            <IconButton size='medium' onClick={onMatchString}>
+              <Bookmark />
+            </IconButton>
+          </Tooltip>
+        }
+
         <Tooltip title='Save all changes'>
           <IconButton size='medium' onClick={() => model.saveAll()}>
             <Save />
@@ -58,7 +119,7 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
               <TableRow>
                 <TableCell>
                   <Checkbox
-                    color="primary"
+                    color='primary'
                     onChange={(e) => {
                       if (e.target.checked) {
                         model.setEditIds(model.musicList.map(it => it.id))
@@ -85,7 +146,7 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
                       >
                         <TableCell>
                           <Checkbox
-                            color="primary"
+                            color='primary'
                             onChange={(e) => {
                               if (e.target.checked) {
                                 model.setEditIds([...((model.editIds ?? []).filter(selectedId => selectedId !== it.id)), it.id])
@@ -99,7 +160,8 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
                         <TableCell>{it.id}</TableCell>
                         <TableCell>{it.filename}</TableCell>
                         <TableCell>{it.editMusic?.title}</TableCell>
-                        <TableCell>{it.editMusic?.artist?.map(artistName => (<Chip key={artistName} label={artistName} />))}</TableCell>
+                        <TableCell>{it.editMusic?.artist?.map(artistName => (
+                          <Chip key={artistName} label={artistName} />))}</TableCell>
                         <TableCell>{it.editMusic?.album}</TableCell>
                       </TableRow>
                     )

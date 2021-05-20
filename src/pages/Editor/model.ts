@@ -1,10 +1,10 @@
 import { createModel } from 'hox'
 import { useState } from 'react'
-import { fetchMusicList, Music, updateMusicInfo } from '../../api/music'
+import { fetchMusicList, Music, updateMusicInfo, uploadMusicCover } from '../../api/music'
 import { ipcRenderer } from 'electron'
 import { intersection } from 'lodash'
 import { Channels } from '../../../electron/channels'
-import { getImageUrl } from '../../utils/image'
+import { getImageUrl, getMusicFileCover } from '../../utils/image'
 import { readFile } from '../../utils/file'
 
 export interface MusicUpdateData {
@@ -44,7 +44,7 @@ const EditorModel = () => {
       return undefined
     }
     return {
-      cover: update?.cover ?? (music.album?.cover ? getImageUrl(music.album.cover) : undefined),
+      cover: update?.cover ?? (music.album?.cover ? getMusicFileCover(music.id) : undefined),
       title: update?.title ?? music.title,
       album: update?.album ?? music.album?.name,
       artist: update?.artist ?? music.artist.map(it => it.name)
@@ -104,7 +104,9 @@ const EditorModel = () => {
         total: updateMusics.length
       })
       await updateMusicInfo(updateMusic.id, updateMusic)
-
+      if (updateMusic.file) {
+        await uploadMusicCover(updateMusic.id, updateMusic.file)
+      }
       setUpdateMusics([])
     }
     setSaveProgress(undefined)
@@ -122,7 +124,8 @@ const EditorModel = () => {
     saveAll,
     saveProgress,
     getEditMusic,
-    setImageFile
+    setImageFile,
+    setUpdateMusics
   }
 }
 const useEditorModel = createModel(EditorModel)

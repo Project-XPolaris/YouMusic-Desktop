@@ -6,6 +6,7 @@ import { Button, IconButton, styled, TextField, Tooltip } from '@material-ui/cor
 import ArtistPickView from '../../../../components/ArtistPickView'
 import { useArtistPickController } from '../../../../components/ArtistPickView/hook'
 import { Image } from '@material-ui/icons'
+import { readFile } from '../../../../utils/file'
 
 export interface EditorViewPropsType {
   className?: string
@@ -19,8 +20,9 @@ const EditorView = ({ className }: EditorViewPropsType): React.ReactElement => {
   const [title, setTitle] = useState<string>('')
   const [album, setAlbum] = useState<string>('')
   const [coverUrl, setCoverUrl] = useState<string | undefined>()
+  const [coverFile, setCoverFile] = useState<File | undefined>()
   const artistPickController = useArtistPickController([])
-  const onUploadCover = (e:ChangeEvent<HTMLInputElement>) => {
+  const onUploadCover = async (e:ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
       return
     }
@@ -31,7 +33,11 @@ const EditorView = ({ className }: EditorViewPropsType): React.ReactElement => {
     if (!model.editIds) {
       return
     }
-    model.setImageFile(model.editIds, file)
+    const url = await readFile(file)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    setCoverUrl(url)
+    setCoverFile(file)
   }
   useEffect(() => {
     const editMusic = model.getCurrentEditMusic()
@@ -42,9 +48,10 @@ const EditorView = ({ className }: EditorViewPropsType): React.ReactElement => {
     setAlbum(editMusic.album ?? '')
     artistPickController.setSelected(editMusic.artist ?? [])
     setCoverUrl(editMusic.cover)
+    console.log(model.updateMusics)
   }, [model.editIds])
   const editMusic = model.getCurrentEditMusic()
-  if (!editMusic) {
+  if (!editMusic || model.editIds?.length === 0) {
     return <></>
   }
   const onApply = () => {
@@ -56,7 +63,8 @@ const EditorView = ({ className }: EditorViewPropsType): React.ReactElement => {
       title: title.length > 0 ? title : undefined,
       album: album.length > 0 ? album : undefined,
       artist: artistPickController.selected.length > 0 ? artistPickController.selected : undefined,
-      cover: coverUrl
+      cover: coverUrl,
+      file: coverFile
     })))
   }
   return (

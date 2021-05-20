@@ -5,5 +5,5 @@ export const readFile = (file:File):Promise<string | ArrayBuffer | null> => new 
     resolve(fr.result)
   }
   fr.onerror = reject
-  fr.readAsText(file)
+  fr.readAsDataURL(file)
 })
