@@ -1,6 +1,6 @@
 export const matchName = (text:string, pattern:string): {[key:string]:string} => {
-  const replaceString = '[ \\ ^ $ . | ? * + ( )'
-  const extractNames = ['track', 'title']
+  const replaceString = '[\\^$.|?*+()'
+  const extractNames = ['track', 'title', 'artist']
   for (const symbol of replaceString) {
     pattern = pattern.replace(symbol, `\\${symbol}`)
   }

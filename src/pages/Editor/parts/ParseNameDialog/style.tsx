@@ -2,7 +2,9 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {},
+    root: {
+
+    },
     header: {
       width: theme.spacing(60),
       backgroundColor: '#2a2a2a',
@@ -17,7 +19,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     list: {
       height: theme.spacing(30),
-      overflowY: 'auto'
+      overflowY: 'auto',
+      width: theme.spacing(60)
+    },
+    content: {
+      padding: theme.spacing(2)
     }
   })
 )

@@ -11,12 +11,12 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Tooltip,
+  Tooltip
 } from '@material-ui/core'
 import EditorView from './parts/editor'
 import { Bookmark, Save } from '@material-ui/icons'
 import SaveDialog from './parts/SaveDialog'
-import ParseNameDialog from './parts/ParseNameDialog'
+import ParseNameDialog, { MatchResult } from './parts/ParseNameDialog'
 import { matchName } from '../../utils/match'
 
 export interface EditPagePropsType {
@@ -66,21 +66,25 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
       if (!music) {
         continue
       }
-      const result = matchName(music.filename.substr(0, music.filename.lastIndexOf('.')), pattern)
+      const result : MatchResult = matchName(music.filename.substr(0, music.filename.lastIndexOf('.')), pattern)
       const update = updates.find(it => editId === it.id)
       if (update) {
         if (result.title) {
           update.title = result.title
         }
+        if (result.artist) {
+          update.artist = [result.artist]
+        }
       } else {
         const newUpdate: MusicUpdateData = {
           id: editId,
-          title: result.title
+          title: result.title,
+          artist: result.artist ? [result.artist] : undefined
         }
         updates.push(newUpdate)
       }
     }
-    model.setUpdateMusics(updates)
+    model.setUpdateMusics([...updates])
   }
   return (
     <div className={clsx(className, classes.root)}>

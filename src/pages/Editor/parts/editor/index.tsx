@@ -44,12 +44,12 @@ const EditorView = ({ className }: EditorViewPropsType): React.ReactElement => {
     if (!editMusic) {
       return
     }
+
     setTitle(editMusic.title ?? '')
     setAlbum(editMusic.album ?? '')
     artistPickController.setSelected(editMusic.artist ?? [])
     setCoverUrl(editMusic.cover)
-    console.log(model.updateMusics)
-  }, [model.editIds])
+  }, [model.editIds, model.updateMusics])
   const editMusic = model.getCurrentEditMusic()
   if (!editMusic || model.editIds?.length === 0) {
     return <></>
@@ -62,7 +62,7 @@ const EditorView = ({ className }: EditorViewPropsType): React.ReactElement => {
       id: it,
       title: title.length > 0 ? title : undefined,
       album: album.length > 0 ? album : undefined,
-      artist: artistPickController.selected.length > 0 ? artistPickController.selected : undefined,
+      artist: artistPickController.selected,
       cover: coverUrl,
       file: coverFile
     })))

@@ -1,10 +1,11 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import useStyles from './style'
-import { Button, Dialog, DialogActions, InputBase, List, ListItem, ListItemText } from '@material-ui/core'
+import { Button, Dialog, DialogActions, InputBase, List, ListItem, ListItemText, TextField } from '@material-ui/core'
 import { matchName } from '../../../../utils/match'
 export interface MatchResult {
   track?:string
   title?:string
+  artist?:string
 }
 export interface ParseNameDialogPropsType {
   name?: string
@@ -28,13 +29,14 @@ const ParseNameDialog = ({
   }, [matchString])
   const classes = useStyles()
   return (
-    <Dialog open={open} maxWidth={'xl'} onClose={onCancel}>
+    <Dialog open={open} maxWidth={'xl'} onClose={onCancel} className={classes.root}>
       <div className={classes.header}>
         <InputBase placeholder="match pattern" onChange={e => setMatchString(e.target.value)} fullWidth />
         <div className={classes.example}>
           {name}
         </div>
       </div>
+
       <div className={classes.list}>
         <List>
           {
