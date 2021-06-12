@@ -7,25 +7,17 @@ import usePlayerModel from '../../../models/player'
 import MusicListItem from '../../../components/MusicListItem'
 import { useContextMenu } from '../../../hooks/context'
 import { Music } from '../../../api/music'
-import useEditorModel from '../../../models/editor'
 import MusicEditDrawer from '../../../components/MusicEditDrawer'
 import { ipcRenderer } from 'electron'
-import { Channels } from '../../../../electron/channels'
 
 const MusicListPage = (): ReactElement => {
   const classes = useStyles()
   const musicModel = useMusicListModel()
   const playerModel = usePlayerModel()
-  const editorModel = useEditorModel()
   const contextMenuController = useContextMenu<Music>(undefined)
   useEffect(() => {
-    musicModel.fetchMusic({})
+    musicModel.fetchMusic({ order: '-id' })
   }, [])
-  ipcRenderer.on(Channels.MusicUpdateEvent, (e, ids) => {
-    if (musicModel.data.find(it => ids.find((id:number) => it.id === id) !== 0)) {
-      musicModel.fetchMusic({ page: musicModel.page })
-    }
-  })
   return (
     <div className={classes.root}>
       <Menu
@@ -104,7 +96,7 @@ const MusicListPage = (): ReactElement => {
       </List>
       <Pagination
         count={Math.ceil(musicModel.total / 20)}
-        onChange={(event, page) => musicModel.fetchMusic({ page })}
+        onChange={(event, page) => musicModel.fetchMusic({ page, order: '-id' })}
       />
     </div>
   )

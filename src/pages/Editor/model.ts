@@ -79,8 +79,13 @@ const EditorModel = () => {
     return editMusic
   }
   const saveUpdate = (update: MusicUpdateData[]) => {
-    setUpdateMusics([...updateMusics.filter(it => update.find(u => it.id !== u.id)), ...update])
+    setUpdateMusics([...updateMusics.filter(it => !update.find(u => it.id !== u.id)), ...update])
   }
+
+  const applyUpdate = (update: MusicUpdateData[]) => {
+    setUpdateMusics([...updateMusics.filter(it => !update.find(u => it.id !== u.id)), ...update])
+  }
+
   const setImageFile = async (ids:number[], file:File) => {
     const fileUrl:any = await readFile(file)
     setUpdateMusics(updateMusics.map(it => {

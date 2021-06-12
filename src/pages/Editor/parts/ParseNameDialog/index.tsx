@@ -25,6 +25,8 @@ const ParseNameDialog = ({
   useEffect(() => {
     if (name) {
       setResult(matchName(name, matchString))
+    } else {
+      setResult({})
     }
   }, [matchString])
   const classes = useStyles()

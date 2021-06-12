@@ -44,7 +44,6 @@ const EditorView = ({ className }: EditorViewPropsType): React.ReactElement => {
     if (!editMusic) {
       return
     }
-
     setTitle(editMusic.title ?? '')
     setAlbum(editMusic.album ?? '')
     artistPickController.setSelected(editMusic.artist ?? [])
@@ -58,14 +57,17 @@ const EditorView = ({ className }: EditorViewPropsType): React.ReactElement => {
     if (!model.editIds) {
       return
     }
-    model.saveUpdate(model.editIds.map(it => ({
-      id: it,
-      title: title.length > 0 ? title : undefined,
-      album: album.length > 0 ? album : undefined,
-      artist: artistPickController.selected,
-      cover: coverUrl,
-      file: coverFile
-    })))
+    model.saveUpdate(model.editIds.map(it => {
+      const update = model.updateMusics.find(updateData => updateData.id === it)
+      return {
+        id: it,
+        title: title.length > 0 ? title : update?.title,
+        album: album.length > 0 ? album : update?.album,
+        artist: artistPickController.selected.length > 0 ? artistPickController.selected : update?.artist,
+        cover: coverUrl ?? update?.cover,
+        file: coverFile ?? update?.file
+      }
+    }))
   }
   return (
     <div className={clsx(classes.root, className)}>

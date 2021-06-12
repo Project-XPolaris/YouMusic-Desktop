@@ -60,14 +60,14 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
     if (!model.editIds) {
       return
     }
-    const updates = model.updateMusics
+    const updates : MusicUpdateData[] = []
     for (const editId of model.editIds) {
       const music = model.musicList.find(it => it.id === editId)
       if (!music) {
         continue
       }
       const result : MatchResult = matchName(music.filename.substr(0, music.filename.lastIndexOf('.')), pattern)
-      const update = updates.find(it => editId === it.id)
+      const update = model.updateMusics.find(it => editId === it.id)
       if (update) {
         if (result.title) {
           update.title = result.title
@@ -75,6 +75,9 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
         if (result.artist) {
           update.artist = [result.artist]
         }
+        updates.push({
+          ...update
+        })
       } else {
         const newUpdate: MusicUpdateData = {
           id: editId,
@@ -84,7 +87,7 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
         updates.push(newUpdate)
       }
     }
-    model.setUpdateMusics([...updates])
+    model.saveUpdate([...updates])
   }
   return (
     <div className={clsx(className, classes.root)}>
@@ -131,6 +134,7 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
                         model.setEditIds([])
                       }
                     }}
+                    checked={model.musicList.length > 0 && model.editIds?.length === model.musicList.length}
                   />
                 </TableCell>
                 <TableCell>ID</TableCell>

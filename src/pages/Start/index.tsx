@@ -20,7 +20,7 @@ import { LoginHistory, loginHistoryManager } from '../../utils/login'
 import { fetchAppInfo } from '../../api/info'
 import { useSnackbar } from 'notistack'
 import request from 'umi-request'
-import useLayoutModel from '../../models/layout';
+import useLayoutModel from '../../models/layout'
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -47,7 +47,22 @@ const useStyles = makeStyles(theme => ({
   },
   input: {
     marginBottom: theme.spacing(2)
-  }
+  },
+  list: {
+    height: '45vh',
+    overflowY: 'auto'
+  },
+  '@global': {
+    '*::-webkit-scrollbar': {
+      width: '8px'
+    },
+    '*::-webkit-scrollbar-track': {
+      background: 'rgba(0,0,0,0)'
+    },
+    '*::-webkit-scrollbar-thumb': {
+      backgroundColor: '#303030'
+    }
+  },
 
 }))
 
@@ -111,7 +126,7 @@ const StartPage = () : ReactElement => {
     }
     return (
       <div>
-        <List>
+        <List className={classes.list}>
           {
             loginHistoryManager.list.map((loginHistory, idx) => {
               return (

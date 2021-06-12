@@ -28,8 +28,7 @@ const MusicListItem = ({
     if (music.artist.length > 0) {
       parts.push(music.artist.map(it => it.name).join('/'))
     }
-    parts.push(music.filename)
-    return parts.join(' | ');
+    return parts.join(' | ')
   }
   return (
     <ListItem
