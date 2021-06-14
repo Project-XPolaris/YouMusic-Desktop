@@ -1,27 +1,24 @@
 import useStyles from './style'
 import clsx from 'clsx'
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect } from 'react'
 import useEditorModel from '../../model'
 import { Button, IconButton, styled, TextField, Tooltip } from '@material-ui/core'
 import ArtistPickView from '../../../../components/ArtistPickView'
-import { useArtistPickController } from '../../../../components/ArtistPickView/hook'
 import { Image } from '@material-ui/icons'
-import { readFile } from '../../../../utils/file'
+import { EditorController } from './hook'
 
 export interface EditorViewPropsType {
   className?: string
+  controller:EditorController
 }
 const Input = styled('input')({
   display: 'none'
 })
-const EditorView = ({ className }: EditorViewPropsType): React.ReactElement => {
+const EditorView = ({ className, controller }: EditorViewPropsType): React.ReactElement => {
   const classes = useStyles()
   const model = useEditorModel()
-  const [title, setTitle] = useState<string>('')
-  const [album, setAlbum] = useState<string>('')
-  const [coverUrl, setCoverUrl] = useState<string | undefined>()
-  const [coverFile, setCoverFile] = useState<File | undefined>()
-  const artistPickController = useArtistPickController([])
+  const { title, setTitle, album, setAlbum, artistPickController, setCoverUrl, coverUrl, coverFile } = controller
+
   const onUploadCover = async (e:ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
       return
@@ -33,11 +30,7 @@ const EditorView = ({ className }: EditorViewPropsType): React.ReactElement => {
     if (!model.editIds) {
       return
     }
-    const url = await readFile(file)
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    setCoverUrl(url)
-    setCoverFile(file)
+    controller.setCoverFromFile(file)
   }
   useEffect(() => {
     const editMusic = model.getCurrentEditMusic()
@@ -47,7 +40,9 @@ const EditorView = ({ className }: EditorViewPropsType): React.ReactElement => {
     setTitle(editMusic.title ?? '')
     setAlbum(editMusic.album ?? '')
     artistPickController.setSelected(editMusic.artist ?? [])
-    setCoverUrl(editMusic.cover)
+    if (editMusic.cover) {
+      setCoverUrl(editMusic.cover)
+    }
   }, [model.editIds, model.updateMusics])
   const editMusic = model.getCurrentEditMusic()
   if (!editMusic || model.editIds?.length === 0) {
@@ -65,7 +60,8 @@ const EditorView = ({ className }: EditorViewPropsType): React.ReactElement => {
         album: album.length > 0 ? album : update?.album,
         artist: artistPickController.selected.length > 0 ? artistPickController.selected : update?.artist,
         cover: coverUrl ?? update?.cover,
-        file: coverFile ?? update?.file
+        file: coverFile ?? update?.file,
+        coverUrl: coverUrl
       }
     }))
   }
@@ -107,6 +103,7 @@ const EditorView = ({ className }: EditorViewPropsType): React.ReactElement => {
         <Button
           variant='contained'
           onClick={onApply}
+          className={classes.applyButton}
         >
           Apply
         </Button>

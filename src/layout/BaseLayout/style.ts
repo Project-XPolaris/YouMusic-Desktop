@@ -32,8 +32,8 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0
   },
   appbar: {
-    backgroundColor: '#202020'
-
+    backgroundColor: '#202020',
+    zIndex: theme.zIndex.modal + 1
   },
   toolbar: {
     padding: 0

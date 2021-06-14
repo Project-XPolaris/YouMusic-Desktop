@@ -37,7 +37,7 @@ const useStyles = makeStyles({
   },
   list: {
     width: theme.spacing(40),
-    marginTop: theme.spacing(8)
+    marginTop: theme.spacing(8 + 6)
   },
   header: {
     height: theme.spacing(8),
@@ -46,6 +46,7 @@ const useStyles = makeStyles({
     position: 'fixed',
     width: '100%',
     zIndex: 100,
+    top: 48,
     backgroundColor: '#202020'
   }
 })

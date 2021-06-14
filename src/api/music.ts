@@ -31,6 +31,7 @@ export const updateMusicInfo = async (
     year?:number
     track?:number
     artist?:string[]
+    coverUrl?:string
   }
 ): Promise<void> => {
   return apiRequest.patch(`/music/${id}/file`, {

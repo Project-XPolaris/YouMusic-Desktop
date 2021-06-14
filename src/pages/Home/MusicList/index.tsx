@@ -16,7 +16,7 @@ const MusicListPage = (): ReactElement => {
   const playerModel = usePlayerModel()
   const contextMenuController = useContextMenu<Music>(undefined)
   useEffect(() => {
-    musicModel.fetchMusic({ order: '-id' })
+    musicModel.fetchMusic({ order: '-id', page: musicModel.page })
   }, [])
   return (
     <div className={classes.root}>

@@ -4,7 +4,7 @@ import { fetchMusicList, Music, updateMusicInfo, uploadMusicCover } from '../../
 import { ipcRenderer } from 'electron'
 import { intersection } from 'lodash'
 import { Channels } from '../../../electron/channels'
-import { getImageUrl, getMusicFileCover } from '../../utils/image'
+import { getMusicFileCover } from '../../utils/image'
 import { readFile } from '../../utils/file'
 
 export interface MusicUpdateData {
@@ -13,7 +13,8 @@ export interface MusicUpdateData {
   album?: string
   artist?:string[]
   cover?:string,
-  file?:File
+  file?:File,
+  coverUrl?:string
 }
 
 export interface EditMusic {

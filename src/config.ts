@@ -13,7 +13,8 @@ export const ApplicationConfig = {
     spotifyCode: '/spotify/client/code',
     spotifyUnlink: '/spotify/login',
     spotifySearch: '/spotify/search',
-    accountInfo: '/account/my'
+    accountInfo: '/account/my',
+    searchAlbumMeta: '/meta/search/album'
   },
   keys: {
     store: {

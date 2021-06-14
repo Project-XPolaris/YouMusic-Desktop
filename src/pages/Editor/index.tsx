@@ -14,10 +14,12 @@ import {
   Tooltip
 } from '@material-ui/core'
 import EditorView from './parts/editor'
-import { Bookmark, Save } from '@material-ui/icons'
+import { Album, Bookmark, Save } from '@material-ui/icons'
 import SaveDialog from './parts/SaveDialog'
 import ParseNameDialog, { MatchResult } from './parts/ParseNameDialog'
 import { matchName } from '../../utils/match'
+import SearchAlbumDrawer from './parts/SearchAlbumDrawer'
+import { useEditor } from './parts/editor/hook'
 
 export interface EditPagePropsType {
   className?: string
@@ -33,6 +35,8 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
   const classes = useStyles()
   const model = useEditorModel()
   const [matchString, setMatchString] = useState<string | undefined>()
+  const [searchAlbumOpen, setSearchAlbumOpen] = useState(false)
+  const editController = useEditor()
   useEffect(() => {
     model.loadMusic()
   }, [])
@@ -89,6 +93,12 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
     }
     model.saveUpdate([...updates])
   }
+  const onApplyAlbum = (cover:string, name:string, artistName:string) => {
+    editController.setAlbum(name)
+    editController.addArtist(artistName)
+    editController.setCoverFromUrl(cover)
+    setSearchAlbumOpen(false)
+  }
   return (
     <div className={clsx(className, classes.root)}>
       <SaveDialog />
@@ -98,16 +108,30 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
         onCancel={() => setMatchString(undefined)}
         onOk={onMatchOk}
       />
+      <SearchAlbumDrawer
+        isOpen={searchAlbumOpen}
+        onCLose={() => setSearchAlbumOpen(false)}
+        onApply={onApplyAlbum}
+      />
       <div className={classes.toolbar}>
         <div className={classes.title}>
           Editor
         </div>
         {
-          (model.editIds?.length ?? 0) > 0 && <Tooltip title='match filename'>
-            <IconButton size='medium' onClick={onMatchString}>
-              <Bookmark />
-            </IconButton>
-          </Tooltip>
+          (model.editIds?.length ?? 0) > 0 &&
+            <>
+              <Tooltip title='match filename'>
+                <IconButton size='medium' onClick={onMatchString}>
+                  <Bookmark />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title='search album meta'>
+                <IconButton size='medium' onClick={() => setSearchAlbumOpen(true)}>
+                  <Album />
+                </IconButton>
+              </Tooltip>
+            </>
+
         }
 
         <Tooltip title='Save all changes'>
@@ -118,7 +142,7 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
       </div>
       <div className={classes.content}>
         <div className={classes.view}>
-          <EditorView />
+          <EditorView controller={editController} />
         </div>
         <div className={classes.list}>
           <Table stickyHeader size='small'>

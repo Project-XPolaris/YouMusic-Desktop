@@ -73,7 +73,7 @@ const AlbumListPage = (): React.ReactElement => {
         ))}
       </Grid>
       <Pagination count={Math.ceil(albumListModel.total / 55)}
-        onChange={(event, page) => albumListModel.fetchAlbum({ page })} />
+        onChange={(event, page) => albumListModel.fetchAlbum({ page,order: '-id' })} />
     </div>
   )
 }
