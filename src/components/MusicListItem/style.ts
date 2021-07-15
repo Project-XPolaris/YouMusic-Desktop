@@ -6,8 +6,10 @@ const useStyles = makeStyles((theme: Theme) =>
       color: 'white'
     },
     cover: {
-      width: theme.spacing(8),
-      marginRight: theme.spacing(2)
+      width: theme.spacing(6),
+      marginRight: theme.spacing(2),
+      height: theme.spacing(6),
+      objectFit: 'contain'
     },
     selectedItem: {
       backgroundColor: theme.palette.primary.dark

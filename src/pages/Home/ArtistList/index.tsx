@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Grid, Menu, MenuItem, Pagination } from '@material-ui/core'
+import { Grid, Menu, MenuItem, Pagination, List } from '@material-ui/core'
 import useStyles from './style'
 import ArtistItem from '../../../components/ArtistItem'
 import { useMount, useUnmount } from 'ahooks'
@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom'
 import { useContextMenu } from '../../../hooks/context'
 import { Artist } from '../../../api/artist'
 import useEditorModel from '../../../models/editor'
-import AlbumFilter from '../../../components/AlbumFilter';
+import ArtistFilter from '../../../components/ArtistFilter'
 
 const ArtistListPage = ():React.ReactElement => {
   const classes = useStyles()
@@ -46,21 +46,33 @@ const ArtistListPage = ():React.ReactElement => {
         >Edit</MenuItem>
       </Menu>
       <div className={classes.toolbar}>
-        <AlbumFilter filter={artistModel.filter} onChange={(newFilter) => artistModel.setFilter(newFilter)}/>
+        <ArtistFilter filter={artistModel.filter} onChange={(newFilter) => artistModel.setFilter(newFilter)}/>
       </div>
-      <Grid container className={classes.grid}>
+      {/*<Grid container>*/}
+      {/*  {artistModel.data.map((artist) => (*/}
+      {/*    <Grid container item key={artist.id} className={classes.item}>*/}
+      {/*      <ArtistItem*/}
+      {/*        artist={artist}*/}
+      {/*        onClick={(artist) => history.push(`/artist/${artist.id}`)}*/}
+      {/*        onContextClick={(e) => {*/}
+      {/*          contextMenuController.open(artist, { x: e.clientX - 2, y: e.clientY - 4 })*/}
+      {/*        }}*/}
+      {/*      />*/}
+      {/*    </Grid>*/}
+      {/*  ))}*/}
+      {/*</Grid>*/}
+      <List>
         {artistModel.data.map((artist) => (
-          <Grid container item key={artist.id} className={classes.item}>
-            <ArtistItem
-              artist={artist}
-              onClick={(artist) => history.push(`/artist/${artist.id}`)}
-              onContextClick={(e) => {
-                contextMenuController.open(artist, { x: e.clientX - 2, y: e.clientY - 4 })
-              }}
-            />
-          </Grid>
+          <ArtistListItem
+            key={artist.id}
+            artist={artist}
+            onClick={(artist) => history.push(`/artist/${artist.id}`)}
+            onContextClick={(e) => {
+              contextMenuController.open(artist, { x: e.clientX - 2, y: e.clientY - 4 })
+            }}
+          />
         ))}
-      </Grid>
+      </List>
       <Pagination count={Math.ceil(artistModel.total / 55)} onChange={(event, page) => artistModel.fetchArtist({ page })} />
     </div>
   )

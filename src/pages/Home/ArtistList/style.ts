@@ -4,6 +4,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: '100%',
     maxHeight: '100%',
+    padding: theme.spacing(3),
     overflowX: 'hidden',
     overflowY: 'scroll',
     paddingBottom: theme.spacing(12)
