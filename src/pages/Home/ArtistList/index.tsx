@@ -8,6 +8,7 @@ import { useHistory } from 'react-router-dom'
 import { useContextMenu } from '../../../hooks/context'
 import { Artist } from '../../../api/artist'
 import useEditorModel from '../../../models/editor'
+import AlbumFilter from '../../../components/AlbumFilter';
 
 const ArtistListPage = ():React.ReactElement => {
   const classes = useStyles()
@@ -44,7 +45,10 @@ const ArtistListPage = ():React.ReactElement => {
           }}
         >Edit</MenuItem>
       </Menu>
-      <Grid container>
+      <div className={classes.toolbar}>
+        <AlbumFilter filter={artistModel.filter} onChange={(newFilter) => artistModel.setFilter(newFilter)}/>
+      </div>
+      <Grid container className={classes.grid}>
         {artistModel.data.map((artist) => (
           <Grid container item key={artist.id} className={classes.item}>
             <ArtistItem

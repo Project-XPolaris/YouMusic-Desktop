@@ -14,7 +14,9 @@ export const ApplicationConfig = {
     spotifyUnlink: '/spotify/login',
     spotifySearch: '/spotify/search',
     accountInfo: '/account/my',
-    searchAlbumMeta: '/meta/search/album'
+    searchAlbumMeta: '/meta/search/album',
+    searchMusicMeta: '/meta/search/music',
+    musicMetaLyric: '/meta/lyric'
   },
   keys: {
     store: {

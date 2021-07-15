@@ -9,6 +9,8 @@ import { useContextMenu } from '../../../hooks/context'
 import { Music } from '../../../api/music'
 import MusicEditDrawer from '../../../components/MusicEditDrawer'
 import { ipcRenderer } from 'electron'
+import AlbumFilter from '../../../components/AlbumFilter'
+import MusicFilter from '../../../components/MusicFilter';
 
 const MusicListPage = (): ReactElement => {
   const classes = useStyles()
@@ -68,7 +70,7 @@ const MusicListPage = (): ReactElement => {
         }}
       />
       <div className={classes.toolbar}>
-
+        <MusicFilter filter={musicModel.filter} onChange={(newFilter) => musicModel.setFilter(newFilter)}/>
       </div>
       <List>
         {musicModel.data.map((music) => {

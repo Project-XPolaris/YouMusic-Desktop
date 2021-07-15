@@ -48,3 +48,7 @@ export const uploadMusicCover = async (id:number, file:File):Promise<BaseRespons
 export const fetchMusicLyrics = async (id:string):Promise<string> => {
   return await apiRequest.get(`/file/lrc/${id}`)
 }
+
+export const updateMusicLyrics = async (id:string, lyric:string):Promise<BaseResponse> => {
+  return await apiRequest.post(`/music/${id}/lyric`, { data: { content: lyric } })
+}

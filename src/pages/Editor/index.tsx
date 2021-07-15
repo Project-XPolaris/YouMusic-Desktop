@@ -20,15 +20,18 @@ import ParseNameDialog, { MatchResult } from './parts/ParseNameDialog'
 import { matchName } from '../../utils/match'
 import SearchAlbumDrawer from './parts/SearchAlbumDrawer'
 import { useEditor } from './parts/editor/hook'
+import SearchLyricDrawer from './parts/SearchLyricDrawer'
+import { useSearchLyricDrawerController } from './parts/SearchLyricDrawer/hook'
+import { updateMusicLyrics } from '../../api/music'
 
 export interface EditPagePropsType {
-  className?: string
+  className?: string;
 }
 
 export interface ColData {
-  id: number
-  filename: string
-  editMusic: EditMusic | undefined
+  id: number;
+  filename: string;
+  editMusic: EditMusic | undefined;
 }
 
 const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
@@ -37,6 +40,8 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
   const [matchString, setMatchString] = useState<string | undefined>()
   const [searchAlbumOpen, setSearchAlbumOpen] = useState(false)
   const editController = useEditor()
+  const searchLyricController = useSearchLyricDrawerController()
+  const [searchLyricOpen, setSearchLyricOpen] = useState(false)
   useEffect(() => {
     model.loadMusic()
   }, [])
@@ -64,13 +69,13 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
     if (!model.editIds) {
       return
     }
-    const updates : MusicUpdateData[] = []
+    const updates: MusicUpdateData[] = []
     for (const editId of model.editIds) {
       const music = model.musicList.find(it => it.id === editId)
       if (!music) {
         continue
       }
-      const result : MatchResult = matchName(music.filename.substr(0, music.filename.lastIndexOf('.')), pattern)
+      const result: MatchResult = matchName(music.filename.substr(0, music.filename.lastIndexOf('.')), pattern)
       const update = model.updateMusics.find(it => editId === it.id)
       if (update) {
         if (result.title) {
@@ -93,11 +98,25 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
     }
     model.saveUpdate([...updates])
   }
-  const onApplyAlbum = (cover:string, name:string, artistName:string) => {
+  const onApplyAlbum = (cover: string, name: string, artistName: string) => {
     editController.setAlbum(name)
     editController.addArtist(artistName)
     editController.setCoverFromUrl(cover)
     setSearchAlbumOpen(false)
+  }
+  const onEditorSearchLyricClick = (id: number, title: string) => {
+    if (model.editIds?.length !== 1) {
+      return
+    }
+    searchLyricController.setInputSearch(title)
+    setSearchLyricOpen(true)
+  }
+  const onApplyLyric = async (lyric: string) => {
+    if (!model.editIds || model.editIds.length !== 1) {
+      return
+    }
+    await updateMusicLyrics(model.editIds[0].toString(), lyric)
+    setSearchLyricOpen(false)
   }
   return (
     <div className={clsx(className, classes.root)}>
@@ -113,24 +132,25 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
         onCLose={() => setSearchAlbumOpen(false)}
         onApply={onApplyAlbum}
       />
+      <SearchLyricDrawer isOpen={searchLyricOpen} onCLose={() => setSearchLyricOpen(false)} onApply={onApplyLyric} controller={searchLyricController} />
       <div className={classes.toolbar}>
         <div className={classes.title}>
           Editor
         </div>
         {
           (model.editIds?.length ?? 0) > 0 &&
-            <>
-              <Tooltip title='match filename'>
-                <IconButton size='medium' onClick={onMatchString}>
-                  <Bookmark />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title='search album meta'>
-                <IconButton size='medium' onClick={() => setSearchAlbumOpen(true)}>
-                  <Album />
-                </IconButton>
-              </Tooltip>
-            </>
+          <>
+            <Tooltip title='match filename'>
+              <IconButton size='medium' onClick={onMatchString}>
+                <Bookmark />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title='search album meta'>
+              <IconButton size='medium' onClick={() => setSearchAlbumOpen(true)}>
+                <Album />
+              </IconButton>
+            </Tooltip>
+          </>
 
         }
 
@@ -142,7 +162,7 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
       </div>
       <div className={classes.content}>
         <div className={classes.view}>
-          <EditorView controller={editController} />
+          <EditorView controller={editController} onSearchLyric={onEditorSearchLyricClick} />
         </div>
         <div className={classes.list}>
           <Table stickyHeader size='small'>

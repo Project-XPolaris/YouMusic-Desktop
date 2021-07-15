@@ -1,16 +1,18 @@
 import { useDataPageLoader } from '../../../hooks/loader'
 import { createModel } from 'hox'
 import { fetchMusicList, Music, updateMusicInfo } from '../../../api/music'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { MusicUpdate } from '../../../components/MusicEditDrawer'
 import { ipcRenderer } from 'electron'
 import { Channels } from '../../../../electron/channels'
+import { MusicFilterData } from '../../../components/MusicFilter'
 
 const musicListModel = () => {
   const { data, page, pageSize, total, loadData } = useDataPageLoader<Music>({ loader: fetchMusicList, defaultPageSize: 10, defaultPage: 1 })
   const [selectedMusic, setSelectMusic] = useState<Music[]>([])
+  const [filter, setFilter] = useState<MusicFilterData>({ order: '-id' })
   const fetchMusic = async ({ page = 1, pageSize = 20, ...other }) => {
-    await loadData({ page, pageSize, extraParams: other })
+    await loadData({ page, pageSize, extraParams: filter })
   }
   const switchSelect = (music:Music) => {
     if (selectedMusic.find(it => it.id === music.id)) {
@@ -36,6 +38,10 @@ const musicListModel = () => {
     }
     await fetchMusic({ page, pageSize })
   }
+  useEffect(() => {
+    setSelectMusic([])
+    fetchMusic({})
+  }, [filter])
   return {
     data,
     page,
@@ -47,7 +53,9 @@ const musicListModel = () => {
     switchSelect,
     isSelected,
     selectNone,
-    update
+    update,
+    filter,
+    setFilter
   }
 }
 const useMusicListModel = createModel(musicListModel)

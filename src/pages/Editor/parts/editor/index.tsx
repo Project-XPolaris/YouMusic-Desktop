@@ -4,17 +4,18 @@ import React, { ChangeEvent, useEffect } from 'react'
 import useEditorModel from '../../model'
 import { Button, IconButton, styled, TextField, Tooltip } from '@material-ui/core'
 import ArtistPickView from '../../../../components/ArtistPickView'
-import { Image } from '@material-ui/icons'
+import { Image, ListAlt } from '@material-ui/icons'
 import { EditorController } from './hook'
 
 export interface EditorViewPropsType {
   className?: string
   controller:EditorController
+  onSearchLyric:(id:number, name:string) => void
 }
 const Input = styled('input')({
   display: 'none'
 })
-const EditorView = ({ className, controller }: EditorViewPropsType): React.ReactElement => {
+const EditorView = ({ className, controller, onSearchLyric }: EditorViewPropsType): React.ReactElement => {
   const classes = useStyles()
   const model = useEditorModel()
   const { title, setTitle, album, setAlbum, artistPickController, setCoverUrl, coverUrl, coverFile } = controller
@@ -65,6 +66,16 @@ const EditorView = ({ className, controller }: EditorViewPropsType): React.React
       }
     }))
   }
+  const onSearchLyricButtonClick = () => {
+    if (!model.editIds) {
+      return
+    }
+    if (model.editIds.length !== 1) {
+      return
+    }
+    const target = model.editIds[0]
+    onSearchLyric(target, title)
+  }
   return (
     <div className={clsx(classes.root, className)}>
       {
@@ -92,6 +103,14 @@ const EditorView = ({ className, controller }: EditorViewPropsType): React.React
         className={classes.item}
       />
       <div className={classes.bottomAction}>
+        {
+          model.editIds && model.editIds.length > 0 &&
+          <Tooltip title={'search lyric'}>
+            <IconButton component="span" onClick={onSearchLyricButtonClick}>
+              <ListAlt />
+            </IconButton>
+          </Tooltip>
+        }
         <Tooltip title={'update image'}>
           <label htmlFor='icon-button-file'>
             <Input accept='image/*' id='icon-button-file' type='file' onChange={onUploadCover}/>
