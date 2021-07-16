@@ -6,7 +6,10 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '100%',
     overflowX: 'hidden',
     overflowY: 'scroll',
-    paddingBottom: theme.spacing(12)
+    display: 'flex',
+    flexDirection: 'column',
+    paddingBottom: theme.spacing(12),
+    flex: 1
   },
   content: {},
   item: {
@@ -15,7 +18,11 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2)
   },
   grid: {
-    padding: theme.spacing(3)
+    padding: theme.spacing(3),
+    flex: 1
+  },
+  list: {
+    flex: 1
   },
   '@global': {
     '*::-webkit-scrollbar': {

@@ -7,6 +7,7 @@ import { ArtistFilterData } from '../../../components/ArtistFilter'
 const artistListModel = () => {
   const { data, page, pageSize, total, loadData } = useDataPageLoader<Artist>({ loader: fetchArtistList, defaultPageSize: 55, defaultPage: 1 })
   const [filter, setFilter] = useState<ArtistFilterData>({ order: '-id' })
+  const [display, setDisplay] = useState<string>('list')
   const fetchArtist = async ({ page = 1, pageSize = 55, ...other }) => {
     console.log(other)
     await loadData({ page, pageSize, extraParams: other })
@@ -15,7 +16,7 @@ const artistListModel = () => {
     fetchArtist({ order: filter.order })
   }, [filter])
   return {
-    data, page, pageSize, total, fetchArtist, filter, setFilter
+    data, page, pageSize, total, fetchArtist, filter, setFilter, display, setDisplay
   }
 }
 const useArtistListModel = createModel(artistListModel)

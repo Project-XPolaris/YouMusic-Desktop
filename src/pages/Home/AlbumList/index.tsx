@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { Grid, MenuItem, Pagination, Menu } from '@material-ui/core'
+import { Grid, MenuItem, Pagination, Menu, Select, List } from '@material-ui/core'
 import useStyles from './style'
 import AlbumItem from '../../../components/AlbumItem'
 import useAlbumListModel from './model'
@@ -11,7 +11,18 @@ import { useContextMenu } from '../../../hooks/context'
 import { Album } from '../../../api/album'
 import { useMount, useUnmount } from 'ahooks'
 import useEditorModel from '../../../models/editor'
-
+import ViewSelectPopup from '../../../components/ViewSelectPopup'
+import AlbumListItem from '../../../components/AlbumListItem'
+const DisplayViews = [
+  {
+    name: 'list',
+    value: 'list'
+  },
+  {
+    name: 'grid',
+    value: 'grid'
+  }
+]
 const AlbumListPage = (): React.ReactElement => {
   const classes = useStyles()
   const albumListModel = useAlbumListModel()
@@ -36,6 +47,45 @@ const AlbumListPage = (): React.ReactElement => {
   useUnmount(() => {
     document.removeEventListener('albumUpdate', onAlbumUpdate)
   })
+  const renderViews = () => {
+    if (albumListModel.display === 'grid') {
+      return (
+        <Grid container className={classes.grid}>
+          {albumListModel.data.map((album) => (
+            <Grid item key={album.id} className={classes.item}>
+              <AlbumItem
+                album={album}
+                onClick={(album) => playerModel.playAlbum(album.id)}
+                onTitleClick={(album) => history.push(`/album/${album.id}`)}
+                onContextClick={(e) => {
+                  contextMenuController.open(album, { x: e.clientX - 2, y: e.clientY - 4 })
+                }}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      )
+    }
+    return (
+      <List className={classes.list}>
+        {
+          albumListModel.data.map(album => {
+            return (
+              <AlbumListItem
+                album={album}
+                key={album.id}
+                onClick={(album) => playerModel.playAlbum(album.id)}
+                onTitleClick={(album) => history.push(`/album/${album.id}`)}
+                onContextClick={(e) => {
+                  contextMenuController.open(album, { x: e.clientX - 2, y: e.clientY - 4 })
+                }}
+              />
+            )
+          })
+        }
+      </List>
+    )
+  }
   return (
     <div className={classes.root}>
       <Menu
@@ -57,23 +107,11 @@ const AlbumListPage = (): React.ReactElement => {
       </Menu>
       <div className={classes.toolbar}>
         <AlbumFilter filter={filter} onChange={(newFilter) => setFilter(newFilter)}/>
+        <ViewSelectPopup items={DisplayViews} value={albumListModel.display} onChange={value => albumListModel.setDisplay(value)} />
       </div>
-      <Grid container className={classes.grid}>
-        {albumListModel.data.map((album) => (
-          <Grid item key={album.id} className={classes.item}>
-            <AlbumItem
-              album={album}
-              onClick={(album) => playerModel.playAlbum(album.id)}
-              onTitleClick={(album) => history.push(`/album/${album.id}`)}
-              onContextClick={(e) => {
-                contextMenuController.open(album, { x: e.clientX - 2, y: e.clientY - 4 })
-              }}
-            />
-          </Grid>
-        ))}
-      </Grid>
+      {renderViews()}
       <Pagination count={Math.ceil(albumListModel.total / 55)}
-        onChange={(event, page) => albumListModel.fetchAlbum({ page,order: '-id' })} />
+        onChange={(event, page) => albumListModel.fetchAlbum({ page, order: '-id' })} />
     </div>
   )
 }

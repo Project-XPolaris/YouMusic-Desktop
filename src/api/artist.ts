@@ -8,8 +8,7 @@ export interface Artist {
   avatar:string
 }
 
-export const fetchArtistList = async ({ page = 1, pageSize = 20, ...other }:{page?:number, pageSize?:number, search?:string}):Promise<ListResponseContainer<Artist>> => {
-  console.log(other)
+export const fetchArtistList = async ({ page = 1, pageSize = 20, ...other }:{page?:number, pageSize?:number, search?:string, order?:string}):Promise<ListResponseContainer<Artist>> => {
   return apiRequest.get(ApplicationConfig.apiPaths.artistList, {
     params: {
       page,

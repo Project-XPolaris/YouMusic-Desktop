@@ -9,7 +9,18 @@ import { useContextMenu } from '../../../hooks/context'
 import { Artist } from '../../../api/artist'
 import useEditorModel from '../../../models/editor'
 import ArtistFilter from '../../../components/ArtistFilter'
-
+import ArtistListItem from '../../../components/ArtistListItem'
+import ViewSelectPopup from '../../../components/ViewSelectPopup'
+const DisplayViews = [
+  {
+    name: 'list',
+    value: 'list'
+  },
+  {
+    name: 'grid',
+    value: 'grid'
+  }
+]
 const ArtistListPage = ():React.ReactElement => {
   const classes = useStyles()
   const artistModel = useArtistListModel()
@@ -26,6 +37,37 @@ const ArtistListPage = ():React.ReactElement => {
   useUnmount(() => {
     document.removeEventListener('artistUpdate', onArtistUpdate)
   })
+  const renderDisplay = () => {
+    if (artistModel.display === 'grid') {
+      return <Grid container className={classes.grid}>
+        {artistModel.data.map((artist) => (
+          <Grid container item key={artist.id} className={classes.item}>
+            <ArtistItem
+              artist={artist}
+              onClick={(artist) => history.push(`/artist/${artist.id}`)}
+              onContextClick={(e) => {
+                contextMenuController.open(artist, { x: e.clientX - 2, y: e.clientY - 4 })
+              }}
+            />
+          </Grid>
+        ))}
+      </Grid>
+    }
+    return (
+      <List className={classes.list}>
+        {artistModel.data.map((artist) => (
+          <ArtistListItem
+            key={artist.id}
+            artist={artist}
+            onClick={(artist) => history.push(`/artist/${artist.id}`)}
+            onContextClick={(e) => {
+              contextMenuController.open(artist, { x: e.clientX - 2, y: e.clientY - 4 })
+            }}
+          />
+        ))}
+      </List>
+    )
+  }
   return (
     <div className={classes.root}>
       <Menu
@@ -47,32 +89,9 @@ const ArtistListPage = ():React.ReactElement => {
       </Menu>
       <div className={classes.toolbar}>
         <ArtistFilter filter={artistModel.filter} onChange={(newFilter) => artistModel.setFilter(newFilter)}/>
+        <ViewSelectPopup items={DisplayViews} value={artistModel.display} onChange={value => artistModel.setDisplay(value)} />
       </div>
-      {/*<Grid container>*/}
-      {/*  {artistModel.data.map((artist) => (*/}
-      {/*    <Grid container item key={artist.id} className={classes.item}>*/}
-      {/*      <ArtistItem*/}
-      {/*        artist={artist}*/}
-      {/*        onClick={(artist) => history.push(`/artist/${artist.id}`)}*/}
-      {/*        onContextClick={(e) => {*/}
-      {/*          contextMenuController.open(artist, { x: e.clientX - 2, y: e.clientY - 4 })*/}
-      {/*        }}*/}
-      {/*      />*/}
-      {/*    </Grid>*/}
-      {/*  ))}*/}
-      {/*</Grid>*/}
-      <List>
-        {artistModel.data.map((artist) => (
-          <ArtistListItem
-            key={artist.id}
-            artist={artist}
-            onClick={(artist) => history.push(`/artist/${artist.id}`)}
-            onContextClick={(e) => {
-              contextMenuController.open(artist, { x: e.clientX - 2, y: e.clientY - 4 })
-            }}
-          />
-        ))}
-      </List>
+      {renderDisplay()}
       <Pagination count={Math.ceil(artistModel.total / 55)} onChange={(event, page) => artistModel.fetchArtist({ page })} />
     </div>
   )

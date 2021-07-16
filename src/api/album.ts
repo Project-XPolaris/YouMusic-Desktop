@@ -11,7 +11,7 @@ export interface Album {
   artist:Artist[]
   music:Music[]
 }
-export const fetchAlbumList = async ({ page = 1, pageSize = 20, ...other }:{page?:number, pageSize?:number, search?:string, artist?:number}):Promise<ListResponseContainer<Album>> => {
+export const fetchAlbumList = async ({ page = 1, pageSize = 20, ...other }:{page?:number, pageSize?:number, search?:string, artist?:number, order?:string}):Promise<ListResponseContainer<Album>> => {
   return apiRequest.get(ApplicationConfig.apiPaths.albumList, {
     params: {
       page,

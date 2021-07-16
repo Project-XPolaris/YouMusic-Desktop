@@ -7,6 +7,7 @@ import { ButtonBase } from '@material-ui/core'
 import MusicNoteIcon from '@material-ui/icons/MusicNote'
 import { getImageUrl } from '../../utils/image'
 import clsx from 'clsx'
+import AlbumCover from '../AlbumCover';
 
 const useStyles = makeStyles({
   main: {
@@ -64,10 +65,7 @@ const AlbumItem = ({ onContextClick, album, onClick, onTitleClick, className }: 
           onClick(album)
         }
       }}>
-        {
-          album?.cover ? <img src={getImageUrl(album.cover)} className={classes.cover} alt={album.name} />
-            : <div className={classes.noCover}><MusicNoteIcon className={classes.noCoverIcon} /></div>
-        }
+        <AlbumCover coverUrl={album.cover} className={classes.cover} />
       </ButtonBase>
       <div className={classes.title} onClick={() => {
         if (onTitleClick) {

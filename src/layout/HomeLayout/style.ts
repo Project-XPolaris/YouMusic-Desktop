@@ -11,7 +11,9 @@ const useStyles = makeStyles(() => ({
     width: 'calc(100vw - 240px)',
     height: '100%',
     overflowX: 'hidden',
-    overflowY: 'auto'
+    overflowY: 'auto',
+    flex: 1,
+    display: 'flex'
   },
   nav: {
     height: 'calc(100vh - 64px)',
