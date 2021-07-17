@@ -4,10 +4,8 @@ import theme from '../../theme'
 import { Album } from '../../api/album'
 import { getAlbumArtistString } from '../../utils/album'
 import { ButtonBase } from '@material-ui/core'
-import MusicNoteIcon from '@material-ui/icons/MusicNote'
-import { getImageUrl } from '../../utils/image'
 import clsx from 'clsx'
-import AlbumCover from '../AlbumCover';
+import AlbumCover from '../AlbumCover'
 
 const useStyles = makeStyles({
   main: {

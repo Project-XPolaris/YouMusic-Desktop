@@ -9,7 +9,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     cover: {
       width: 48,
-      height: 48
+      height: 48,
+      objectFit: 'cover'
     },
     text: {
       color: 'white',

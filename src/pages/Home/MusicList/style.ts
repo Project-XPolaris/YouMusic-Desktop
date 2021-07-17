@@ -7,7 +7,10 @@ const useStyles = makeStyles((theme) => ({
     overflowX: 'hidden',
     overflowY: 'scroll',
     paddingBottom: theme.spacing(12),
-    paddingTop: 0
+    paddingTop: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1
   },
   content: {},
   item: {

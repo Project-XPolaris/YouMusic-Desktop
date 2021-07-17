@@ -3,7 +3,8 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      padding: theme.spacing(2)
+      padding: theme.spacing(2),
+      flex: 1
     },
     header: {
       backgroundColor: '#3c3f41',
