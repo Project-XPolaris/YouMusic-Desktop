@@ -6,6 +6,7 @@ import { Button } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
 import PathSelectDialog from './parts/PathSelectDialog'
 import useLayoutModel from '../../../models/layout'
+import { useInterval } from 'ahooks'
 
 const LibraryPage = ():ReactElement => {
   const classes = useStyles()
@@ -14,6 +15,9 @@ const LibraryPage = ():ReactElement => {
   useEffect(() => {
     model.fetchLibrary({})
   }, [])
+  useInterval(() => {
+    model.refreshTask()
+  }, 3000)
   return (
     <div className={classes.root}>
       <PathSelectDialog
@@ -40,7 +44,12 @@ const LibraryPage = ():ReactElement => {
       {
         model.data && model.data.map(it => (
           <div className={classes.item} key={it.path}>
-            <LibraryItem library={it} onDelete={() => model.remove(it.id)} onScan={() => model.scan(it.id)} />
+            <LibraryItem
+              library={it}
+              onDelete={() => model.remove(it.id)}
+              onScan={() => model.scan(it.id)}
+              task={model.taskList.find(task => task.id === it.id)}
+            />
           </div>
         ))
       }
