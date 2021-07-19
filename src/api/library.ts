@@ -3,7 +3,7 @@ import apiRequest from '../utils/request'
 import { ApplicationConfig } from '../config'
 
 export interface Library {
-  id:string
+  id:number
   name:string
   path:string
 }
