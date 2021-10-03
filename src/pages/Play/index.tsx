@@ -1,22 +1,23 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
 import useLayoutModel from '../../models/layout'
 import useStyles from './style'
-import { Tab, Tabs } from '@material-ui/core'
+import { IconButton, Tab, Tabs } from '@material-ui/core'
 import usePlayerModel from '../../models/player'
 import { getMusicAlbumCoverUrl } from '../../utils/music'
 import clsx from 'clsx'
+import { ExpandMore } from '@material-ui/icons'
 
 export interface PlayPagePropsType {
-
+  onCollapse:() => void
 }
 
-const PlayPage = ({}: PlayPagePropsType):ReactElement => {
+const PlayPage = ({ onCollapse }: PlayPagePropsType):ReactElement => {
   const classes = useStyles()
   const layoutModel = useLayoutModel()
   const [tabIndex, setTabIndex] = useState<number>(0)
   const [lyricIndex, setLyricIndex] = useState(0)
   const playModel = usePlayerModel()
-  const lyricsContainerRef = useRef<HTMLDivElement>()
+  const lyricsContainerRef : any = useRef<HTMLDivElement>()
   useEffect(() => {
     const lyricTime = playModel.lyrics?.manager.getLyricTimeByTime(playModel.currentPlayTime)
     if (!lyricTime) {
@@ -59,16 +60,22 @@ const PlayPage = ({}: PlayPagePropsType):ReactElement => {
   }
   return (
     <div className={classes.root}>
-      <Tabs
-        className={classes.tab}
-        textColor={'secondary'}
-        indicatorColor={'secondary'}
-        value={tabIndex}
-        onChange={onTabChange}
-      >
-        <Tab label="Cover" />
-        <Tab label="Lyrics" />
-      </Tabs>
+      <div className={classes.header}>
+        <IconButton onClick={onCollapse}>
+          <ExpandMore />
+        </IconButton>
+        <Tabs
+          className={classes.tab}
+          textColor={'secondary'}
+          indicatorColor={'secondary'}
+          value={tabIndex}
+          onChange={onTabChange}
+        >
+          <Tab label="Cover" />
+          <Tab label="Lyrics" />
+        </Tabs>
+      </div>
+
       {
         tabIndex === 0 &&
         <div className={classes.musicView}>

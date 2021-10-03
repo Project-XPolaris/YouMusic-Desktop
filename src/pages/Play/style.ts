@@ -5,20 +5,27 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       position: 'relative',
       width: '100vw',
-      height: '100%'
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column'
+    },
+    header: {
+      width: '100%',
+      display: 'flex',
+      paddingTop: theme.spacing(8),
+      paddingLeft: theme.spacing(2),
+      paddingRight: theme.spacing(2)
     },
     tab: {
-      position: 'absolute',
-      top: theme.spacing(2),
-      left: theme.spacing(2)
+
     },
     musicView: {
       width: '100vw',
-      height: '100%',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      flexGrow: 1
     },
     lyricsView: {
       width: '100vw',
