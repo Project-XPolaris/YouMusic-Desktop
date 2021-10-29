@@ -109,7 +109,11 @@ const EditorModel = () => {
         current: i,
         total: updateMusics.length
       })
-      await updateMusicInfo(updateMusic.id, updateMusic)
+      await updateMusicInfo(updateMusic.id, {
+        title: updateMusic.title,
+        artist: updateMusic.artist,
+        album: updateMusic.album
+      })
       if (updateMusic.file) {
         await uploadMusicCover(updateMusic.id, updateMusic.file)
       }
