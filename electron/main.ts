@@ -8,7 +8,9 @@ import { Channels } from './channels'
 import './editor/index'
 let mainWindow: Electron.BrowserWindow | null
 let editorWindow: Electron.BrowserWindow | null
-
+if (process.platform === 'darwin') {
+  app.dock.setIcon(path.join(__dirname, 'assets/icon.png'))
+}
 function createWindow () {
   mainWindow = new BrowserWindow({
     width: 1100,
