@@ -16,7 +16,6 @@ import ClearSharpIcon from '@material-ui/icons/ClearSharp'
 import PlayBarLayout from '../PlayBar/layout'
 import StartPage from '../../pages/Start'
 import { ApplicationConfig } from '../../config'
-import MusicEditDrawer from '../../components/MusicEditDrawer'
 import AlbumEditDrawer from '../../components/AlbumEditDrawer'
 import ArtistEditDrawer from '../../components/ArtistEditDrawer'
 import SearchBar from './parts/Search'
@@ -149,7 +148,7 @@ const BaseLayout = (): React.ReactElement => {
               </Route>
               <Route path='/play'>
                 <PlayBarLayout className={classes.content}>
-                  <PlayPage />
+                  <PlayPage onCollapse={() => history.back()} />
                 </PlayBarLayout>
               </Route>
               <Route path='/editor'>

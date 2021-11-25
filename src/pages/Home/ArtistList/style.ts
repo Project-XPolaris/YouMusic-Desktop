@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
     flex: 1
   },
-  list:{
+  list: {
     flex: 1
   },
   '@global': {

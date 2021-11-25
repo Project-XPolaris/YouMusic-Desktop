@@ -4,7 +4,7 @@ import useStyles from './style'
 import { getMusicAlbumCoverUrl } from '../../utils/music'
 import useEditorModel from '../../models/editor'
 import { Photo, Save } from '@material-ui/icons'
-import { updateMusicInfo, uploadMusicCover } from '../../api/music'
+import { uploadMusicCover } from '../../api/music'
 import ArtistPickView from '../ArtistPickView'
 import { useArtistPickController } from '../ArtistPickView/hook'
 

@@ -44,7 +44,6 @@ const PlayBar = ({ onMusicClick, className }:{ onMusicClick:() => void, classNam
   const playerModel = usePlayerModel()
   const layoutModel = useLayoutModel()
   const currentMusic = playerModel.getCurrentPlay()
-  const history = useHistory()
   const [saveVolume, setSaveVolume] = useLocalStorageState('saveVolume', 0)
   const {
     togglePlayPause,

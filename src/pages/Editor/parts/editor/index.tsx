@@ -8,19 +8,28 @@ import { Image, ListAlt } from '@material-ui/icons'
 import { EditorController } from './hook'
 
 export interface EditorViewPropsType {
-  className?: string
-  controller:EditorController
-  onSearchLyric:(id:number, name:string) => void
+    className?: string
+    controller: EditorController
+    onSearchLyric: (id: number, name: string) => void
 }
+
 const Input = styled('input')({
   display: 'none'
 })
 const EditorView = ({ className, controller, onSearchLyric }: EditorViewPropsType): React.ReactElement => {
   const classes = useStyles()
   const model = useEditorModel()
-  const { title, setTitle, album, setAlbum, artistPickController, setCoverUrl, coverUrl, coverFile } = controller
-
-  const onUploadCover = async (e:ChangeEvent<HTMLInputElement>) => {
+  const {
+    title,
+    setTitle,
+    album,
+    setAlbum,
+    artistPickController,
+    setCoverUrl,
+    coverUrl,
+    coverFile
+  } = controller
+  const onUploadCover = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
       return
     }
@@ -28,10 +37,7 @@ const EditorView = ({ className, controller, onSearchLyric }: EditorViewPropsTyp
     if (!file) {
       return undefined
     }
-    if (!model.editIds) {
-      return
-    }
-    controller.setCoverFromFile(file)
+    await controller.setCoverFromFile(file)
   }
   useEffect(() => {
     const editMusic = model.getCurrentEditMusic()
@@ -44,42 +50,35 @@ const EditorView = ({ className, controller, onSearchLyric }: EditorViewPropsTyp
     if (editMusic.cover) {
       setCoverUrl(editMusic.cover)
     }
-  }, [model.editIds, model.updateMusics])
+  }, [model.editEntityList])
   const editMusic = model.getCurrentEditMusic()
-  if (!editMusic || model.editIds?.length === 0) {
+  if (!editMusic || model.getSelectedEditEntity().length === 0) {
     return <></>
   }
   const onApply = () => {
-    if (!model.editIds) {
-      return
-    }
-    model.saveUpdate(model.editIds.map(it => {
-      const update = model.updateMusics.find(updateData => updateData.id === it)
-      return {
-        id: it,
-        title: title.length > 0 ? title : update?.title,
-        album: album.length > 0 ? album : update?.album,
-        artist: artistPickController.selected.length > 0 ? artistPickController.selected : update?.artist,
-        cover: coverUrl ?? update?.cover,
-        file: coverFile ?? update?.file,
-        coverUrl: coverUrl
+    const selectMusics = model.editEntityList.filter(it => it.isSelect)
+    selectMusics.forEach(it => {
+      it.setTitle(title.length > 0 ? title : undefined)
+      it.setArtist(artistPickController.selected.length > 0 ? artistPickController.selected : undefined)
+      it.setAlbum(album)
+      if (coverFile && coverUrl) {
+        it.setCover(coverFile, coverUrl)
       }
-    }))
+    })
+    model.refreshEntity()
   }
   const onSearchLyricButtonClick = () => {
-    if (!model.editIds) {
+    const selectedEditEntity = model.getSelectedEditEntity()
+    if (selectedEditEntity.length !== 1) {
       return
     }
-    if (model.editIds.length !== 1) {
-      return
-    }
-    const target = model.editIds[0]
-    onSearchLyric(target, title)
+    const target = selectedEditEntity[0]
+    onSearchLyric(target.getId(), title)
   }
   return (
     <div className={clsx(classes.root, className)}>
       {
-        coverUrl ? <img src={coverUrl} className={classes.cover} /> : <div className={classes.empty} />
+        coverUrl ? <img src={coverUrl} className={classes.cover}/> : <div className={classes.empty}/>
       }
       <TextField
         variant='outlined'
@@ -88,7 +87,7 @@ const EditorView = ({ className, controller, onSearchLyric }: EditorViewPropsTyp
         size='small'
         label='name'
         onChange={(e) => setTitle(e.target.value)}
-        className={classes.item} />
+        className={classes.item}/>
       <TextField
         variant='outlined'
         fullWidth
@@ -104,18 +103,18 @@ const EditorView = ({ className, controller, onSearchLyric }: EditorViewPropsTyp
       />
       <div className={classes.bottomAction}>
         {
-          model.editIds && model.editIds.length > 0 &&
-          <Tooltip title={'search lyric'}>
-            <IconButton component="span" onClick={onSearchLyricButtonClick}>
-              <ListAlt />
-            </IconButton>
-          </Tooltip>
+          model.editEntityList.filter(it => it.isSelect).length > 0 &&
+                    <Tooltip title={'search lyric'}>
+                      <IconButton component="span" onClick={onSearchLyricButtonClick}>
+                        <ListAlt/>
+                      </IconButton>
+                    </Tooltip>
         }
         <Tooltip title={'update image'}>
           <label htmlFor='icon-button-file'>
             <Input accept='image/*' id='icon-button-file' type='file' onChange={onUploadCover}/>
             <IconButton component="span">
-              <Image />
+              <Image/>
             </IconButton>
           </label>
         </Tooltip>
@@ -124,7 +123,7 @@ const EditorView = ({ className, controller, onSearchLyric }: EditorViewPropsTyp
           onClick={onApply}
           className={classes.applyButton}
         >
-          Apply
+                    Apply
         </Button>
       </div>
 

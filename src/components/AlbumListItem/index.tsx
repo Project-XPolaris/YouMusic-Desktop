@@ -1,9 +1,7 @@
 import useStyles from './style'
 import clsx from 'clsx'
 import React, { MouseEventHandler } from 'react'
-import { ButtonBase, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
-import { getImageUrl } from '../../utils/image'
-import MusicNoteIcon from '@material-ui/icons/MusicNote'
+import { ButtonBase, ListItemText } from '@material-ui/core'
 import { Album } from '../../api/album'
 import AlbumCover from '../AlbumCover'
 

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { Grid, MenuItem, Pagination, Menu, Select, List } from '@material-ui/core'
+import { Grid, List, Menu, MenuItem, Pagination } from '@material-ui/core'
 import useStyles from './style'
 import AlbumItem from '../../../components/AlbumItem'
 import useAlbumListModel from './model'
@@ -13,6 +13,7 @@ import { useMount, useUnmount } from 'ahooks'
 import useEditorModel from '../../../models/editor'
 import ViewSelectPopup from '../../../components/ViewSelectPopup'
 import AlbumListItem from '../../../components/AlbumListItem'
+
 const DisplayViews = [
   {
     name: 'list',

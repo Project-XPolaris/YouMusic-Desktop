@@ -1,7 +1,7 @@
 import useStyles from './style'
 import clsx from 'clsx'
 import { IconButton } from '@material-ui/core'
-import { Apps, Sort } from '@material-ui/icons';
+import { Apps } from '@material-ui/icons'
 import ChipPickPopup from '../ChipPickPopup'
 import React from 'react'
 export interface ViewSelectItem {
@@ -16,7 +16,7 @@ export interface ViewSelectPopupPropsType {
   onChange:(value:string) => void
 }
 
-const ViewSelectPopup = ({ className, value,onChange, items = [] }: ViewSelectPopupPropsType): React.ReactElement => {
+const ViewSelectPopup = ({ className, value, onChange, items = [] }: ViewSelectPopupPropsType): React.ReactElement => {
   const classes = useStyles()
   const [popupAnchorEl, setPopupAnchorEl] = React.useState<HTMLButtonElement | null>(null)
   return (

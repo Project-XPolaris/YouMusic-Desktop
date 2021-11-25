@@ -1,6 +1,6 @@
 import useStyles from './style'
 import React, { useEffect, useState } from 'react'
-import useEditorModel, { EditMusic, MusicUpdateData } from './model'
+import useEditorModel, { EditMusic } from './model'
 import clsx from 'clsx'
 import {
   Checkbox,
@@ -25,15 +25,8 @@ import { useSearchLyricDrawerController } from './parts/SearchLyricDrawer/hook'
 import { updateMusicLyrics } from '../../api/music'
 
 export interface EditPagePropsType {
-  className?: string;
+    className?: string;
 }
-
-export interface ColData {
-  id: number;
-  filename: string;
-  editMusic: EditMusic | undefined;
-}
-
 const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
   const classes = useStyles()
   const model = useEditorModel()
@@ -45,58 +38,30 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
   useEffect(() => {
     model.loadMusic()
   }, [])
-  const getData = (): ColData[] => {
-    return model.musicList.filter(it => model.getEditMusic(it.id) !== undefined)
-      .map(it => ({
-        id: it.id,
-        filename: it.filename,
-        editMusic: model.getEditMusic(it.id)
-      }))
-  }
+  // const getData = (): ColData[] => {
+  //   return model.musicList.filter(it => model.getEditMusic(it.id) !== undefined)
+  //     .map(it => ({
+  //       id: it.id,
+  //       filename: it.filename,
+  //       editMusic: model.getEditMusic(it.id)
+  //     }))
+  // }
   const onMatchString = () => {
-    if (!model.editIds || model.setEditIds.length === 0) {
+    const editMusic = model.editEntityList.filter(it => it.isSelect)
+    if (editMusic.length === 0) {
       return
     }
-    const id = model.editIds[0]
-    const music = model.musicList.find(it => it.id === id)
-    if (!music) {
-      return
-    }
-    setMatchString(music.filename.substr(0, music.filename.lastIndexOf('.')))
+    const music = editMusic[0]
+    setMatchString(music.getFileName())
   }
   const onMatchOk = (pattern: string) => {
     setMatchString(undefined)
-    if (!model.editIds) {
-      return
+    for (const editEntity of model.editEntityList.filter(it => it.isSelect)) {
+      const result: MatchResult = matchName(editEntity.getFileName(), pattern)
+      editEntity.setTitle(result.title)
+      editEntity.setArtist(result.artist)
     }
-    const updates: MusicUpdateData[] = []
-    for (const editId of model.editIds) {
-      const music = model.musicList.find(it => it.id === editId)
-      if (!music) {
-        continue
-      }
-      const result: MatchResult = matchName(music.filename.substr(0, music.filename.lastIndexOf('.')), pattern)
-      const update = model.updateMusics.find(it => editId === it.id)
-      if (update) {
-        if (result.title) {
-          update.title = result.title
-        }
-        if (result.artist) {
-          update.artist = [result.artist]
-        }
-        updates.push({
-          ...update
-        })
-      } else {
-        const newUpdate: MusicUpdateData = {
-          id: editId,
-          title: result.title,
-          artist: result.artist ? [result.artist] : undefined
-        }
-        updates.push(newUpdate)
-      }
-    }
-    model.saveUpdate([...updates])
+    model.setEditEntity([...model.editEntityList])
   }
   const onApplyAlbum = (cover: string, name: string, artistName: string) => {
     editController.setAlbum(name)
@@ -105,22 +70,20 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
     setSearchAlbumOpen(false)
   }
   const onEditorSearchLyricClick = (id: number, title: string) => {
-    if (model.editIds?.length !== 1) {
-      return
-    }
     searchLyricController.setInputSearch(title)
     setSearchLyricOpen(true)
   }
   const onApplyLyric = async (lyric: string) => {
-    if (!model.editIds || model.editIds.length !== 1) {
+    const selectedEditEntity = model.getSelectedEditEntity()
+    if (selectedEditEntity.length !== 1) {
       return
     }
-    await updateMusicLyrics(model.editIds[0].toString(), lyric)
+    await updateMusicLyrics(selectedEditEntity[0].getId().toString(), lyric)
     setSearchLyricOpen(false)
   }
   return (
     <div className={clsx(className, classes.root)}>
-      <SaveDialog />
+      <SaveDialog/>
       <ParseNameDialog
         open={Boolean(matchString)}
         name={matchString ?? ''}
@@ -132,37 +95,38 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
         onCLose={() => setSearchAlbumOpen(false)}
         onApply={onApplyAlbum}
       />
-      <SearchLyricDrawer isOpen={searchLyricOpen} onCLose={() => setSearchLyricOpen(false)} onApply={onApplyLyric} controller={searchLyricController} />
+      <SearchLyricDrawer isOpen={searchLyricOpen} onCLose={() => setSearchLyricOpen(false)} onApply={onApplyLyric}
+        controller={searchLyricController}/>
       <div className={classes.toolbar}>
         <div className={classes.title}>
-          Editor
+                    Editor
         </div>
         {
-          (model.editIds?.length ?? 0) > 0 &&
-          <>
-            <Tooltip title='match filename'>
-              <IconButton size='medium' onClick={onMatchString}>
-                <Bookmark />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title='search album meta'>
-              <IconButton size='medium' onClick={() => setSearchAlbumOpen(true)}>
-                <Album />
-              </IconButton>
-            </Tooltip>
-          </>
+          model.getSelectedEditEntity().length > 0 &&
+                        <>
+                          <Tooltip title='match filename'>
+                            <IconButton size='medium' onClick={onMatchString}>
+                              <Bookmark/>
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title='search album meta'>
+                            <IconButton size='medium' onClick={() => setSearchAlbumOpen(true)}>
+                              <Album/>
+                            </IconButton>
+                          </Tooltip>
+                        </>
 
         }
 
         <Tooltip title='Save all changes'>
           <IconButton size='medium' onClick={() => model.saveAll()}>
-            <Save />
+            <Save/>
           </IconButton>
         </Tooltip>
       </div>
       <div className={classes.content}>
         <div className={classes.view}>
-          <EditorView controller={editController} onSearchLyric={onEditorSearchLyricClick} />
+          <EditorView controller={editController} onSearchLyric={onEditorSearchLyricClick}/>
         </div>
         <div className={classes.list}>
           <Table stickyHeader size='small'>
@@ -172,13 +136,12 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
                   <Checkbox
                     color='primary'
                     onChange={(e) => {
-                      if (e.target.checked) {
-                        model.setEditIds(model.musicList.map(it => it.id))
-                      } else {
-                        model.setEditIds([])
-                      }
+                      model.setEditEntity([...model.editEntityList.map(it => {
+                        it.isSelect = e.target.checked
+                        return it
+                      })])
                     }}
-                    checked={model.musicList.length > 0 && model.editIds?.length === model.musicList.length}
+                    checked={model.editEntityList.filter(it => it.isSelect).length === model.editEntityList.length}
                   />
                 </TableCell>
                 <TableCell>ID</TableCell>
@@ -190,31 +153,33 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
             </TableHead>
             <TableBody>
               {
-                getData()
+                model.editEntityList
                   .map(it => {
                     return (
                       <TableRow
-                        key={it.id}
+                        key={it.getId()}
                       >
                         <TableCell>
                           <Checkbox
                             color='primary'
                             onChange={(e) => {
-                              if (e.target.checked) {
-                                model.setEditIds([...((model.editIds ?? []).filter(selectedId => selectedId !== it.id)), it.id])
-                              } else {
-                                model.setEditIds((model.editIds ?? []).filter(selectedId => selectedId !== it.id))
+                              model.setEditEntity([...model.editEntityList.map(elm => {
+                                if (it.getId() === elm.getId()) {
+                                  elm.isSelect = e.target.checked
+                                }
+                                return elm
                               }
+                              )])
                             }}
-                            checked={Boolean(model.editIds?.find(selectedId => selectedId === it.id))}
+                            checked={it.isSelect}
                           />
                         </TableCell>
-                        <TableCell>{it.id}</TableCell>
-                        <TableCell>{it.filename}</TableCell>
-                        <TableCell>{it.editMusic?.title}</TableCell>
-                        <TableCell>{it.editMusic?.artist?.map(artistName => (
-                          <Chip key={artistName} label={artistName} />))}</TableCell>
-                        <TableCell>{it.editMusic?.album}</TableCell>
+                        <TableCell>{it.getId()}</TableCell>
+                        <TableCell>{it.original.filename}</TableCell>
+                        <TableCell>{it.getTitle()}</TableCell>
+                        <TableCell>{it.getArtists()?.map(artistName => (
+                          <Chip key={artistName} label={artistName}/>))}</TableCell>
+                        <TableCell>{it.getAlbum()}</TableCell>
                       </TableRow>
                     )
                   })

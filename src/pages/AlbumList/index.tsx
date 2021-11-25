@@ -32,7 +32,7 @@ const AlbumListPage = ():ReactElement => {
   useEffect(() => {
     layoutModel.setNavIcon('Back')
     albumListModel.loadData({ artist, search })
-  },[])
+  }, [])
   return (
     <div className={classes.main}>
       <GridContainer

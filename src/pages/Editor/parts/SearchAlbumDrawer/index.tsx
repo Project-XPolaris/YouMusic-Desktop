@@ -1,7 +1,6 @@
 import useStyles from './style'
 import {
   Button,
-  Divider,
   Drawer,
   IconButton,
   InputBase,
@@ -12,7 +11,6 @@ import {
 } from '@material-ui/core'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { SearchOutlined } from '@material-ui/icons'
-import clsx from 'clsx'
 import { SearchAlbumEntity, searchAlbumMeta } from '../../../../api/meta'
 
 export interface SearchAlbumDrawerPropsType {

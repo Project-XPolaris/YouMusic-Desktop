@@ -62,8 +62,7 @@ const useStyles = makeStyles(theme => ({
     '*::-webkit-scrollbar-thumb': {
       backgroundColor: '#303030'
     }
-  },
-
+  }
 }))
 
 const StartPage = () : ReactElement => {

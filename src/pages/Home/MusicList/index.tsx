@@ -9,8 +9,7 @@ import { useContextMenu } from '../../../hooks/context'
 import { Music } from '../../../api/music'
 import MusicEditDrawer from '../../../components/MusicEditDrawer'
 import { ipcRenderer } from 'electron'
-import AlbumFilter from '../../../components/AlbumFilter'
-import MusicFilter from '../../../components/MusicFilter';
+import MusicFilter from '../../../components/MusicFilter'
 
 const MusicListPage = (): ReactElement => {
   const classes = useStyles()

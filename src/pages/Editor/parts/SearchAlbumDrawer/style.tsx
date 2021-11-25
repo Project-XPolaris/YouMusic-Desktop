@@ -1,6 +1,4 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import theme from '../../../../theme'
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -45,16 +43,16 @@ const useStyles = makeStyles((theme: Theme) =>
       color: '#FFFFFF',
       marginBottom: theme.spacing(2)
     },
-    resultWrap:{
+    resultWrap: {
       flex: '1',
-      position:'relative'
+      position: 'relative'
     },
     resultList: {
-      position:"absolute",
-      top:0,
-      bottom:0,
-      right:0,
-      left:0,
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      right: 0,
+      left: 0,
       overflowY: 'auto'
     },
     resultItemCover: {

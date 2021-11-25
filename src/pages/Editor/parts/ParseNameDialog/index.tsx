@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import useStyles from './style'
-import { Button, Dialog, DialogActions, InputBase, List, ListItem, ListItemText, TextField } from '@material-ui/core'
+import { Button, Dialog, DialogActions, InputBase, List, ListItem, ListItemText } from '@material-ui/core'
 import { matchName } from '../../../../utils/match'
 export interface MatchResult {
   track?:string

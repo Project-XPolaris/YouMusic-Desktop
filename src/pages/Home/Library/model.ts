@@ -12,11 +12,11 @@ const libraryListModel = () => {
   }
   const newLibrary = async (libraryPath:string) => {
     await createLibrary(libraryPath)
-    fetchLibrary({})
+    await fetchLibrary({})
   }
   const remove = async (libraryId : number | string) => {
     await deleteLibrary(libraryId)
-    fetchLibrary({})
+    await fetchLibrary({})
   }
   const scan = async (libraryId : number | string) => {
     await scanLibrary(libraryId)
@@ -26,7 +26,7 @@ const libraryListModel = () => {
     setTaskList(response.tasks)
   }
   return {
-    data, page, pageSize, total, fetchLibrary, newLibrary, remove, scan,taskList,refreshTask
+    data, page, pageSize, total, fetchLibrary, newLibrary, remove, scan, taskList, refreshTask
   }
 }
 const useLibraryListModel = createModel(libraryListModel)

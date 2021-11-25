@@ -34,7 +34,6 @@ function createEditor () {
   }
 }
 
-console.log("init editor")
 let editIds:number[] = []
 ipcMain.on('openEditor', (e, ids) => {
   editIds = ids

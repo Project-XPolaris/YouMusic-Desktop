@@ -1,4 +1,4 @@
-import ChipPickPopup from './ChipPickPopup';
+import ChipPickPopup from './ChipPickPopup'
 
 export default {
   ChipPickPopup

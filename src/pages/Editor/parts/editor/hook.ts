@@ -11,7 +11,6 @@ export interface EditorController {
   artistPickController:ArtistPickController,
   coverUrl:string | undefined
   coverFile:File | undefined
-  updateCoverUrl:string | undefined
   setCoverFromUrl:(url:string) => void
   setCoverFromFile:(file:File) => void
   setCoverUrl:(url:string) => void
@@ -23,13 +22,15 @@ export const useEditor = ():EditorController => {
   const artistPickController = useArtistPickController([])
   const [coverUrl, setCoverUrl] = useState<string | undefined>()
   const [coverFile, setCoverFile] = useState<File | undefined>()
-  const [updateCoverUrl, setUpdateCoverUrl] = useState<string | undefined>()
   const addArtist = (artistName:string) => {
     artistPickController.setSelected([...artistPickController.selected, artistName])
   }
-  const setCoverFromUrl = (url:string) => {
+  const setCoverFromUrl = async (url:string) => {
+    const response = await fetch(url)
+    const blob = await response.blob()
+    const file = new File([blob], 'image', { type: blob.type })
+    setCoverFile(file)
     setCoverUrl(url)
-    setUpdateCoverUrl(url)
   }
   const setCoverFromFile = async (file:File) => {
     setCoverFile(file)
@@ -47,7 +48,6 @@ export const useEditor = ():EditorController => {
     addArtist,
     coverUrl,
     coverFile,
-    updateCoverUrl,
     setCoverFromUrl,
     setCoverFromFile,
     setCoverUrl

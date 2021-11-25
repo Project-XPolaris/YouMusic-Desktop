@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
       right: theme.spacing(2),
       display: 'flex'
     },
-    applyButton:{
+    applyButton: {
       alignSelf: 'center'
     }
   })
