@@ -2,9 +2,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-
-    },
+    root: {},
     toolbar: {
       width: '100vw',
       height: theme.spacing(6),
@@ -35,6 +33,9 @@ const useStyles = makeStyles((theme: Theme) =>
       ...theme.typography.h6,
       color: 'white',
       flexGrow: 1
+    },
+    editCell: {
+      color: theme.palette.primary.main
     },
     '@global': {
       '*::-webkit-scrollbar': {

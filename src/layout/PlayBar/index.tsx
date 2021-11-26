@@ -13,7 +13,6 @@ import { playTimeText } from '../../utils/time'
 import useLayoutModel from '../../models/layout'
 import { VolumeDown } from '@material-ui/icons'
 import { useLocalStorageState } from 'ahooks'
-import { useHistory } from 'react-router-dom'
 import useStyles from './style'
 import clsx from 'clsx'
 

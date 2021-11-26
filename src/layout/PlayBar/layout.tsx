@@ -45,7 +45,7 @@ const PlayBarLayout = ({ children, className }:{children?:ReactNode, className?:
               </div>
             </div>
           </Drawer>
-          <PlayBar onMusicClick={() => setIsDrawerOpen(true)} className={classes.bar} />
+          <PlayBar onMusicClick={() => setIsDrawerOpen(!isDrawerOpen)} className={classes.bar} />
         </AudioPlayerProvider>
       </div>
     </div>

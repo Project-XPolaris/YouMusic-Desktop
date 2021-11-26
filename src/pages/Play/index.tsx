@@ -60,58 +60,70 @@ const PlayPage = ({ onCollapse }: PlayPagePropsType):ReactElement => {
   }
   return (
     <div className={classes.root}>
-      <div className={classes.header}>
-        <IconButton onClick={onCollapse}>
-          <ExpandMore />
-        </IconButton>
-        <Tabs
-          className={classes.tab}
-          textColor={'secondary'}
-          indicatorColor={'secondary'}
-          value={tabIndex}
-          onChange={onTabChange}
-        >
-          <Tab label="Cover" />
-          <Tab label="Lyrics" />
-        </Tabs>
+      {/* <div className={classes.header}> */}
+      {/*  <IconButton onClick={onCollapse}> */}
+      {/*    <ExpandMore /> */}
+      {/*  </IconButton> */}
+      {/*  <Tabs */}
+      {/*    className={classes.tab} */}
+      {/*    textColor={'secondary'} */}
+      {/*    indicatorColor={'secondary'} */}
+      {/*    value={tabIndex} */}
+      {/*    onChange={onTabChange} */}
+      {/*  > */}
+      {/*    <Tab label="Cover" /> */}
+      {/*    <Tab label="Lyrics" /> */}
+      {/*  </Tabs> */}
+      {/* </div> */}
+      <div className={classes.musicViewContainer}>
+        <div className={classes.content}>
+          <div className={clsx(classes.coverViewContainer)}>
+            <img src={getMusicAlbumCoverUrl(currentPlay)} className={classes.cover} />
+            {/*<div className={classes.name}>*/}
+            {/*  { currentPlay.title }*/}
+            {/*</div>*/}
+            {/*<div className={classes.album}>*/}
+            {/*  {currentPlay.album?.name}*/}
+            {/*</div>*/}
+            {/*<div className={classes.artist}>*/}
+            {/*  { currentPlay.artist.map(it => it.name).join('/') }*/}
+            {/*</div>*/}
+          </div>
+          <div className={classes.right}>
+            <div className={classes.rightHeader}>
+              <div className={classes.title}>
+                { currentPlay.title }
+              </div>
+              <div className={classes.metaData}>
+                <div className={classes.artist}>
+                  { currentPlay.artist.map(it => it.name).join('/') }
+                </div>
+                <div className={classes.album}>
+                  {currentPlay.album?.name}
+                </div>
+              </div>
+            </div>
+            <div className={clsx(classes.lyricViewContainer)} ref={lyricsContainerRef}>
+              <div className={classes.lyricsView}>
+                {
+                  playModel.lyrics?.manager.lines.map((line) => {
+                    return (
+                      <div className={clsx(
+                        classes.lyricLine,
+                            playModel.lyrics?.manager.getLyricTimeByTime(playModel.currentPlayTime) === line.time ? classes.lyricActive : classes.lyricInactive
+                      )} key={line.time}>
+                        { line.text }
+                      </div>
+                    )
+                  })
+                }
+              </div>
+            </div>
+          </div>
+
+        </div>
+
       </div>
-
-      {
-        tabIndex === 0 &&
-        <div className={classes.musicView}>
-          <img src={getMusicAlbumCoverUrl(currentPlay)} className={classes.cover} />
-
-          <div className={classes.name}>
-            { currentPlay.title }
-          </div>
-          <div className={classes.album}>
-            {currentPlay.album?.name}
-          </div>
-          <div className={classes.artist}>
-            { currentPlay.artist.map(it => it.name).join('/') }
-          </div>
-        </div>
-      }
-      {
-        tabIndex === 1 && playModel.lyrics &&
-        <div className={classes.musicView}>
-          <div className={classes.lyricsContainer} ref={lyricsContainerRef}>
-            {
-              playModel.lyrics.manager.lines.map((line) => {
-                return (
-                  <div className={clsx(
-                    classes.lyricLine,
-                    playModel.lyrics?.manager.getLyricTimeByTime(playModel.currentPlayTime) === line.time ? classes.lyricActive : classes.lyricInactive
-                  )} key={line.time}>
-                    { line.text }
-                  </div>
-                )
-              })
-            }
-          </div>
-        </div>
-      }
-
     </div>
   )
 }

@@ -2,7 +2,7 @@ import { createModel } from 'hox'
 import { useState } from 'react'
 import { fetchMusicList, Music, updateMusicInfo, uploadMusicCover } from '../../api/music'
 import { ipcRenderer } from 'electron'
-import { intersection, isArray } from 'lodash'
+import { differenceWith, intersection, isArray } from 'lodash'
 import { Channels } from '../../../electron/channels'
 import { readFile } from '../../utils/file'
 import { getMusicFileCover } from '../../utils/image'
@@ -28,8 +28,40 @@ export class EditEntity {
       return this.updateData.title ?? this.original.title
     }
 
+    setTitle (title: string | undefined): void {
+      if (title) {
+        if (this.original.title === title) {
+          this.updateData.title = undefined
+          return
+        }
+        this.updateData.title = title
+      }
+    }
+
+    isTitleEdit ():boolean {
+      return Boolean(this.updateData.title)
+    }
+
     getArtists (): string[] {
       return this.updateData.artist ?? this.original.artist.map(it => it.name)
+    }
+
+    setArtist (artist: string | string[] | undefined): void {
+      if (!artist) {
+        return
+      }
+      const newArtists:string[] = []
+      if (isArray(artist)) {
+        newArtists.push(...artist)
+      } else {
+        newArtists.push(artist)
+      }
+      const diff = differenceWith(newArtists, this.original.artist.map(it => it.name))
+      if (diff.length === 0) {
+        this.updateData.artist = undefined
+        return
+      }
+      this.updateData.artist = newArtists
     }
 
     getAlbum (): string {
@@ -40,37 +72,13 @@ export class EditEntity {
       return this.original.filename.substr(0, this.original.filename.lastIndexOf('.'))
     }
 
-    setTitle (title: string | undefined): void {
-      if (title) {
-        if (this.original.title === title) {
-          this.updateData.title = undefined
-        }
-        this.updateData.title = title
-      }
-    }
-
     setAlbum (album: string | undefined): void {
       if (album) {
         if (this.original.album.name === album) {
-          this.updateData.title = undefined
+          this.updateData.album = undefined
+          return
         }
         this.updateData.album = album
-      }
-    }
-
-    setArtist (artist: string | string[] | undefined): void {
-      if (!artist) {
-        return
-      }
-      if (isArray(artist)) {
-        this.updateData.artist = artist
-        return
-      }
-      if (artist) {
-        if (this.original.artist.length === 1 && this.original.artist.filter(it => it.name === artist).length > 0) {
-          this.updateData.artist = undefined
-        }
-        this.updateData.artist = [artist]
       }
     }
 
@@ -216,6 +224,7 @@ const EditorModel = () => {
   }
   const refreshEntity = () => {
     console.log('refresh edit data')
+    console.log(editEntityList)
     setEditEntity([...editEntityList])
   }
   return {

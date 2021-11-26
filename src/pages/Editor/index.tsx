@@ -129,8 +129,8 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
           <EditorView controller={editController} onSearchLyric={onEditorSearchLyricClick}/>
         </div>
         <div className={classes.list}>
-          <Table stickyHeader size='small'>
-            <TableHead>
+          <Table stickyHeader >
+            <TableHead style={{ height: 32 }}>
               <TableRow>
                 <TableCell>
                   <Checkbox
@@ -176,7 +176,7 @@ const EditPage = ({ className }: EditPagePropsType): React.ReactElement => {
                         </TableCell>
                         <TableCell>{it.getId()}</TableCell>
                         <TableCell>{it.original.filename}</TableCell>
-                        <TableCell>{it.getTitle()}</TableCell>
+                        <TableCell className={clsx(it.isTitleEdit() ? classes.editCell : undefined)}>{it.getTitle()}</TableCell>
                         <TableCell>{it.getArtists()?.map(artistName => (
                           <Chip key={artistName} label={artistName}/>))}</TableCell>
                         <TableCell>{it.getAlbum()}</TableCell>
