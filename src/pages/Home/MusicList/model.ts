@@ -7,6 +7,7 @@ import { ipcRenderer } from 'electron'
 import { Channels } from '../../../../electron/channels'
 import { MusicFilterData } from '../../../components/MusicFilter'
 
+let lastUpdateMusicEventId : string | undefined
 const musicListModel = () => {
   const { data, page, pageSize, total, loadData } = useDataPageLoader<Music>({ loader: fetchMusicList, defaultPageSize: 10, defaultPage: 1 })
   const [selectedMusic, setSelectMusic] = useState<Music[]>([])
@@ -27,7 +28,11 @@ const musicListModel = () => {
   const selectNone = () => {
     setSelectMusic([])
   }
-  ipcRenderer.on(Channels.MusicUpdateEvent, (e, ids) => {
+  ipcRenderer.on(Channels.MusicUpdateEvent, (e, ids, eventId) => {
+    if (eventId === lastUpdateMusicEventId) {
+      return
+    }
+    lastUpdateMusicEventId = eventId
     if (data.find(it => ids.find((id:number) => it.id === id) !== 0)) {
       fetchMusic({ page: page })
     }

@@ -14,7 +14,7 @@ export interface Music {
   filename:string,
 }
 
-export const fetchMusicList = async ({ page = 1, pageSize = 20, ...other }:{page?:number, pageSize?:number, search?:string, album?:string, order?:string, artist?:number, ids?:string }): Promise<ListResponseContainer<Music>> => {
+export const fetchMusicList = async ({ page = 1, pageSize = 20, ...other }:{page?:number, pageSize?:number, search?:string, album?:string, order?:string, artist?:string, ids?:string }): Promise<ListResponseContainer<Music>> => {
   return apiRequest.get(ApplicationConfig.apiPaths.musicList, {
     params: {
       page,

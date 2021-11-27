@@ -5,6 +5,7 @@ import { runExpress } from './express/instance'
 import './spotify/login'
 import './notification/client'
 import { Channels } from './channels'
+import { v4 as uuidv4 } from 'uuid'
 import './editor/index'
 let mainWindow: Electron.BrowserWindow | null
 let editorWindow: Electron.BrowserWindow | null
@@ -93,6 +94,7 @@ ipcMain.on(Channels.Max, () => {
 
 ipcMain.on(Channels.NotifyMusicUpdate, (e, ids) => {
   if (mainWindow) {
-    mainWindow.webContents.send(Channels.MusicUpdateEvent, ids)
+    const eventId = uuidv4()
+    mainWindow.webContents.send(Channels.MusicUpdateEvent, ids, eventId)
   }
 })
